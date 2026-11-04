@@ -113,6 +113,31 @@ class HardwareApi:
         except Exception:
             return []
 
+    def check_ollama_available(self):
+        """Checks if local Ollama daemon is running on localhost:11434."""
+        try:
+            import urllib.request
+            req = urllib.request.Request("http://127.0.0.1:11434/api/tags", headers={"User-Agent": "WindowsTerminalNeo"})
+            with urllib.request.urlopen(req, timeout=1.5) as resp:
+                if resp.status == 200:
+                    data = json.loads(resp.read().decode())
+                    return {"active": True, "models": [m.get("name") for m in data.get("models", [])]}
+        except Exception:
+            pass
+        return {"active": False, "models": []}
+
+    def query_ollama(self, prompt, model="qwen2.5-coder:0.5b"):
+        """Queries local Ollama instance if available."""
+        try:
+            import urllib.request
+            payload = json.dumps({"model": model, "prompt": prompt, "stream": False}).encode("utf-8")
+            req = urllib.request.Request("http://127.0.0.1:11434/api/generate", data=payload, headers={"Content-Type": "application/json"})
+            with urllib.request.urlopen(req, timeout=25) as resp:
+                res = json.loads(resp.read().decode())
+                return {"success": True, "response": res.get("response", "")}
+        except Exception as e:
+            return {"success": False, "error": str(e)}
+
     def execute_real_command(self, cmd_text, cwd=None):
         try:
             res = subprocess.run(
