@@ -1,0 +1,10 @@
+{
+  "name": "windows-terminal-neo",
+  "version": "3.5.0",
+  "description": "Next-Gen Windows Terminal Neo Application",
+  "main": "electron_main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:exe": "npx electron-packager . WindowsTerminalNeo --platform=win32 --arch=x64 --out=build --overwrite"
+  }
+}

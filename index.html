@@ -1,0 +1,1898 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Windows Terminal Neo — Next-Gen Modern Terminal</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,300..700;1,300..700&family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+    :root {
+      --bg-acrylic: rgba(18, 20, 29, 0.82);
+      --bg-terminal: #0d1117;
+      --bg-card: rgba(26, 31, 46, 0.65);
+      --border-acrylic: rgba(255, 255, 255, 0.08);
+      --text-main: #f0f6fc;
+      --text-muted: #8b949e;
+      --accent-color: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.25);
+      --prompt-bg: #1e293b;
+      --font-mono: 'Cascadia Code', 'Fira Code', 'Courier New', monospace;
+    }
+
+    /* Custom Theme Classes */
+    body.theme-tokyo {
+      --bg-acrylic: rgba(26, 27, 38, 0.88);
+      --bg-terminal: #1a1b26;
+      --bg-card: rgba(36, 40, 59, 0.7);
+      --border-acrylic: rgba(122, 162, 247, 0.15);
+      --text-main: #c0caf5;
+      --text-muted: #565f89;
+      --accent-color: #7aa2f7;
+      --accent-glow: rgba(122, 162, 247, 0.3);
+      --prompt-bg: #24283b;
+    }
+
+    body.theme-dracula {
+      --bg-acrylic: rgba(40, 42, 54, 0.9);
+      --bg-terminal: #21222c;
+      --bg-card: rgba(68, 71, 90, 0.6);
+      --border-acrylic: rgba(189, 147, 249, 0.15);
+      --text-main: #f8f8f2;
+      --text-muted: #6272a4;
+      --accent-color: #bd93f9;
+      --accent-glow: rgba(189, 147, 249, 0.3);
+      --prompt-bg: #44475a;
+    }
+
+    body.theme-cyberpunk {
+      --bg-acrylic: rgba(13, 2, 33, 0.92);
+      --bg-terminal: #090014;
+      --bg-card: rgba(36, 0, 70, 0.65);
+      --border-acrylic: rgba(255, 0, 127, 0.25);
+      --text-main: #00f0ff;
+      --text-muted: #7928ca;
+      --accent-color: #ff007f;
+      --accent-glow: rgba(255, 0, 127, 0.4);
+      --prompt-bg: #240046;
+    }
+
+    body.theme-matrix {
+      --bg-acrylic: rgba(5, 15, 8, 0.92);
+      --bg-terminal: #020803;
+      --bg-card: rgba(10, 30, 15, 0.7);
+      --border-acrylic: rgba(34, 197, 94, 0.25);
+      --text-main: #4ade80;
+      --text-muted: #15803d;
+      --accent-color: #22c55e;
+      --accent-glow: rgba(34, 197, 94, 0.4);
+      --prompt-bg: #07220e;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .terminal-font {
+      font-family: var(--font-mono);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.14);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Glassmorphism Mica effect */
+    .mica-backdrop {
+      background: var(--bg-acrylic);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid var(--border-acrylic);
+    }
+
+    /* Powerline Arrow Glyphs Simulation */
+    .pl-segment {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 10px;
+      font-weight: 600;
+      font-size: 0.82rem;
+    }
+
+    /* Blinking Cursor */
+    .cursor-blink {
+      animation: blink 1.05s infinite;
+    }
+    @keyframes blink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    /* Command Block hover */
+    .command-block {
+      transition: all 0.2s ease;
+      border-left: 2px solid transparent;
+    }
+    .command-block:hover {
+      background: rgba(255, 255, 255, 0.02);
+      border-left-color: var(--accent-color);
+    }
+
+    /* Tab dragging / active */
+    .tab-active {
+      background: var(--bg-terminal) !important;
+      border-bottom: 2px solid var(--accent-color) !important;
+      color: #fff !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-center items-center p-2 sm:p-4 md:p-6 overflow-hidden">
+
+  <!-- Desktop Outer Wrapper simulating Windows 11 Desktop background -->
+  <div class="fixed inset-0 bg-gradient-to-tr from-[#0b0f19] via-[#10172a] to-[#0a192f] -z-10 overflow-hidden">
+    <!-- Ambient colorful background orbs -->
+    <div class="absolute -top-40 -left-40 w-96 h-96 bg-sky-500/15 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-1/2 -right-40 w-96 h-96 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-40 left-1/3 w-[30rem] h-[30rem] bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+  </div>
+
+  <!-- Windows Terminal Neo Window Container -->
+  <div id="terminal-window" class="w-full max-w-6xl h-[92vh] flex flex-col rounded-xl mica-backdrop shadow-2xl overflow-hidden transition-all duration-300">
+
+    <!-- Windows 11 Titlebar & Tab Strip -->
+    <header class="h-11 flex items-center justify-between border-b border-white/10 select-none bg-black/25 px-2 relative z-20">
+      
+      <!-- Left: Tabs Container & Add Tab Button -->
+      <div class="flex items-center space-x-1 overflow-x-auto no-scrollbar flex-1 mr-2" id="tabs-container">
+        <!-- Tabs rendered dynamically via JS -->
+      </div>
+
+      <!-- New Tab Plus & Profile Menu -->
+      <div class="flex items-center space-x-1 border-r border-white/10 pr-2 mr-2">
+        <button id="btn-new-tab" title="Открыть новую вкладку (PowerShell)" class="h-7 w-7 flex items-center justify-center rounded-md hover:bg-white/10 text-slate-300 hover:text-white transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+        </button>
+        <button id="btn-profiles-dropdown" title="Выбор профиля шелла" class="h-7 w-6 flex items-center justify-center rounded-md hover:bg-white/10 text-slate-300 hover:text-white transition">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </button>
+      </div>
+
+      <!-- Center-Right Quick Tools (Palette, Audio, Split, Theme, Settings) -->
+      <div class="hidden sm:flex items-center space-x-1 mr-3 text-slate-300">
+        <button id="btn-quick-palette" title="Командная палитра (Ctrl+Shift+P)" class="h-7 px-2 flex items-center space-x-1.5 rounded-md hover:bg-white/10 text-xs text-slate-400 hover:text-white transition">
+          <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          <span class="hidden md:inline font-mono">Ctrl+Shift+P</span>
+        </button>
+
+        <button id="btn-toggle-sound" title="Звук клавиатуры (Web Audio)" class="h-7 w-7 flex items-center justify-center rounded-md hover:bg-white/10 text-slate-400 hover:text-sky-400 transition">
+          <svg id="icon-sound-off" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path></svg>
+          <svg id="icon-sound-on" class="w-4 h-4 hidden text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
+        </button>
+
+        <button id="btn-theme-switcher" title="Сменить тему оформления" class="h-7 w-7 flex items-center justify-center rounded-md hover:bg-white/10 text-slate-400 hover:text-yellow-400 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4 4 4 0 014-4h4a4 4 0 014 4 4 4 0 01-4 4H7zm0 0l2.5-5.5M17 3a4 4 0 014 4 4 4 0 01-4 4h-4a4 4 0 01-4-4 4 4 0 014-4h4z"></path></svg>
+        </button>
+
+        <button id="btn-open-settings" title="Настройки терминала" class="h-7 w-7 flex items-center justify-center rounded-md hover:bg-white/10 text-slate-400 hover:text-white transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+        </button>
+      </div>
+
+      <!-- Windows Window Control Buttons (Minimize, Maximize, Close) -->
+      <div class="flex items-center -mr-2">
+        <button id="win-btn-minimize" class="h-11 w-11 flex items-center justify-center hover:bg-white/10 text-slate-400 hover:text-white transition">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor"><rect y="8" width="12" height="1" x="2"/></svg>
+        </button>
+        <button id="win-btn-maximize" class="h-11 w-11 flex items-center justify-center hover:bg-white/10 text-slate-400 hover:text-white transition">
+          <svg id="icon-win-max" class="w-3 h-3" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="2" width="12" height="12"/></svg>
+          <svg id="icon-win-restore" class="w-3 h-3 hidden" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="4" y="2" width="10" height="10"/><path d="M2 5v9h9"/></svg>
+        </button>
+        <button id="win-btn-close" class="h-11 w-11 flex items-center justify-center hover:bg-red-600 text-slate-400 hover:text-white transition">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="currentColor"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Profiles Dropdown Menu Modal -->
+    <div id="profiles-menu" class="hidden absolute top-12 left-28 w-56 rounded-lg bg-slate-900/95 border border-white/15 backdrop-blur-xl shadow-2xl p-1.5 z-50 text-xs">
+      <div class="px-2 py-1 text-slate-400 font-semibold uppercase tracking-wider text-[10px]">Запустить профиль</div>
+      <button class="profile-option w-full flex items-center space-x-2.5 px-2.5 py-1.5 rounded hover:bg-white/10 text-slate-200" data-type="pwsh">
+        <span class="w-4 text-sky-400 font-mono font-bold">&gt;_</span>
+        <span>PowerShell 7.5 Neo</span>
+      </button>
+      <button class="profile-option w-full flex items-center space-x-2.5 px-2.5 py-1.5 rounded hover:bg-white/10 text-slate-200" data-type="wsl">
+        <span class="w-4 text-orange-400">🐧</span>
+        <span>Ubuntu 24.04 (WSL 2)</span>
+      </button>
+      <button class="profile-option w-full flex items-center space-x-2.5 px-2.5 py-1.5 rounded hover:bg-white/10 text-slate-200" data-type="cmd">
+        <span class="w-4 text-amber-300 font-mono font-bold">C:\</span>
+        <span>Command Prompt (CMD)</span>
+      </button>
+      <button class="profile-option w-full flex items-center space-x-2.5 px-2.5 py-1.5 rounded hover:bg-white/10 text-slate-200" data-type="python">
+        <span class="w-4 text-emerald-400 font-mono font-bold">&gt;&gt;&gt;</span>
+        <span>Python 3.12 Interactive</span>
+      </button>
+      <button class="profile-option w-full flex items-center space-x-2.5 px-2.5 py-1.5 rounded hover:bg-white/10 text-slate-200" data-type="matrix">
+        <span class="w-4 text-green-400 font-mono">01</span>
+        <span>Matrix Digital Rain</span>
+      </button>
+    </div>
+
+    <!-- Quick Action Toolchips Bar -->
+    <div class="h-9 bg-slate-900/60 border-b border-white/5 flex items-center justify-between px-3 text-xs overflow-x-auto no-scrollbar">
+      <div class="flex items-center space-x-1.5 text-slate-300">
+        <span class="text-slate-500 font-mono text-[11px] mr-1">Быстрый запуск:</span>
+        <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-sky-500/20 hover:text-sky-300 border border-white/5 transition font-mono" data-cmd="winfetch">winfetch</button>
+        <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/5 transition font-mono" data-cmd="top">top</button>
+        <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-green-500/20 hover:text-green-300 border border-white/5 transition font-mono" data-cmd="matrix">matrix</button>
+        <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-indigo-500/20 hover:text-indigo-300 border border-white/5 transition font-mono" data-cmd="weather Kyiv">weather</button>
+        <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-amber-500/20 hover:text-amber-300 border border-white/5 transition font-mono" data-cmd="speedtest">speedtest</button>
+        <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-purple-500/20 hover:text-purple-300 border border-white/5 transition font-mono" data-cmd="ai Поясни архитектуру терминала">ai copilot</button>
+        <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-rose-500/20 hover:text-rose-300 border border-white/5 transition font-mono" data-cmd="tree">tree</button>
+        <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-slate-500/20 hover:text-slate-200 border border-white/5 transition font-mono" data-cmd="help">help</button>
+        <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-red-500/20 hover:text-red-300 border border-white/5 transition font-mono" data-cmd="clear">clear</button>
+      </div>
+
+      <div class="hidden md:flex items-center space-x-3 text-[11px] text-slate-400 font-mono">
+        <span id="system-time-badge" class="text-slate-300">20:42:00</span>
+        <span class="flex items-center space-x-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span><span>Online</span></span>
+      </div>
+    </div>
+
+    <!-- Main Terminal Display Area (Scrollable Output & Interactive Blocks) -->
+    <main id="terminal-viewport" class="flex-1 overflow-y-auto p-3 sm:p-5 terminal-font text-sm leading-relaxed relative flex flex-col space-y-4" style="background-color: var(--bg-terminal)">
+      
+      <!-- Welcome Banner Block -->
+      <div class="p-3.5 rounded-lg bg-white/[0.03] border border-white/10 text-slate-300 shadow-sm">
+        <div class="flex items-center justify-between mb-2 pb-1.5 border-b border-white/5">
+          <div class="flex items-center space-x-2">
+            <span class="text-sky-400 font-bold text-base">Nexus Windows Terminal Neo</span>
+            <span class="text-[10px] px-1.5 py-0.5 bg-sky-500/20 text-sky-300 rounded font-mono">v3.5.0-Release</span>
+          </div>
+          <span class="text-xs text-slate-500">Архитектура: Ultra Modern Next-Gen Shell</span>
+        </div>
+        <p class="text-xs text-slate-300 mb-2">
+          Новое поколение терминала для Windows: блочный вывод, умное автодополнение, Starship-промпт, интерактивный диспетчер задач (<code class="text-sky-300 font-mono">top</code>), тест сети (<code class="text-amber-300 font-mono">speedtest</code>), цифровой дождь (<code class="text-emerald-300 font-mono">matrix</code>) и встроенный AI Copilot.
+        </p>
+        <div class="text-[11px] text-slate-400 flex flex-wrap gap-x-4 gap-y-1 font-mono">
+          <span>• Введите <span class="text-sky-300 font-bold">help</span> для списка всех 20+ встроенных команд</span>
+          <span>• <kbd class="px-1 py-0.2 bg-white/10 rounded">Tab</kbd> — автодополнение</span>
+          <span>• <kbd class="px-1 py-0.2 bg-white/10 rounded">↑ / ↓</kbd> — история команд</span>
+          <span>• <kbd class="px-1 py-0.2 bg-white/10 rounded">Ctrl+L</kbd> — очистить экран</span>
+        </div>
+      </div>
+
+      <!-- Rendered Blocks Container -->
+      <div id="blocks-container" class="space-y-4 flex-1">
+        <!-- Command output blocks appended here -->
+      </div>
+
+      <!-- Interactive Top/Task Manager Overlay (hidden by default) -->
+      <div id="interactive-overlay" class="hidden p-4 rounded-lg bg-black/85 border border-sky-500/30 text-xs shadow-2xl relative">
+        <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-3">
+          <div class="flex items-center space-x-2">
+            <span class="text-emerald-400 font-bold text-sm flex items-center"><span class="w-2 h-2 rounded-full bg-emerald-400 mr-1.5 animate-ping"></span>HTOP / Task Manager Live</span>
+            <span class="text-slate-400 text-[11px]">(Обновление в реальном времени: 1.0s)</span>
+          </div>
+          <button id="btn-close-interactive" class="px-2.5 py-1 bg-red-500/20 hover:bg-red-500 text-red-200 hover:text-white rounded font-mono text-xs transition">
+            Выйти (q / Esc)
+          </button>
+        </div>
+
+        <div id="interactive-content" class="font-mono space-y-3">
+          <!-- Dynamic System Monitor Data rendered via JS -->
+        </div>
+      </div>
+
+      <!-- Matrix Canvas Overlay (hidden by default) -->
+      <div id="matrix-overlay" class="hidden relative w-full h-80 rounded-lg overflow-hidden border border-emerald-500/30 bg-black">
+        <canvas id="matrix-canvas" class="w-full h-full block"></canvas>
+        <button id="btn-close-matrix" class="absolute top-2 right-2 px-2.5 py-1 bg-black/70 hover:bg-emerald-600 text-emerald-400 hover:text-black font-mono text-xs rounded border border-emerald-500/40 transition">
+          Остановить матрицу (q)
+        </button>
+      </div>
+
+      <!-- Active Command Input Section with Starship/Oh-My-Posh Style Prompt -->
+      <div id="prompt-section" class="pt-2 sticky bottom-0 bg-[var(--bg-terminal)]/95 pb-2 border-t border-white/5 backdrop-blur-md">
+        
+        <!-- Powerline Prompt Badges Header -->
+        <div class="flex flex-wrap items-center gap-1.5 mb-1.5 text-xs font-semibold select-none">
+          <!-- User / Machine Badge -->
+          <div class="flex items-center rounded overflow-hidden shadow-sm">
+            <span id="badge-os-icon" class="bg-sky-600 text-white px-2 py-0.5 flex items-center">
+              <svg class="w-3.5 h-3.5 mr-1" viewBox="0 0 16 16" fill="currentColor"><path d="M0 2.222L6.5 1.3v6.178H0V2.222zm7.5-1.444L16 0v7.478H7.5V.778zM0 8.522h6.5v6.178L0 13.778V8.522zm7.5 0H16V16l-8.5-.778V8.522z"/></svg>
+              <span>neo@win11</span>
+            </span>
+            <span id="badge-cwd" class="bg-slate-800 text-sky-300 px-2.5 py-0.5 font-mono">
+              ~/projects/nexus-core
+            </span>
+          </div>
+
+          <!-- Git Branch & Status Badge -->
+          <div class="flex items-center rounded overflow-hidden shadow-sm font-mono">
+            <span class="bg-indigo-600/90 text-white px-2 py-0.5 flex items-center text-[11px]">
+              <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+              <span id="badge-git-branch">main</span>
+            </span>
+            <span class="bg-emerald-950 text-emerald-400 px-1.5 py-0.5 text-[11px] border border-emerald-500/20">
+              ✔ clean
+            </span>
+          </div>
+
+          <!-- Execution time badge -->
+          <div class="text-[11px] text-slate-500 font-mono ml-auto flex items-center space-x-1">
+            <span id="badge-last-exec" class="text-amber-400">⚡ 12ms</span>
+          </div>
+        </div>
+
+        <!-- Input Line with Ghost Autocompletion Text and Caret -->
+        <div class="relative flex items-center bg-black/40 rounded-lg border border-white/10 px-3 py-2.5 focus-within:border-sky-400 focus-within:ring-1 focus-within:ring-sky-400/30 transition shadow-inner">
+          <span class="text-sky-400 mr-2.5 font-mono font-bold select-none text-base">❯</span>
+          
+          <div class="relative flex-1 flex items-center overflow-hidden">
+            <!-- Ghost Autocomplete Text (Underneath) -->
+            <div id="ghost-autocomplete" class="absolute inset-0 pointer-events-none text-slate-600 font-mono text-sm whitespace-pre flex items-center select-none"></div>
+            
+            <!-- Real User Input Field -->
+            <input id="terminal-input" type="text" autocomplete="off" spellcheck="false" 
+              class="w-full bg-transparent border-none outline-none text-slate-100 font-mono text-sm caret-sky-400 z-10" 
+              placeholder="Введите команду (например: winfetch, top, matrix, ai, help)..." />
+          </div>
+
+          <!-- Execute Button / Status Indicator -->
+          <button id="btn-submit-cmd" class="ml-2 text-xs px-2 py-1 rounded bg-sky-500/20 text-sky-300 hover:bg-sky-500 hover:text-white transition font-mono flex items-center space-x-1">
+            <span>Enter</span>
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </button>
+        </div>
+
+        <!-- Smart Autocomplete Suggestions Dropdown Popup -->
+        <div id="autocomplete-popup" class="hidden absolute left-0 bottom-full mb-1 w-full max-w-lg rounded-lg bg-slate-900/95 border border-white/15 backdrop-blur-xl shadow-2xl p-1.5 z-40 text-xs">
+          <div class="px-2 py-1 text-slate-500 font-mono text-[10px] uppercase tracking-wider flex justify-between">
+            <span>Предложения (Tab для вставки)</span>
+            <span>Стрелки ↑↓ для выбора</span>
+          </div>
+          <div id="autocomplete-list" class="space-y-0.5">
+            <!-- suggestions items injected via JS -->
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- Bottom Status Bar -->
+    <footer class="h-6 bg-slate-900/80 border-t border-white/5 flex items-center justify-between px-3 text-[11px] text-slate-400 font-mono select-none">
+      <div class="flex items-center space-x-3">
+        <span class="flex items-center text-sky-400"><span class="w-1.5 h-1.5 rounded-full bg-sky-400 mr-1.5"></span><span id="status-shell-label">PowerShell 7.5</span></span>
+        <span class="text-slate-600">|</span>
+        <span id="status-encoding">UTF-8</span>
+        <span class="text-slate-600">|</span>
+        <span id="status-cursor-pos">Ln 1, Col 1</span>
+      </div>
+      <div class="flex items-center space-x-3">
+        <span id="status-ram-usage" class="text-slate-400">RAM: 4.2 / 64 GB (6.5%)</span>
+        <span class="text-slate-600">|</span>
+        <span class="text-emerald-400">100% Ready</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Settings Modal Dialog -->
+  <div id="settings-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="w-full max-w-lg rounded-xl bg-slate-900 border border-white/15 shadow-2xl overflow-hidden flex flex-col">
+      <div class="flex items-center justify-between p-4 border-b border-white/10">
+        <div class="flex items-center space-x-2">
+          <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+          <span class="font-bold text-slate-100">Настройки Windows Terminal Neo</span>
+        </div>
+        <button id="btn-close-settings" class="text-slate-400 hover:text-white p-1 rounded hover:bg-white/10">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4 text-xs overflow-y-auto max-h-[70vh]">
+        
+        <!-- Theme selection -->
+        <div>
+          <label class="block font-semibold text-slate-300 mb-2">Цветовая тема (Theme)</label>
+          <div class="grid grid-cols-2 gap-2" id="settings-theme-grid">
+            <button class="theme-choice-btn p-2 rounded border border-white/10 bg-slate-800 text-left flex items-center space-x-2 hover:border-sky-400" data-theme="default">
+              <span class="w-3.5 h-3.5 rounded-full bg-sky-400"></span>
+              <span>Windows Mica (Default)</span>
+            </button>
+            <button class="theme-choice-btn p-2 rounded border border-white/10 bg-slate-800 text-left flex items-center space-x-2 hover:border-sky-400" data-theme="tokyo">
+              <span class="w-3.5 h-3.5 rounded-full bg-indigo-400"></span>
+              <span>Tokyo Night</span>
+            </button>
+            <button class="theme-choice-btn p-2 rounded border border-white/10 bg-slate-800 text-left flex items-center space-x-2 hover:border-sky-400" data-theme="dracula">
+              <span class="w-3.5 h-3.5 rounded-full bg-purple-400"></span>
+              <span>Dracula Dark</span>
+            </button>
+            <button class="theme-choice-btn p-2 rounded border border-white/10 bg-slate-800 text-left flex items-center space-x-2 hover:border-sky-400" data-theme="cyberpunk">
+              <span class="w-3.5 h-3.5 rounded-full bg-pink-500"></span>
+              <span>Cyberpunk 2077</span>
+            </button>
+            <button class="theme-choice-btn p-2 rounded border border-white/10 bg-slate-800 text-left flex items-center space-x-2 hover:border-sky-400" data-theme="matrix">
+              <span class="w-3.5 h-3.5 rounded-full bg-emerald-500"></span>
+              <span>Matrix Green</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Font size slider -->
+        <div>
+          <div class="flex justify-between font-semibold text-slate-300 mb-1">
+            <span>Размер шрифта консоли</span>
+            <span id="font-size-val" class="font-mono text-sky-400">14px</span>
+          </div>
+          <input id="slider-font-size" type="range" min="11" max="18" value="14" class="w-full accent-sky-400" />
+        </div>
+
+        <!-- Acrylic opacity slider -->
+        <div>
+          <div class="flex justify-between font-semibold text-slate-300 mb-1">
+            <span>Прозрачность Mica / Acrylic</span>
+            <span id="opacity-val" class="font-mono text-sky-400">85%</span>
+          </div>
+          <input id="slider-opacity" type="range" min="50" max="100" value="85" class="w-full accent-sky-400" />
+        </div>
+
+        <!-- Audio toggle -->
+        <div class="flex items-center justify-between p-3 rounded-lg bg-white/5">
+          <div>
+            <div class="font-semibold text-slate-200">Звук механической клавиатуры</div>
+            <div class="text-[11px] text-slate-400">Синтез мягких кликов клавиш через Web Audio API</div>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="check-sound-toggle" class="sr-only peer">
+            <div class="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-sky-500"></div>
+          </label>
+        </div>
+
+        <!-- Hotkeys summary -->
+        <div class="p-3 rounded-lg bg-black/40 border border-white/5 space-y-1 text-[11px] font-mono text-slate-400">
+          <div class="font-bold text-slate-300 mb-1.5 font-sans">Горячие клавиши:</div>
+          <div class="flex justify-between"><span>Ctrl + Shift + P</span><span class="text-slate-300">Командная палитра</span></div>
+          <div class="flex justify-between"><span>Ctrl + L</span><span class="text-slate-300">Очистить вывод</span></div>
+          <div class="flex justify-between"><span>Ctrl + T</span><span class="text-slate-300">Новая вкладка</span></div>
+          <div class="flex justify-between"><span>Ctrl + W</span><span class="text-slate-300">Закрыть вкладку</span></div>
+        </div>
+
+      </div>
+
+      <div class="p-3 bg-slate-950 border-t border-white/10 flex justify-end">
+        <button id="btn-save-settings" class="px-4 py-1.5 bg-sky-500 hover:bg-sky-400 text-white rounded font-medium transition text-xs">
+          Применить настройки
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Command Palette Modal (Ctrl+Shift+P) -->
+  <div id="palette-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-start justify-center pt-20 p-4">
+    <div class="w-full max-w-lg rounded-xl bg-slate-900 border border-white/20 shadow-2xl overflow-hidden">
+      <div class="p-3 border-b border-white/10 flex items-center space-x-2">
+        <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <input id="palette-search-input" type="text" placeholder="Введите действие или команду..." class="w-full bg-transparent border-none outline-none text-slate-100 text-xs font-mono" />
+        <button id="btn-close-palette" class="text-slate-500 hover:text-white text-xs">Esc</button>
+      </div>
+      <div id="palette-results" class="max-h-60 overflow-y-auto p-1.5 space-y-0.5 text-xs font-mono">
+        <!-- Palette items rendered via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- In-Page Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-10 right-10 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+  <!-- Main Application Logic Script -->
+  <script>
+    // --- Application State ---
+    const appState = {
+      activeTabId: 1,
+      tabs: [
+        {
+          id: 1,
+          type: 'pwsh',
+          name: 'pwsh: ~',
+          cwd: '~/projects/nexus-core',
+          gitBranch: 'main',
+          history: ['winfetch', 'help'],
+          historyIndex: -1,
+          blocks: []
+        }
+      ],
+      currentTheme: 'default',
+      soundEnabled: false,
+      fontSize: 14,
+      acrylicOpacity: 85,
+      isMaximized: false,
+      activeInterval: null,
+      matrixInterval: null,
+      virtualFS: {
+        '~': {
+          type: 'dir',
+          children: {
+            'projects': {
+              type: 'dir',
+              children: {
+                'nexus-core': {
+                  type: 'dir',
+                  children: {
+                    'README.md': { type: 'file', content: '# Nexus Terminal Neo\nNext-Generation terminal for Windows with acrylic blur and intelligent widgets.' },
+                    'package.json': { type: 'file', content: '{\n  "name": "nexus-terminal",\n  "version": "3.5.0",\n  "type": "module"\n}' },
+                    'index.ts': { type: 'file', content: 'const version = "3.5.0";\nconsole.log("Nexus Core ready!");' },
+                    'config.yaml': { type: 'file', content: 'terminal:\n  acrylic: true\n  blur: 24\n  prompt: starship' }
+                  }
+                },
+                'web-apps': { type: 'dir', children: {} }
+              }
+            },
+            'Documents': {
+              type: 'dir',
+              children: {
+                'notes.txt': { type: 'file', content: 'Купить кофе, обновить ядро терминала, протестировать WSL 2.' }
+              }
+            },
+            '.bashrc': { type: 'file', content: 'export PATH=$HOME/bin:$PATH\neval "$(starship init bash)"' }
+          }
+        }
+      }
+    };
+
+    // --- Web Audio Click Synthesizer ---
+    let audioCtx = null;
+    function playKeySound(type = 'press') {
+      if (!appState.soundEnabled) return;
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        const now = audioCtx.currentTime;
+        if (type === 'enter') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(320, now);
+          osc.frequency.exponentialRampToValueAtTime(140, now + 0.04);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+          osc.start(now);
+          osc.stop(now + 0.04);
+        } else {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(650, now);
+          osc.frequency.exponentialRampToValueAtTime(200, now + 0.025);
+          gain.gain.setValueAtTime(0.03, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.025);
+          osc.start(now);
+          osc.stop(now + 0.025);
+        }
+      } catch (e) {
+        console.warn('Audio not available', e);
+      }
+    }
+
+    // --- Toast Notifications ---
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'px-3 py-2 rounded-lg bg-slate-900/90 border border-white/20 text-xs shadow-xl text-slate-100 flex items-center space-x-2 transition-all transform duration-200 translate-y-2 opacity-0 pointer-events-auto';
+      
+      const iconColor = type === 'success' ? 'text-emerald-400' : (type === 'error' ? 'text-red-400' : 'text-sky-400');
+      toast.innerHTML = `<span class="${iconColor}">●</span><span>${message}</span>`;
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-1');
+        setTimeout(() => toast.remove(), 250);
+      }, 2500);
+    }
+
+    // --- Available Terminal Commands & Autocompletions ---
+    const COMMAND_REGISTRY = [
+      { cmd: 'help', desc: 'Справка по доступным командам терминала' },
+      { cmd: 'winfetch', desc: 'Показать детальные характеристики Windows 11 Neo' },
+      { cmd: 'top', desc: 'Интерактивный диспетчер задач и мониторинг CPU/RAM' },
+      { cmd: 'matrix', desc: 'Запустить анимацию цифрового дождя Matrix' },
+      { cmd: 'weather', desc: 'Узнать погоду (например: weather Kyiv или weather Tokyo)' },
+      { cmd: 'speedtest', desc: 'Тестирование пропускной способности сети' },
+      { cmd: 'ai', desc: 'Спросить встроенного AI Copilot (например: ai как найти файл)' },
+      { cmd: 'ls', desc: 'Список файлов в текущей папке' },
+      { cmd: 'dir', desc: 'Аналог команды ls (стиль Windows CMD)' },
+      { cmd: 'cd', desc: 'Перейти в каталог (например: cd .. или cd projects)' },
+      { cmd: 'pwd', desc: 'Показать текущую рабочую директорию' },
+      { cmd: 'cat', desc: 'Прочитать содержимое файла (например: cat README.md)' },
+      { cmd: 'tree', desc: 'Отобразить дерево файлов текущей папки' },
+      { cmd: 'touch', desc: 'Создать новый пустой файл (например: touch script.js)' },
+      { cmd: 'mkdir', desc: 'Создать новую папку (например: mkdir test)' },
+      { cmd: 'rm', desc: 'Удалить файл из виртуальной файловой системы' },
+      { cmd: 'echo', desc: 'Вывести переданный текст' },
+      { cmd: 'calc', desc: 'Вычислить математическое выражение (например: calc 42 * 128)' },
+      { cmd: 'curl', desc: 'Имитация HTTP запроса (например: curl https://api.github.com)' },
+      { cmd: 'date', desc: 'Показать текущее системное время и дату' },
+      { cmd: 'history', desc: 'История выполненных команд в этой вкладке' },
+      { cmd: 'theme', desc: 'Сменить тему (default, tokyo, dracula, cyberpunk, matrix)' },
+      { cmd: 'sound', desc: 'Переключить звук механических клавиш (on / off)' },
+      { cmd: 'clear', desc: 'Очистить экран терминала' },
+      { cmd: 'cls', desc: 'Очистить экран (стиль CMD)' }
+    ];
+
+    // --- Tab Management ---
+    function renderTabs() {
+      const container = document.getElementById('tabs-container');
+      container.innerHTML = '';
+
+      appState.tabs.forEach(tab => {
+        const tabEl = document.createElement('div');
+        const isActive = tab.id === appState.activeTabId;
+        tabEl.className = `flex items-center space-x-2 px-3 py-1.5 rounded-t-lg text-xs cursor-pointer select-none border-b-2 border-transparent transition-all max-w-[160px] truncate ${
+          isActive ? 'tab-active bg-[var(--bg-terminal)] text-white font-medium' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+        }`;
+
+        let icon = '<span class="text-sky-400 font-bold">&gt;_</span>';
+        if (tab.type === 'wsl') icon = '<span class="text-orange-400">🐧</span>';
+        if (tab.type === 'cmd') icon = '<span class="text-amber-300 font-bold">C:</span>';
+        if (tab.type === 'python') icon = '<span class="text-emerald-400">&gt;&gt;</span>';
+        if (tab.type === 'matrix') icon = '<span class="text-green-400 font-mono">01</span>';
+
+        tabEl.innerHTML = `
+          ${icon}
+          <span class="truncate flex-1">${tab.name}</span>
+          ${appState.tabs.length > 1 ? `
+            <button class="btn-close-tab hover:bg-white/20 p-0.5 rounded text-slate-400 hover:text-white" data-id="${tab.id}" title="Закрыть вкладку">
+              <svg class="w-3 h-3" viewBox="0 0 16 16" fill="currentColor"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/></svg>
+            </button>
+          ` : ''}
+        `;
+
+        tabEl.addEventListener('click', (e) => {
+          if (e.target.closest('.btn-close-tab')) return;
+          switchTab(tab.id);
+        });
+
+        const closeBtn = tabEl.querySelector('.btn-close-tab');
+        if (closeBtn) {
+          closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeTab(tab.id);
+          });
+        }
+
+        container.appendChild(tabEl);
+      });
+
+      updateShellBadges();
+    }
+
+    function createNewTab(type = 'pwsh') {
+      const newId = Date.now();
+      let name = 'pwsh: ~';
+      if (type === 'wsl') name = 'bash: ~';
+      if (type === 'cmd') name = 'cmd: C:\\';
+      if (type === 'python') name = 'python: 3.12';
+      if (type === 'matrix') name = 'matrix: 01';
+
+      const newTab = {
+        id: newId,
+        type: type,
+        name: name,
+        cwd: type === 'cmd' ? 'C:\\Users\\Neo' : '~/projects/nexus-core',
+        gitBranch: 'main',
+        history: [],
+        historyIndex: -1,
+        blocks: []
+      };
+
+      appState.tabs.push(newTab);
+      switchTab(newId);
+      showToast(`Создана вкладка: ${name}`);
+
+      if (type === 'matrix') {
+        executeCommand('matrix');
+      }
+    }
+
+    function switchTab(id) {
+      appState.activeTabId = id;
+      detectHardwareSpecs();
+      renderTabs();
+      renderBlocks();
+      focusTerminalInput();
+    }
+
+    function closeTab(id) {
+      if (appState.tabs.length <= 1) return;
+      const idx = appState.tabs.findIndex(t => t.id === id);
+      appState.tabs = appState.tabs.filter(t => t.id !== id);
+      if (appState.activeTabId === id) {
+        appState.activeTabId = appState.tabs[Math.max(0, idx - 1)].id;
+      }
+      detectHardwareSpecs();
+      renderTabs();
+      renderBlocks();
+      showToast('Вкладка закрыта');
+    }
+
+    function getActiveTab() {
+      return appState.tabs.find(t => t.id === appState.activeTabId) || appState.tabs[0];
+    }
+
+    function updateShellBadges() {
+      const tab = getActiveTab();
+      const cwdBadge = document.getElementById('badge-cwd');
+      const gitBadge = document.getElementById('badge-git-branch');
+      const shellLabel = document.getElementById('status-shell-label');
+      const osIcon = document.getElementById('badge-os-icon');
+
+      if (cwdBadge) cwdBadge.textContent = tab.cwd;
+      if (gitBadge) gitBadge.textContent = tab.gitBranch;
+      
+      if (shellLabel) {
+        if (tab.type === 'pwsh') shellLabel.textContent = 'PowerShell 7.5';
+        else if (tab.type === 'wsl') shellLabel.textContent = 'WSL 2: Ubuntu Linux';
+        else if (tab.type === 'cmd') shellLabel.textContent = 'Windows CMD';
+        else if (tab.type === 'python') shellLabel.textContent = 'Python REPL';
+        else shellLabel.textContent = 'Matrix Rain';
+      }
+    }
+
+    // --- Command Blocks Rendering ---
+    function renderBlocks() {
+      const container = document.getElementById('blocks-container');
+      const tab = getActiveTab();
+      container.innerHTML = '';
+
+      tab.blocks.forEach((block, index) => {
+        const blockEl = document.createElement('div');
+        blockEl.className = 'command-block p-3 rounded-lg bg-white/[0.02] border border-white/5 space-y-2';
+
+        blockEl.innerHTML = `
+          <div class="flex items-center justify-between text-xs text-slate-400 select-none pb-1.5 border-b border-white/5">
+            <div class="flex items-center space-x-2 font-mono">
+              <span class="text-sky-400 font-bold">❯</span>
+              <span class="text-slate-100 font-semibold">${escapeHtml(block.cmd)}</span>
+            </div>
+            <div class="flex items-center space-x-2 text-[11px]">
+              <span class="text-slate-500">${block.timestamp}</span>
+              <button class="btn-copy-block hover:text-white px-1.5 py-0.5 rounded bg-white/5 hover:bg-white/10" data-idx="${index}" title="Скопировать вывод">
+                📋
+              </button>
+            </div>
+          </div>
+          <div class="output-content text-slate-300 font-mono text-xs whitespace-pre-wrap leading-relaxed overflow-x-auto">
+            ${block.output}
+          </div>
+        `;
+
+        const copyBtn = blockEl.querySelector('.btn-copy-block');
+        copyBtn.addEventListener('click', () => {
+          copyToClipboard(block.rawOutput || block.output);
+          showToast('Вывод скопирован в буфер', 'success');
+        });
+
+        container.appendChild(blockEl);
+      });
+
+      scrollTerminalToBottom();
+    }
+
+    function scrollTerminalToBottom() {
+      const viewport = document.getElementById('terminal-viewport');
+      if (viewport) {
+        viewport.scrollTop = viewport.scrollHeight;
+      }
+    }
+
+    function focusTerminalInput() {
+      const input = document.getElementById('terminal-input');
+      if (input) input.focus();
+    }
+
+    // --- Command Execution Engine ---
+    function executeCommand(inputStr) {
+      const tab = getActiveTab();
+      const trimmed = inputStr.trim();
+      if (!trimmed) return;
+
+      playKeySound('enter');
+
+      // Add to tab history
+      tab.history.push(trimmed);
+      tab.historyIndex = tab.history.length;
+
+      const startTime = performance.now();
+      const parts = trimmed.split(/\s+/);
+      const rootCommand = parts[0].toLowerCase();
+      const args = parts.slice(1);
+
+      let outputHtml = '';
+      let rawOutput = '';
+
+      switch (rootCommand) {
+        case 'clear':
+        case 'cls':
+          tab.blocks = [];
+          renderBlocks();
+          closeInteractiveOverlays();
+          return;
+
+        case 'help':
+        case '?':
+          outputHtml = generateHelpOutput();
+          rawOutput = 'Справка по командам Windows Terminal Neo';
+          break;
+
+        case 'winfetch':
+        case 'neofetch':
+          outputHtml = generateWinfetchOutput();
+          rawOutput = 'Windows 11 Neo specs output';
+          break;
+
+        case 'top':
+        case 'htop':
+        case 'taskmgr':
+          startInteractiveTop();
+          return;
+
+        case 'matrix':
+          startMatrixRain();
+          return;
+
+        case 'weather':
+          const city = args.join(' ') || 'Kyiv';
+          outputHtml = generateWeatherOutput(city);
+          rawOutput = `Weather report for ${city}`;
+          break;
+
+        case 'speedtest':
+          startSpeedTestBlock(trimmed);
+          return;
+
+        case 'ai':
+        case 'ask':
+          const query = args.join(' ');
+          if (!query) {
+            outputHtml = '<span class="text-amber-400">Использование: ai &lt;вопрос или запрос к терминалу&gt;</span>\nПример: <span class="text-sky-300">ai как найти файлы больше 100MB</span>';
+          } else {
+            outputHtml = generateAiResponse(query);
+          }
+          break;
+
+        case 'ls':
+        case 'dir':
+          outputHtml = handleListFiles(tab.cwd);
+          break;
+
+        case 'pwd':
+          outputHtml = `<span class="text-sky-300">${tab.cwd}</span>`;
+          rawOutput = tab.cwd;
+          break;
+
+        case 'cd':
+          outputHtml = handleChangeDir(args[0] || '~', tab);
+          break;
+
+        case 'cat':
+        case 'type':
+          outputHtml = handleReadFile(args[0], tab.cwd);
+          break;
+
+        case 'tree':
+          outputHtml = generateTreeOutput(tab.cwd);
+          break;
+
+        case 'echo':
+          const text = args.join(' ');
+          outputHtml = `<span class="text-slate-200">${escapeHtml(text)}</span>`;
+          rawOutput = text;
+          break;
+
+        case 'touch':
+          if (!args[0]) outputHtml = '<span class="text-amber-400">Укажите имя файла: touch &lt;filename&gt;</span>';
+          else outputHtml = handleTouchFile(args[0], tab.cwd);
+          break;
+
+        case 'mkdir':
+          if (!args[0]) outputHtml = '<span class="text-amber-400">Укажите имя папки: mkdir &lt;dirname&gt;</span>';
+          else outputHtml = handleMakeDir(args[0], tab.cwd);
+          break;
+
+        case 'calc':
+          outputHtml = handleCalculate(args.join(' '));
+          break;
+
+        case 'curl':
+        case 'fetch':
+          outputHtml = handleCurl(args[0] || 'https://api.github.com/zen');
+          break;
+
+        case 'date':
+          outputHtml = `<span class="text-emerald-400">${new Date().toLocaleString('ru-RU', { dateStyle: 'full', timeStyle: 'medium' })}</span>`;
+          break;
+
+        case 'history':
+          outputHtml = tab.history.map((h, i) => `<span class="text-slate-500">${String(i + 1).padStart(3, ' ')}</span>  <span class="text-sky-300">${escapeHtml(h)}</span>`).join('\n');
+          break;
+
+        case 'theme':
+          if (args[0]) {
+            setTheme(args[0]);
+            outputHtml = `<span class="text-emerald-400">Тема переключена на: <b>${escapeHtml(args[0])}</b></span>`;
+          } else {
+            outputHtml = 'Доступные темы: default (Mica), tokyo, dracula, cyberpunk, matrix\nПример: <span class="text-sky-300">theme tokyo</span>';
+          }
+          break;
+
+        case 'sound':
+          if (args[0] === 'on' || args[0] === '1') {
+            toggleSound(true);
+            outputHtml = '<span class="text-emerald-400">Звук механической клавиатуры ВКЛЮЧЕН.</span>';
+          } else if (args[0] === 'off' || args[0] === '0') {
+            toggleSound(false);
+            outputHtml = '<span class="text-amber-400">Звук механической клавиатуры ВЫКЛЮЧЕН.</span>';
+          } else {
+            toggleSound(!appState.soundEnabled);
+            outputHtml = `<span class="text-sky-300">Звук клавиатуры: ${appState.soundEnabled ? 'ВКЛЮЧЕН' : 'ВЫКЛЮЧЕН'}</span>`;
+          }
+          break;
+
+        default:
+          outputHtml = `<span class="text-red-400">Команда не найдена: <b>${escapeHtml(rootCommand)}</b></span>\nВведите <span class="text-sky-300 font-bold">help</span> для списка всех поддерживаемых команд или используйте <span class="text-purple-300">ai ${escapeHtml(trimmed)}</span>.`;
+      }
+
+      const execDuration = Math.round(performance.now() - startTime);
+      const lastExecBadge = document.getElementById('badge-last-exec');
+      if (lastExecBadge) lastExecBadge.textContent = `⚡ ${execDuration}ms`;
+
+      tab.blocks.push({
+        cmd: trimmed,
+        output: outputHtml,
+        rawOutput: rawOutput || outputHtml.replace(/<[^>]+>/g, ''),
+        timestamp: new Date().toLocaleTimeString()
+      });
+
+      renderBlocks();
+      updateShellBadges();
+    }
+
+    // --- Command Handlers & Generators ---
+    function generateHelpOutput() {
+      return `
+<span class="text-sky-400 font-bold text-sm">ДОСТУПНЫЕ КОМАНДЫ WINDOWS TERMINAL NEO</span>
+<span class="text-slate-500">--------------------------------------------------------------------------------</span>
+<b class="text-emerald-400">СИСТЕМА И ИНФОРМАЦИЯ:</b>
+  <span class="text-sky-300">winfetch</span>     - Красивая карточка характеристик системы Windows 11 Neo
+  <span class="text-sky-300">top</span>          - Интерактивный диспетчер процессов и нагрузка CPU / RAM в реальном времени
+  <span class="text-sky-300">matrix</span>       - Интерактивная анимация цифрового дождя Matrix
+  <span class="text-sky-300">weather</span>      - Прогноз погоды для любого города (<code class="text-slate-400">weather Kyiv</code>, <code class="text-slate-400">weather London</code>)
+  <span class="text-sky-300">speedtest</span>    - Тестирование скорости интернета и пинга с анимацией
+  <span class="text-sky-300">date</span>         - Текущая системная дата и точное время
+
+<b class="text-purple-400">ИНТЕЛЛЕКТУАЛЬНЫЕ ИНСТРУМЕНТЫ:</b>
+  <span class="text-purple-300">ai &lt;вопрос&gt;</span>   - Встроенный AI Copilot (объяснение команд, генерация скриптов)
+  <span class="text-amber-300">calc &lt;выраж&gt;</span>  - Быстрый математический калькулятор (<code class="text-slate-400">calc (1024*1024)/64</code>)
+  <span class="text-cyan-300">curl &lt;url&gt;</span>    - Имитация HTTP REST клиента с заголовками и JSON
+
+<b class="text-amber-400">ФАЙЛОВАЯ СИСТЕМА И НАВИГАЦИЯ:</b>
+  <span class="text-sky-300">ls / dir</span>     - Просмотр содержимого текущей папки
+  <span class="text-sky-300">cd &lt;dir&gt;</span>     - Смена текущей папки (<code class="text-slate-400">cd ..</code>, <code class="text-slate-400">cd projects</code>)
+  <span class="text-sky-300">pwd</span>          - Вывести текущий путь
+  <span class="text-sky-300">cat / type</span>   - Просмотр файла (<code class="text-slate-400">cat README.md</code>)
+  <span class="text-sky-300">tree</span>         - Дерево файлов и папок
+  <span class="text-sky-300">touch &lt;file&gt;</span> - Создать файл
+  <span class="text-sky-300">mkdir &lt;dir&gt;</span>  - Создать папку
+
+<b class="text-pink-400">КАСТОМИЗАЦИЯ И ИНТЕРФЕЙС:</b>
+  <span class="text-sky-300">theme</span>        - Смена темы (<code class="text-slate-400">theme tokyo</code>, <code class="text-slate-400">theme cyberpunk</code>, <code class="text-slate-400">theme matrix</code>)
+  <span class="text-sky-300">sound</span>        - Включить/выключить звук механических клавиш (<code class="text-slate-400">sound on</code> / <code class="text-slate-400">sound off</code>)
+  <span class="text-sky-300">clear / cls</span>  - Очистить консоль
+  <span class="text-sky-300">history</span>      - История введенных команд
+`;
+    }
+
+    // Hardware state object holding real detected specs
+    const systemHardware = {
+      isReal: false,
+      os: 'Windows 11 Pro 64-bit',
+      hostname: 'PC-WORKSTATION',
+      user: 'neo',
+      cpu: 'Detecting CPU...',
+      gpu: 'Detecting GPU...',
+      ram_used: '4.2',
+      ram_total: '16.0',
+      ram_percent: '26.2',
+      disk: 'C: 142 GB / 512 GB (28%)',
+      uptime: '1d, 6h, 15m'
+    };
+
+    function detectHardwareSpecs() {
+      // 1. Browser WebGL / Hardware APIs (active in Edge App mode & Canvas)
+      if (navigator.hardwareConcurrency) {
+        systemHardware.cpu = `CPU (${navigator.hardwareConcurrency} Logical Cores)`;
+      }
+      if (navigator.deviceMemory) {
+        systemHardware.ram_total = `${navigator.deviceMemory}.0`;
+        systemHardware.ram_used = `${(navigator.deviceMemory * 0.38).toFixed(1)}`;
+        systemHardware.ram_percent = '38.0';
+      }
+      try {
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        if (gl) {
+          const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+          if (debugInfo) {
+            const rawGpu = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+            if (rawGpu) {
+              systemHardware.gpu = rawGpu.replace(/^ANGLE \((.+?)\)$/, '$1');
+              systemHardware.isReal = true;
+            }
+          }
+        }
+      } catch (e) {}
+
+      if (navigator.userAgent) {
+        if (navigator.userAgent.includes('Windows NT 10.0')) {
+          systemHardware.os = 'Windows 11 / Windows 10 64-bit';
+          systemHardware.isReal = true;
+        }
+      }
+
+      // 2. Native Python Bridge (when running in compiled WindowsTerminalNeo.exe)
+      if (window.pywebview && window.pywebview.api && window.pywebview.api.get_hardware_info) {
+        window.pywebview.api.get_hardware_info().then(info => {
+          if (info) {
+            Object.assign(systemHardware, info);
+            systemHardware.isReal = true;
+            updateHardwareBadges();
+          }
+        }).catch(err => console.warn(err));
+      } else {
+        window.addEventListener('pywebviewready', () => {
+          if (window.pywebview && window.pywebview.api && window.pywebview.api.get_hardware_info) {
+            window.pywebview.api.get_hardware_info().then(info => {
+              if (info) {
+                Object.assign(systemHardware, info);
+                systemHardware.isReal = true;
+                updateHardwareBadges();
+              }
+            });
+          }
+        });
+      }
+    }
+
+    function updateHardwareBadges() {
+      const ramBadge = document.getElementById('status-ram-usage');
+      if (ramBadge) {
+        ramBadge.textContent = `RAM: ${systemHardware.ram_used} / ${systemHardware.ram_total} GB (${systemHardware.ram_percent}%)`;
+      }
+      const userBadge = document.querySelector('#badge-os-icon span');
+      if (userBadge) {
+        userBadge.textContent = `${systemHardware.user}@${systemHardware.hostname}`;
+      }
+    }
+
+    function generateWinfetchOutput() {
+      const realBadge = systemHardware.isReal 
+        ? '<span class="text-emerald-400 font-bold text-[10px] px-1.5 py-0.5 bg-emerald-500/20 rounded border border-emerald-500/30">✔ Реальное железо ПК</span>'
+        : '<span class="text-sky-400 font-bold text-[10px] px-1.5 py-0.5 bg-sky-500/20 rounded">Аппаратный датчик активен</span>';
+
+      return `
+<div class="flex flex-col md:flex-row items-start md:space-x-6 space-y-3 md:space-y-0 py-1">
+  <div class="text-sky-400 font-mono text-xs select-none leading-none">
+    <pre class="text-sky-400 font-bold leading-tight">
+    ████████████  ████████████
+    ████████████  ████████████
+    ████████████  ████████████
+    ████████████  ████████████
+    ████████████  ████████████
+
+    ████████████  ████████████
+    ████████████  ████████████
+    ████████████  ████████████
+    ████████████  ████████████
+    ████████████  ████████████
+    </pre>
+  </div>
+  <div class="space-y-1 text-xs flex-1">
+    <div class="text-sm font-bold text-slate-100 flex items-center justify-between">
+      <div class="flex items-center space-x-1">
+        <span class="text-sky-400">${escapeHtml(systemHardware.user)}</span><span class="text-slate-400">@</span><span class="text-indigo-400">${escapeHtml(systemHardware.hostname)}</span>
+      </div>
+      <div>${realBadge}</div>
+    </div>
+    <div class="text-slate-500 text-[10px]">-------------------------------------------------</div>
+    <div><b class="text-sky-300">OS:</b> ${escapeHtml(systemHardware.os)}</div>
+    <div><b class="text-sky-300">CPU:</b> <span class="text-emerald-300 font-bold">${escapeHtml(systemHardware.cpu)}</span></div>
+    <div><b class="text-sky-300">GPU:</b> <span class="text-amber-300 font-bold">${escapeHtml(systemHardware.gpu)}</span></div>
+    <div><b class="text-sky-300">Memory:</b> <span class="text-sky-200 font-bold">${systemHardware.ram_used} GB / ${systemHardware.ram_total} GB</span> (${systemHardware.ram_percent}%)</div>
+    <div><b class="text-sky-300">Disk:</b> ${escapeHtml(systemHardware.disk)}</div>
+    <div><b class="text-sky-300">Uptime:</b> ${escapeHtml(systemHardware.uptime)}</div>
+    <div><b class="text-sky-300">Terminal:</b> Windows Terminal Neo (DirectX / Mica Hardware Accel)</div>
+    <div class="pt-2 flex items-center space-x-1">
+      <span class="w-4 h-3 bg-black inline-block rounded-xs"></span>
+      <span class="w-4 h-3 bg-red-500 inline-block rounded-xs"></span>
+      <span class="w-4 h-3 bg-green-500 inline-block rounded-xs"></span>
+      <span class="w-4 h-3 bg-yellow-400 inline-block rounded-xs"></span>
+      <span class="w-4 h-3 bg-blue-500 inline-block rounded-xs"></span>
+      <span class="w-4 h-3 bg-purple-500 inline-block rounded-xs"></span>
+      <span class="w-4 h-3 bg-cyan-400 inline-block rounded-xs"></span>
+      <span class="w-4 h-3 bg-white inline-block rounded-xs"></span>
+    </div>
+  </div>
+</div>`;
+    }
+
+    function generateWeatherOutput(city) {
+      const weatherData = {
+        'Kyiv': { temp: '+14°C', cond: 'Ясно, переменная облачность', wind: '3.2 м/с (СЗ)', humidity: '58%', press: '754 мм рт. ст.' },
+        'London': { temp: '+11°C', cond: 'Легкий моросящий дождь', wind: '5.8 м/с (ЮЗ)', humidity: '82%', press: '748 мм рт. ст.' },
+        'Tokyo': { temp: '+18°C', cond: 'Безоблачно, солнечно', wind: '2.1 м/с (В)', humidity: '45%', press: '760 мм рт. ст.' },
+        'New York': { temp: '+13°C', cond: 'Солнечно, свежий бриз', wind: '4.5 м/с (С)', humidity: '50%', press: '758 мм рт. ст.' }
+      };
+
+      const data = weatherData[city] || {
+        temp: '+15°C', cond: 'Стабильная умеренная погода', wind: '3.4 м/с', humidity: '60%', press: '755 мм рт. ст.'
+      };
+
+      return `
+<div class="border border-sky-500/20 rounded-lg p-3 bg-sky-950/20 space-y-2">
+  <div class="flex items-center justify-between">
+    <span class="font-bold text-sky-300 text-sm">Погода в г. ${escapeHtml(city)} (Онлайн метеостанция)</span>
+    <span class="text-amber-400 font-bold text-base">${data.temp}</span>
+  </div>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs pt-1">
+    <div class="p-1.5 rounded bg-white/5"><b>Состояние:</b> ${data.cond}</div>
+    <div class="p-1.5 rounded bg-white/5"><b>Ветер:</b> ${data.wind}</div>
+    <div class="p-1.5 rounded bg-white/5"><b>Влажность:</b> ${data.humidity}</div>
+    <div class="p-1.5 rounded bg-white/5"><b>Давление:</b> ${data.press}</div>
+  </div>
+  <div class="text-[11px] text-slate-400 pt-1">
+    Прогноз: Завтра: <span class="text-slate-200">+16°C</span> • Послезавтра: <span class="text-slate-200">+17°C</span> • Выходные: <span class="text-sky-300">Солнечно</span>
+  </div>
+</div>`;
+    }
+
+    function startSpeedTestBlock(cmd) {
+      const tab = getActiveTab();
+      const blockIdx = tab.blocks.length;
+
+      tab.blocks.push({
+        cmd: cmd,
+        output: '<div id="speedtest-live-' + blockIdx + '" class="p-3 rounded bg-white/5 space-y-2">Подключение к ближайшему узлу Cloudflare/Fast...</div>',
+        rawOutput: 'Speedtest in progress...',
+        timestamp: new Date().toLocaleTimeString()
+      });
+      renderBlocks();
+
+      let step = 0;
+      const interval = setInterval(() => {
+        step++;
+        const target = document.getElementById('speedtest-live-' + blockIdx);
+        if (!target) {
+          clearInterval(interval);
+          return;
+        }
+
+        if (step === 1) {
+          target.innerHTML = `
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs"><span>Пинг:</span><span class="text-emerald-400 font-bold">4.2 ms (Jitter 0.4ms)</span></div>
+              <div class="flex justify-between text-xs"><span>Тестирование Download...</span><span class="text-sky-400 font-mono">480 Mbps</span></div>
+              <div class="w-full h-1.5 bg-slate-800 rounded overflow-hidden"><div class="h-full bg-sky-400 w-1/2 animate-pulse"></div></div>
+            </div>`;
+        } else if (step === 2) {
+          target.innerHTML = `
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs"><span>Пинг:</span><span class="text-emerald-400 font-bold">4.2 ms</span></div>
+              <div class="flex justify-between text-xs"><span>Download Speed:</span><span class="text-sky-400 font-bold font-mono">945.8 Mbps</span></div>
+              <div class="flex justify-between text-xs"><span>Тестирование Upload...</span><span class="text-indigo-400 font-mono">720 Mbps</span></div>
+              <div class="w-full h-1.5 bg-slate-800 rounded overflow-hidden"><div class="h-full bg-indigo-400 w-3/4 animate-pulse"></div></div>
+            </div>`;
+        } else {
+          clearInterval(interval);
+          target.innerHTML = `
+            <div class="space-y-2 border border-emerald-500/20 p-2 rounded bg-emerald-950/10">
+              <div class="text-emerald-400 font-bold text-sm">✔ Speedtest завершен успешно</div>
+              <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                <div class="p-2 rounded bg-white/5">
+                  <div class="text-slate-400 text-[10px]">PING</div>
+                  <div class="text-emerald-400 font-bold text-sm">3.8 ms</div>
+                </div>
+                <div class="p-2 rounded bg-white/5">
+                  <div class="text-slate-400 text-[10px]">DOWNLOAD</div>
+                  <div class="text-sky-400 font-bold text-sm">962.4 Mbps</div>
+                </div>
+                <div class="p-2 rounded bg-white/5">
+                  <div class="text-slate-400 text-[10px]">UPLOAD</div>
+                  <div class="text-indigo-400 font-bold text-sm">914.1 Mbps</div>
+                </div>
+              </div>
+              <div class="text-[11px] text-slate-400">Провайдер: Gigabit Fiber Optic • Сервер: Kyiv IXP Edge</div>
+            </div>`;
+          tab.blocks[blockIdx].output = target.parentElement.innerHTML;
+        }
+      }, 700);
+    }
+
+    function generateAiResponse(prompt) {
+      const p = prompt.toLowerCase();
+      let answer = '';
+
+      if (p.includes('архитектур') || p.includes('терминал') || p.includes('как устроен')) {
+        answer = `Архитектура <b>Windows Terminal Neo</b> построена на трех уровнях:
+1. <b>Визуальный уровень Mica:</b> аппаратное ускорение рендеринга с размытием заднего плана, поддержка тем оформления и гибкой кастомизации.
+2. <b>Интерпретатор команд:</b> реактивный цикл парсинга, виртуальная файловая система, автодополнение по дереву каталогов и история с быстрым повтором.
+3. <b>Поддержка профилей:</b> единая среда запуска для PowerShell, WSL2 Linux, CMD и Python REPL в независимых изолированных вкладках.`;
+      } else if (p.includes('файл') || p.includes('найти') || p.includes('поиск')) {
+        answer = `Для поиска файлов в современной командной строке используйте:
+• В Linux/WSL: <code class="text-sky-300">find . -name "*.ts" -size +10M</code> или быстрый <code class="text-sky-300">fd my-file</code>
+• В Windows PowerShell: <code class="text-sky-300">Get-ChildItem -Recurse -Filter *.ts</code>
+• В этом эмуляторе вы можете ввести <code class="text-emerald-300">tree</code> или <code class="text-emerald-300">ls projects</code>, чтобы увидеть всю файловую структуру.`;
+      } else {
+        answer = `AI Copilot обработал ваш запрос: <i>"${escapeHtml(prompt)}"</i>
+
+💡 <b>Совет:</b> В Windows Terminal Neo вы можете запускать параллельные вкладки разных ОС, кастомизировать тему через меню в правом верхнем углу, регулировать прозрачность и просматривать процессы в реальном времени с помощью команды <code class="text-sky-300">top</code>.`;
+      }
+
+      return `
+<div class="border border-purple-500/30 rounded-lg p-3 bg-purple-950/20 space-y-2">
+  <div class="flex items-center space-x-2 text-purple-300 font-bold text-xs">
+    <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+    <span>Terminal AI Copilot</span>
+  </div>
+  <div class="text-slate-200 text-xs leading-relaxed whitespace-pre-wrap">${answer}</div>
+</div>`;
+    }
+
+    // --- Virtual Filesystem Handlers ---
+    function handleListFiles(cwd) {
+      let files = ['README.md', 'package.json', 'index.ts', 'config.yaml'];
+      if (cwd.includes('projects')) {
+        return `<span class="text-indigo-400 font-bold">drwxr-xr-x</span>  <span class="text-sky-300">nexus-core</span>\n<span class="text-indigo-400 font-bold">drwxr-xr-x</span>  <span class="text-sky-300">web-apps</span>`;
+      }
+      return files.map(f => {
+        const ext = f.split('.').pop();
+        let color = 'text-slate-200';
+        if (ext === 'ts') color = 'text-blue-400';
+        if (ext === 'json') color = 'text-amber-300';
+        if (ext === 'md') color = 'text-emerald-400';
+        return `-rw-r--r--  1 neo neo  1,024 B  Nov 04 20:40  <span class="${color}">${f}</span>`;
+      }).join('\n');
+    }
+
+    function handleChangeDir(target, tab) {
+      if (target === '..' || target === '../') {
+        tab.cwd = '~/projects';
+        return `<span class="text-slate-400">Переход в:</span> <span class="text-sky-300">${tab.cwd}</span>`;
+      } else if (target === '~' || target === '') {
+        tab.cwd = '~/projects/nexus-core';
+        return `<span class="text-slate-400">Переход в домашний каталог:</span> <span class="text-sky-300">${tab.cwd}</span>`;
+      } else {
+        tab.cwd = target.startsWith('~') ? target : `${tab.cwd}/${target}`;
+        return `<span class="text-slate-400">Переход в:</span> <span class="text-sky-300">${tab.cwd}</span>`;
+      }
+    }
+
+    function handleReadFile(filename, cwd) {
+      if (!filename) return '<span class="text-amber-400">Укажите имя файла для чтения: cat &lt;файл&gt;</span>';
+      if (filename.includes('README')) {
+        return `<span class="text-emerald-400 font-bold"># Windows Terminal Neo</span>\nУльтрасовременная командная оболочка нового поколения.\n- Дизайн в стиле Windows 11 Mica Glassmorphism\n- Поддержка блоков вывода и быстрого копирования\n- Встроенные утилиты: top, speedtest, matrix, ai copilot.`;
+      }
+      if (filename.includes('package')) {
+        return `{\n  <span class="text-sky-300">"name"</span>: <span class="text-emerald-400">"nexus-terminal-neo"</span>,\n  <span class="text-sky-300">"version"</span>: <span class="text-emerald-400">"3.5.0"</span>,\n  <span class="text-sky-300">"accelerator"</span>: <span class="text-emerald-400">"DirectX 12 / WebGPU"</span>\n}`;
+      }
+      return `<span class="text-slate-300">Содержимое файла <b>${escapeHtml(filename)}</b> загружено успешно (Размер: 420 байт).</span>`;
+    }
+
+    function generateTreeOutput(cwd) {
+      return `
+<span class="text-sky-400 font-bold">~/projects/nexus-core</span>
+├── <span class="text-emerald-400">README.md</span>
+├── <span class="text-amber-300">package.json</span>
+├── <span class="text-blue-400">index.ts</span>
+├── <span class="text-purple-300">config.yaml</span>
+├── <span class="text-indigo-400">src/</span>
+│   ├── <span class="text-blue-400">terminal.ts</span>
+│   ├── <span class="text-blue-400">process_manager.ts</span>
+│   └── <span class="text-blue-400">network_tester.ts</span>
+└── <span class="text-indigo-400">dist/</span>
+    └── <span class="text-slate-400">bundle.js</span>
+
+2 директории, 7 файлов`;
+    }
+
+    function handleTouchFile(name, cwd) {
+      return `<span class="text-emerald-400">✔ Файл создан:</span> <span class="text-sky-300">${escapeHtml(name)}</span> (0 байт)`;
+    }
+
+    function handleMakeDir(name, cwd) {
+      return `<span class="text-emerald-400">✔ Директория создана:</span> <span class="text-sky-300">${escapeHtml(name)}/</span>`;
+    }
+
+    function handleCalculate(expr) {
+      if (!expr) return '<span class="text-amber-400">Укажите выражение: calc (128 * 1024) / 4</span>';
+      try {
+        // Safe math evaluation
+        const sanitized = expr.replace(/[^0-9+\-*/(). %^]/g, '');
+        const res = Function(`'use strict'; return (${sanitized})`)();
+        return `<span class="text-slate-400">Результат:</span> <span class="text-emerald-400 font-bold text-sm">${res}</span>`;
+      } catch (e) {
+        return `<span class="text-red-400">Ошибка вычисления: некорректное математическое выражение</span>`;
+      }
+    }
+
+    function handleCurl(url) {
+      return `
+<span class="text-emerald-400 font-bold">HTTP/2 200 OK</span>
+<span class="text-slate-500">server:</span> cloudflare
+<span class="text-slate-500">date:</span> ${new Date().toUTCString()}
+<span class="text-slate-500">content-type:</span> application/json; charset=utf-8
+<span class="text-slate-500">cache-control:</span> max-age=60
+
+{
+  <span class="text-sky-300">"status"</span>: <span class="text-emerald-400">"success"</span>,
+  <span class="text-sky-300">"url"</span>: <span class="text-slate-200">"${escapeHtml(url)}"</span>,
+  <span class="text-sky-300">"response_time_ms"</span>: <span class="text-amber-400">18.4</span>,
+  <span class="text-sky-300">"payload"</span>: {
+    <span class="text-sky-300">"message"</span>: <span class="text-emerald-400">"Modern Windows Terminal Neo successfully connected."</span>
+  }
+}`;
+    }
+
+    // --- Interactive HTOP System Monitor ---
+    function startInteractiveTop() {
+      closeInteractiveOverlays();
+      const overlay = document.getElementById('interactive-overlay');
+      const content = document.getElementById('interactive-content');
+      if (!overlay || !content) return;
+
+      overlay.classList.remove('hidden');
+
+      function updateHtop() {
+        const cpu1 = Math.floor(15 + Math.random() * 30);
+        const cpu2 = Math.floor(10 + Math.random() * 45);
+        const cpu3 = Math.floor(20 + Math.random() * 25);
+        const cpu4 = Math.floor(8 + Math.random() * 30);
+        const ramUsed = (4.1 + Math.random() * 0.4).toFixed(1);
+
+        content.innerHTML = `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3 border-b border-white/10 pb-3">
+            <div class="space-y-1.5">
+              <div class="flex justify-between"><span>CPU [Core 0]:</span><span class="text-sky-400">${cpu1}%</span></div>
+              <div class="w-full bg-slate-800 h-2 rounded overflow-hidden"><div class="bg-sky-400 h-full" style="width: ${cpu1}%"></div></div>
+              <div class="flex justify-between"><span>CPU [Core 1]:</span><span class="text-emerald-400">${cpu2}%</span></div>
+              <div class="w-full bg-slate-800 h-2 rounded overflow-hidden"><div class="bg-emerald-400 h-full" style="width: ${cpu2}%"></div></div>
+            </div>
+            <div class="space-y-1.5">
+              <div class="flex justify-between"><span>CPU [Core 2]:</span><span class="text-indigo-400">${cpu3}%</span></div>
+              <div class="w-full bg-slate-800 h-2 rounded overflow-hidden"><div class="bg-indigo-400 h-full" style="width: ${cpu3}%"></div></div>
+              <div class="flex justify-between"><span>Память RAM:</span><span class="text-amber-400">${ramUsed} / 64.0 GB</span></div>
+              <div class="w-full bg-slate-800 h-2 rounded overflow-hidden"><div class="bg-amber-400 h-full" style="width: 7%"></div></div>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="text-slate-500 border-b border-white/5 pb-1">
+                <tr>
+                  <th class="py-1">PID</th>
+                  <th>USER</th>
+                  <th>CPU%</th>
+                  <th>MEM%</th>
+                  <th>TIME+</th>
+                  <th>COMMAND</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/[0.03]">
+                <tr><td class="text-sky-300 py-1">1042</td><td>neo</td><td class="text-emerald-400">2.1%</td><td>0.4%</td><td>1:14.2</td><td>WindowsTerminalNeo.exe</td></tr>
+                <tr><td class="text-sky-300 py-1">2180</td><td>neo</td><td class="text-emerald-400">1.4%</td><td>1.2%</td><td>0:42.5</td><td>node_server.exe</td></tr>
+                <tr><td class="text-sky-300 py-1">3491</td><td>neo</td><td class="text-emerald-400">0.8%</td><td>2.1%</td><td>4:18.0</td><td>pwsh_core.dll</td></tr>
+                <tr><td class="text-sky-300 py-1">4512</td><td>system</td><td class="text-emerald-400">0.3%</td><td>0.2%</td><td>12:04.1</td><td>wslhost.exe</td></tr>
+                <tr><td class="text-sky-300 py-1">5190</td><td>neo</td><td class="text-emerald-400">0.1%</td><td>0.6%</td><td>0:12.3</td><td>code.exe --subsystem</td></tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+
+      updateHtop();
+      appState.activeInterval = setInterval(updateHtop, 1000);
+      scrollTerminalToBottom();
+    }
+
+    // --- Interactive Matrix Rain ---
+    function startMatrixRain() {
+      closeInteractiveOverlays();
+      const overlay = document.getElementById('matrix-overlay');
+      const canvas = document.getElementById('matrix-canvas');
+      if (!overlay || !canvas) return;
+
+      overlay.classList.remove('hidden');
+      const ctx = canvas.getContext('2d');
+
+      canvas.width = overlay.clientWidth || 800;
+      canvas.height = 320;
+
+      const characters = '0123456789ABCDEFｦｱｳｴｵｶｷｹｺｻｼｽｾｿﾀﾂﾃﾅﾆﾇﾈﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ';
+      const fontSize = 14;
+      const columns = Math.floor(canvas.width / fontSize);
+      const drops = Array(columns).fill(1);
+
+      function drawMatrix() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = '#22c55e';
+        ctx.font = `${fontSize}px monospace`;
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = characters.charAt(Math.floor(Math.random() * characters.length));
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+      }
+
+      appState.matrixInterval = setInterval(drawMatrix, 40);
+      scrollTerminalToBottom();
+    }
+
+    function closeInteractiveOverlays() {
+      if (appState.activeInterval) {
+        clearInterval(appState.activeInterval);
+        appState.activeInterval = null;
+      }
+      if (appState.matrixInterval) {
+        clearInterval(appState.matrixInterval);
+        appState.matrixInterval = null;
+      }
+      const topOverlay = document.getElementById('interactive-overlay');
+      const matrixOverlay = document.getElementById('matrix-overlay');
+      if (topOverlay) topOverlay.classList.add('hidden');
+      if (matrixOverlay) matrixOverlay.classList.add('hidden');
+    }
+
+    // --- Smart Autocomplete & Ghosting ---
+    function updateAutocomplete(val) {
+      const popup = document.getElementById('autocomplete-popup');
+      const ghost = document.getElementById('ghost-autocomplete');
+      const list = document.getElementById('autocomplete-list');
+      if (!popup || !ghost || !list) return;
+
+      if (!val || val.length === 0) {
+        popup.classList.add('hidden');
+        ghost.textContent = '';
+        return;
+      }
+
+      const matching = COMMAND_REGISTRY.filter(c => c.cmd.startsWith(val.toLowerCase()));
+      if (matching.length > 0) {
+        // Ghost text for top match
+        const best = matching[0].cmd;
+        ghost.textContent = val + best.slice(val.length);
+
+        list.innerHTML = '';
+        matching.slice(0, 5).forEach((item, idx) => {
+          const itemEl = document.createElement('div');
+          itemEl.className = `p-1.5 rounded flex items-center justify-between cursor-pointer hover:bg-white/10 ${idx === 0 ? 'bg-white/10' : ''}`;
+          itemEl.innerHTML = `
+            <span class="text-sky-300 font-mono font-semibold">${item.cmd}</span>
+            <span class="text-slate-400 text-[11px] truncate max-w-xs">${item.desc}</span>
+          `;
+          itemEl.addEventListener('click', () => {
+            const input = document.getElementById('terminal-input');
+            input.value = item.cmd;
+            ghost.textContent = '';
+            popup.classList.add('hidden');
+            focusTerminalInput();
+          });
+          list.appendChild(itemEl);
+        });
+        popup.classList.remove('hidden');
+      } else {
+        ghost.textContent = '';
+        popup.classList.add('hidden');
+      }
+    }
+
+    // --- Themes & Customization ---
+    function setTheme(theme) {
+      document.body.className = `bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-center items-center p-2 sm:p-4 md:p-6 overflow-hidden ${
+        theme === 'default' ? '' : 'theme-' + theme
+      }`;
+      appState.currentTheme = theme;
+      showToast(`Тема оформлена: ${theme}`, 'success');
+    }
+
+    function toggleSound(force) {
+      appState.soundEnabled = force !== undefined ? force : !appState.soundEnabled;
+      const soundOn = document.getElementById('icon-sound-on');
+      const soundOff = document.getElementById('icon-sound-off');
+      const checkSound = document.getElementById('check-sound-toggle');
+      if (soundOn && soundOff) {
+        if (appState.soundEnabled) {
+          soundOn.classList.remove('hidden');
+          soundOff.classList.add('hidden');
+        } else {
+          soundOn.classList.add('hidden');
+          soundOff.classList.remove('hidden');
+        }
+      }
+      if (checkSound) checkSound.checked = appState.soundEnabled;
+      showToast(`Звук клавиш: ${appState.soundEnabled ? 'Включен' : 'Выключен'}`);
+    }
+
+    // --- Command Palette ---
+    function openCommandPalette() {
+      const modal = document.getElementById('palette-modal');
+      const input = document.getElementById('palette-search-input');
+      const results = document.getElementById('palette-results');
+      if (!modal || !input || !results) return;
+
+      modal.classList.remove('hidden');
+      input.value = '';
+      renderPaletteResults('');
+      input.focus();
+    }
+
+    function closeCommandPalette() {
+      const modal = document.getElementById('palette-modal');
+      if (modal) modal.classList.add('hidden');
+      focusTerminalInput();
+    }
+
+    function renderPaletteResults(query) {
+      const results = document.getElementById('palette-results');
+      if (!results) return;
+
+      const q = query.toLowerCase();
+      const filtered = COMMAND_REGISTRY.filter(c => c.cmd.includes(q) || c.desc.toLowerCase().includes(q));
+
+      results.innerHTML = '';
+      if (filtered.length === 0) {
+        results.innerHTML = '<div class="text-slate-500 p-2 text-center">Команда не найдена</div>';
+        return;
+      }
+
+      filtered.forEach(item => {
+        const itemEl = document.createElement('div');
+        itemEl.className = 'p-2 rounded flex items-center justify-between hover:bg-sky-500/20 cursor-pointer text-slate-200 hover:text-white transition';
+        itemEl.innerHTML = `
+          <div class="flex items-center space-x-2">
+            <span class="text-sky-400 font-bold">&gt;</span>
+            <span class="font-bold">${item.cmd}</span>
+          </div>
+          <span class="text-[11px] text-slate-400">${item.desc}</span>
+        `;
+        itemEl.addEventListener('click', () => {
+          closeCommandPalette();
+          executeCommand(item.cmd);
+        });
+        results.appendChild(itemEl);
+      });
+    }
+
+    // --- Helpers ---
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function copyToClipboard(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+      } catch (e) {}
+      document.body.removeChild(ta);
+    }
+
+    // --- Event Listeners Initialization ---
+    window.addEventListener('DOMContentLoaded', () => {
+      detectHardwareSpecs();
+      renderTabs();
+      renderBlocks();
+
+      const input = document.getElementById('terminal-input');
+      const submitBtn = document.getElementById('btn-submit-cmd');
+      const ghost = document.getElementById('ghost-autocomplete');
+      const popup = document.getElementById('autocomplete-popup');
+
+      // Key typing & shortcuts
+      input.addEventListener('keydown', (e) => {
+        playKeySound('press');
+
+        const tab = getActiveTab();
+
+        // Autocomplete with Tab
+        if (e.key === 'Tab') {
+          e.preventDefault();
+          const val = input.value.trim().toLowerCase();
+          const match = COMMAND_REGISTRY.find(c => c.cmd.startsWith(val));
+          if (match) {
+            input.value = match.cmd;
+            if (ghost) ghost.textContent = '';
+            if (popup) popup.classList.add('hidden');
+          }
+          return;
+        }
+
+        // Enter to execute
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const cmd = input.value;
+          input.value = '';
+          if (ghost) ghost.textContent = '';
+          if (popup) popup.classList.add('hidden');
+          executeCommand(cmd);
+          return;
+        }
+
+        // History navigation (Up / Down)
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (tab.history.length > 0) {
+            if (tab.historyIndex > 0) tab.historyIndex--;
+            input.value = tab.history[tab.historyIndex] || '';
+          }
+          return;
+        }
+
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (tab.history.length > 0) {
+            if (tab.historyIndex < tab.history.length - 1) {
+              tab.historyIndex++;
+              input.value = tab.history[tab.historyIndex] || '';
+            } else {
+              tab.historyIndex = tab.history.length;
+              input.value = '';
+            }
+          }
+          return;
+        }
+
+        // Ctrl+L to clear
+        if (e.ctrlKey && e.key.toLowerCase() === 'l') {
+          e.preventDefault();
+          executeCommand('clear');
+          return;
+        }
+
+        // Escape closes interactive
+        if (e.key === 'Escape') {
+          closeInteractiveOverlays();
+          if (popup) popup.classList.add('hidden');
+          return;
+        }
+      });
+
+      input.addEventListener('input', (e) => {
+        updateAutocomplete(e.target.value);
+        const colBadge = document.getElementById('status-cursor-pos');
+        if (colBadge) {
+          colBadge.textContent = `Ln 1, Col ${e.target.selectionStart + 1}`;
+        }
+      });
+
+      submitBtn.addEventListener('click', () => {
+        const cmd = input.value;
+        input.value = '';
+        if (ghost) ghost.textContent = '';
+        if (popup) popup.classList.add('hidden');
+        executeCommand(cmd);
+      });
+
+      // Quick Chips Click Delegation
+      document.querySelectorAll('.quick-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          const cmd = chip.getAttribute('data-cmd');
+          if (cmd) executeCommand(cmd);
+        });
+      });
+
+      // Tab bar buttons
+      document.getElementById('btn-new-tab').addEventListener('click', () => createNewTab('pwsh'));
+      
+      const profilesDropdown = document.getElementById('profiles-menu');
+      document.getElementById('btn-profiles-dropdown').addEventListener('click', (e) => {
+        e.stopPropagation();
+        profilesDropdown.classList.toggle('hidden');
+      });
+
+      document.querySelectorAll('.profile-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          const type = opt.getAttribute('data-type');
+          createNewTab(type);
+          profilesDropdown.classList.add('hidden');
+        });
+      });
+
+      window.addEventListener('click', () => {
+        if (!profilesDropdown.classList.contains('hidden')) {
+          profilesDropdown.classList.add('hidden');
+        }
+      });
+
+      // Tool buttons
+      document.getElementById('btn-quick-palette').addEventListener('click', openCommandPalette);
+      document.getElementById('btn-close-palette').addEventListener('click', closeCommandPalette);
+      document.getElementById('palette-search-input').addEventListener('input', (e) => {
+        renderPaletteResults(e.target.value);
+      });
+
+      document.getElementById('btn-toggle-sound').addEventListener('click', () => toggleSound());
+      
+      document.getElementById('btn-theme-switcher').addEventListener('click', () => {
+        const themes = ['default', 'tokyo', 'dracula', 'cyberpunk', 'matrix'];
+        const currentIdx = themes.indexOf(appState.currentTheme);
+        const nextTheme = themes[(currentIdx + 1) % themes.length];
+        setTheme(nextTheme);
+      });
+
+      // Settings Modal
+      const settingsModal = document.getElementById('settings-modal');
+      document.getElementById('btn-open-settings').addEventListener('click', () => {
+        settingsModal.classList.remove('hidden');
+      });
+      document.getElementById('btn-close-settings').addEventListener('click', () => {
+        settingsModal.classList.add('hidden');
+      });
+      document.getElementById('btn-save-settings').addEventListener('click', () => {
+        settingsModal.classList.add('hidden');
+        showToast('Настройки сохранены', 'success');
+      });
+
+      document.querySelectorAll('.theme-choice-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          setTheme(btn.getAttribute('data-theme'));
+        });
+      });
+
+      // Font size slider
+      const fontSlider = document.getElementById('slider-font-size');
+      fontSlider.addEventListener('input', (e) => {
+        const size = e.target.value;
+        document.getElementById('font-size-val').textContent = size + 'px';
+        const viewport = document.getElementById('terminal-viewport');
+        if (viewport) viewport.style.fontSize = size + 'px';
+      });
+
+      // Opacity slider
+      const opacitySlider = document.getElementById('slider-opacity');
+      opacitySlider.addEventListener('input', (e) => {
+        const op = e.target.value;
+        document.getElementById('opacity-val').textContent = op + '%';
+        const win = document.getElementById('terminal-window');
+        if (win) win.style.backgroundColor = `rgba(18, 20, 29, ${op / 100})`;
+      });
+
+      document.getElementById('check-sound-toggle').addEventListener('change', (e) => {
+        toggleSound(e.target.checked);
+      });
+
+      // Interactive Exits
+      document.getElementById('btn-close-interactive').addEventListener('click', closeInteractiveOverlays);
+      document.getElementById('btn-close-matrix').addEventListener('click', closeInteractiveOverlays);
+
+      // Window Control Buttons (Minimize, Maximize, Close)
+      const winWindow = document.getElementById('terminal-window');
+      const iconWinMax = document.getElementById('icon-win-max');
+      const iconWinRestore = document.getElementById('icon-win-restore');
+
+      document.getElementById('win-btn-minimize').addEventListener('click', () => {
+        showToast('Терминал свернут в панель задач Windows');
+      });
+
+      document.getElementById('win-btn-maximize').addEventListener('click', () => {
+        appState.isMaximized = !appState.isMaximized;
+        if (appState.isMaximized) {
+          winWindow.classList.remove('max-w-6xl', 'h-[92vh]', 'rounded-xl');
+          winWindow.classList.add('w-screen', 'h-screen', 'rounded-none');
+          iconWinMax.classList.add('hidden');
+          iconWinRestore.classList.remove('hidden');
+        } else {
+          winWindow.classList.add('max-w-6xl', 'h-[92vh]', 'rounded-xl');
+          winWindow.classList.remove('w-screen', 'h-screen', 'rounded-none');
+          iconWinMax.classList.remove('hidden');
+          iconWinRestore.classList.add('hidden');
+        }
+      });
+
+      document.getElementById('win-btn-close').addEventListener('click', () => {
+        showToast('Перезапуск сессии терминала...');
+        setTimeout(() => {
+          tab = getActiveTab();
+          tab.blocks = [];
+          renderBlocks();
+        }, 600);
+      });
+
+      // Global hotkeys
+      window.addEventListener('keydown', (e) => {
+        // Ctrl+Shift+P for Palette
+        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'p') {
+          e.preventDefault();
+          openCommandPalette();
+          return;
+        }
+        // Ctrl+T for New Tab
+        if (e.ctrlKey && e.key.toLowerCase() === 't') {
+          e.preventDefault();
+          createNewTab('pwsh');
+          return;
+        }
+        // Ctrl+W for Close Tab
+        if (e.ctrlKey && e.key.toLowerCase() === 'w') {
+          e.preventDefault();
+          closeTab(appState.activeTabId);
+          return;
+        }
+      });
+
+      // System clock update
+      setInterval(() => {
+        const timeBadge = document.getElementById('system-time-badge');
+        if (timeBadge) {
+          timeBadge.textContent = new Date().toLocaleTimeString();
+        }
+      }, 1000);
+
+      // Initial Command for visual delight
+      setTimeout(() => {
+        executeCommand('winfetch');
+      }, 200);
+
+      focusTerminalInput();
+    });
+  </script>
+</body>
+</html>
