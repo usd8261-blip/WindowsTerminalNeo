@@ -163,36 +163,37 @@
 
       <!-- New Tab Plus & Profile Menu -->
       <div class="flex items-center space-x-1 border-r border-white/10 pr-2 mr-2">
-        <button id="btn-new-tab" title="Открыть новую вкладку (PowerShell)" class="h-7 w-7 flex items-center justify-center rounded-md hover:bg-white/10 text-slate-300 hover:text-white transition">
+        <button id="btn-new-tab" title="New Tab (PowerShell)" class="h-7 w-7 flex items-center justify-center rounded-md hover:bg-white/10 text-slate-300 hover:text-white transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
         </button>
-        <button id="btn-profiles-dropdown" title="Выбор профиля шелла" class="h-7 w-6 flex items-center justify-center rounded-md hover:bg-white/10 text-slate-300 hover:text-white transition">
+        <button id="btn-profiles-dropdown" title="Select Shell Profile" class="h-7 w-6 flex items-center justify-center rounded-md hover:bg-white/10 text-slate-300 hover:text-white transition">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
         </button>
       </div>
 
       <!-- Center-Right Quick Tools (Palette, Audio, Split, Theme, Settings) -->
       <div class="hidden sm:flex items-center space-x-1 mr-3 text-slate-300">
-        <button id="btn-quick-palette" title="Командная палитра (Ctrl+Shift+P)" class="h-7 px-2 flex items-center space-x-1.5 rounded-md hover:bg-white/10 text-xs text-slate-400 hover:text-white transition">
+        <button id="btn-quick-palette" title="Command Palette (Ctrl+Shift+P)" class="h-7 px-2 flex items-center space-x-1.5 rounded-md hover:bg-white/10 text-xs text-slate-400 hover:text-white transition">
           <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
           <span class="hidden md:inline font-mono">Ctrl+Shift+P</span>
         </button>
 
-        <button id="btn-toggle-sound" title="Звук клавиатуры (Web Audio)" class="h-7 w-7 flex items-center justify-center rounded-md hover:bg-white/10 text-slate-400 hover:text-sky-400 transition">
+        <button id="btn-toggle-sound" title="Keyboard Sound (Web Audio)" class="h-7 w-7 flex items-center justify-center rounded-md hover:bg-white/10 text-slate-400 hover:text-sky-400 transition">
           <svg id="icon-sound-off" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path></svg>
           <svg id="icon-sound-on" class="w-4 h-4 hidden text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
         </button>
 
-        <button id="btn-open-ai-modal" title="Локальная нейросеть (AI Model Manager)" class="h-7 px-2 flex items-center space-x-1 rounded-md hover:bg-purple-500/20 text-purple-400 hover:text-purple-300 transition text-xs font-mono border border-purple-500/20">
-          <svg class="w-3.5 h-3.5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-          <span class="hidden lg:inline">Local AI</span>
+        <!-- Language Switcher (RU / EN) -->
+        <button id="btn-lang-toggle" title="Switch Language / Сменить язык (RU/EN)" class="h-7 px-2 flex items-center space-x-1 rounded-md hover:bg-white/10 text-slate-300 hover:text-sky-300 transition text-xs font-mono border border-white/10">
+          <span>🌐</span>
+          <span id="lang-toggle-label" class="font-bold">EN</span>
         </button>
 
-        <button id="btn-theme-switcher" title="Сменить тему оформления" class="h-7 w-7 flex items-center justify-center rounded-md hover:bg-white/10 text-slate-400 hover:text-yellow-400 transition">
+        <button id="btn-theme-switcher" title="Switch Color Theme" class="h-7 w-7 flex items-center justify-center rounded-md hover:bg-white/10 text-slate-400 hover:text-yellow-400 transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4 4 4 0 014-4h4a4 4 0 014 4 4 4 0 01-4 4H7zm0 0l2.5-5.5M17 3a4 4 0 014 4 4 4 0 01-4 4h-4a4 4 0 01-4-4 4 4 0 014-4h4z"></path></svg>
         </button>
 
-        <button id="btn-open-settings" title="Настройки терминала" class="h-7 w-7 flex items-center justify-center rounded-md hover:bg-white/10 text-slate-400 hover:text-white transition">
+        <button id="btn-open-settings" title="Terminal Settings" class="h-7 w-7 flex items-center justify-center rounded-md hover:bg-white/10 text-slate-400 hover:text-white transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
         </button>
       </div>
@@ -214,7 +215,7 @@
 
     <!-- Profiles Dropdown Menu Modal -->
     <div id="profiles-menu" class="hidden absolute top-12 left-28 w-56 rounded-lg bg-slate-900/95 border border-white/15 backdrop-blur-xl shadow-2xl p-1.5 z-50 text-xs">
-      <div class="px-2 py-1 text-slate-400 font-semibold uppercase tracking-wider text-[10px]">Запустить профиль</div>
+      <div class="px-2 py-1 text-slate-400 font-semibold uppercase tracking-wider text-[10px]">Launch Profile</div>
       <button class="profile-option w-full flex items-center space-x-2.5 px-2.5 py-1.5 rounded hover:bg-white/10 text-slate-200" data-type="pwsh">
         <span class="w-4 text-sky-400 font-mono font-bold">&gt;_</span>
         <span>PowerShell 7.5 Neo</span>
@@ -240,14 +241,13 @@
     <!-- Quick Action Toolchips Bar -->
     <div class="h-9 bg-slate-900/60 border-b border-white/5 flex items-center justify-between px-3 text-xs overflow-x-auto no-scrollbar">
       <div class="flex items-center space-x-1.5 text-slate-300">
-        <span class="text-slate-500 font-mono text-[11px] mr-1">Быстрый запуск:</span>
+        <span id="label-quick-chips" class="text-slate-500 font-mono text-[11px] mr-1">Quick Launch:</span>
         <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-sky-500/20 hover:text-sky-300 border border-white/5 transition font-mono" data-cmd="winfetch">winfetch</button>
         <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-emerald-500/20 hover:text-emerald-300 border border-white/5 transition font-mono" data-cmd="top">top</button>
         <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-green-500/20 hover:text-green-300 border border-white/5 transition font-mono" data-cmd="matrix">matrix</button>
         <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-indigo-500/20 hover:text-indigo-300 border border-white/5 transition font-mono" data-cmd="weather Kyiv">weather</button>
         <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-amber-500/20 hover:text-amber-300 border border-white/5 transition font-mono" data-cmd="speedtest">speedtest</button>
-        <button class="quick-chip px-2 py-0.5 rounded bg-purple-500/15 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30 transition font-mono" data-cmd="ai download">⚡ ai download</button>
-        <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-purple-500/20 hover:text-purple-300 border border-white/5 transition font-mono" data-cmd="ai Поясни архитектуру терминала">ai copilot</button>
+<button class="quick-chip px-2 py-0.5 rounded bg-purple-500/20 hover:bg-purple-500/40 text-purple-300 border border-purple-500/40 transition font-mono font-bold" data-cmd="ai tutor" title="Launch Full Local AI Tutorial">ai tutor</button>
         <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-rose-500/20 hover:text-rose-300 border border-white/5 transition font-mono" data-cmd="tree">tree</button>
         <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-slate-500/20 hover:text-slate-200 border border-white/5 transition font-mono" data-cmd="help">help</button>
         <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-red-500/20 hover:text-red-300 border border-white/5 transition font-mono" data-cmd="clear">clear</button>
@@ -263,22 +263,22 @@
     <main id="terminal-viewport" class="flex-1 overflow-y-auto p-3 sm:p-5 terminal-font text-sm leading-relaxed relative flex flex-col space-y-4" style="background-color: var(--bg-terminal)">
       
       <!-- Welcome Banner Block -->
-      <div class="p-3.5 rounded-lg bg-white/[0.03] border border-white/10 text-slate-300 shadow-sm">
+      <div id="welcome-banner-block" class="p-3.5 rounded-lg bg-white/[0.03] border border-white/10 text-slate-300 shadow-sm">
         <div class="flex items-center justify-between mb-2 pb-1.5 border-b border-white/5">
           <div class="flex items-center space-x-2">
             <span class="text-sky-400 font-bold text-base">Nexus Windows Terminal Neo</span>
             <span class="text-[10px] px-1.5 py-0.5 bg-sky-500/20 text-sky-300 rounded font-mono">v3.5.0-Release</span>
           </div>
-          <span class="text-xs text-slate-500">Архитектура: Ultra Modern Next-Gen Shell</span>
+          <span id="welcome-arch-tag" class="text-xs text-slate-500">Architecture: Ultra Modern Next-Gen Shell</span>
         </div>
-        <p class="text-xs text-slate-300 mb-2">
-          Новое поколение терминала для Windows: блочный вывод, умное автодополнение, Starship-промпт, интерактивный диспетчер задач (<code class="text-sky-300 font-mono">top</code>), тест сети (<code class="text-amber-300 font-mono">speedtest</code>), цифровой дождь (<code class="text-emerald-300 font-mono">matrix</code>) и встроенный AI Copilot.
+        <p id="welcome-desc-text" class="text-xs text-slate-300 mb-2">
+          Next-Generation terminal for Windows: block outputs, smart autocompletion, Starship prompt, live task manager (<code class="text-sky-300 font-mono">top</code>), bandwidth test (<code class="text-amber-300 font-mono">speedtest</code>), digital rain (<code class="text-emerald-300 font-mono">matrix</code>), and local AI Copilot.
         </p>
-        <div class="text-[11px] text-slate-400 flex flex-wrap gap-x-4 gap-y-1 font-mono">
-          <span>• Введите <span class="text-sky-300 font-bold">help</span> для списка всех 20+ встроенных команд</span>
-          <span>• <kbd class="px-1 py-0.2 bg-white/10 rounded">Tab</kbd> — автодополнение</span>
-          <span>• <kbd class="px-1 py-0.2 bg-white/10 rounded">↑ / ↓</kbd> — история команд</span>
-          <span>• <kbd class="px-1 py-0.2 bg-white/10 rounded">Ctrl+L</kbd> — очистить экран</span>
+        <div id="welcome-tips-text" class="text-[11px] text-slate-400 flex flex-wrap gap-x-4 gap-y-1 font-mono">
+          <span>• Type <span class="text-sky-300 font-bold">help</span> to view all 25+ built-in commands</span>
+          <span>• <kbd class="px-1 py-0.2 bg-white/10 rounded">Tab</kbd> — Autocompletion</span>
+          <span>• <kbd class="px-1 py-0.2 bg-white/10 rounded">↑ / ↓</kbd> — Command history</span>
+          <span>• <kbd class="px-1 py-0.2 bg-white/10 rounded">Ctrl+L</kbd> — Clear screen</span>
         </div>
       </div>
 
@@ -292,10 +292,10 @@
         <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-3">
           <div class="flex items-center space-x-2">
             <span class="text-emerald-400 font-bold text-sm flex items-center"><span class="w-2 h-2 rounded-full bg-emerald-400 mr-1.5 animate-ping"></span>HTOP / Task Manager Live</span>
-            <span class="text-slate-400 text-[11px]">(Обновление в реальном времени: 1.0s)</span>
+            <span id="htop-sub-label" class="text-slate-400 text-[11px]">(Обновление в реальном времени: 1.0s)</span>
           </div>
           <button id="btn-close-interactive" class="px-2.5 py-1 bg-red-500/20 hover:bg-red-500 text-red-200 hover:text-white rounded font-mono text-xs transition">
-            Выйти (q / Esc)
+            <span id="htop-btn-close-text">Выйти (q / Esc)</span>
           </button>
         </div>
 
@@ -308,7 +308,7 @@
       <div id="matrix-overlay" class="hidden relative w-full h-80 rounded-lg overflow-hidden border border-emerald-500/30 bg-black">
         <canvas id="matrix-canvas" class="w-full h-full block"></canvas>
         <button id="btn-close-matrix" class="absolute top-2 right-2 px-2.5 py-1 bg-black/70 hover:bg-emerald-600 text-emerald-400 hover:text-black font-mono text-xs rounded border border-emerald-500/40 transition">
-          Остановить матрицу (q)
+          Stop Matrix (q)
         </button>
       </div>
 
@@ -356,7 +356,7 @@
             <!-- Real User Input Field -->
             <input id="terminal-input" type="text" autocomplete="off" spellcheck="false" 
               class="w-full bg-transparent border-none outline-none text-slate-100 font-mono text-sm caret-sky-400 z-10" 
-              placeholder="Введите команду (например: winfetch, top, matrix, ai, help)..." />
+              placeholder="Type a command (e.g.: winfetch, top, matrix, ai tutor, help)..." />
           </div>
 
           <!-- Execute Button / Status Indicator -->
@@ -369,8 +369,8 @@
         <!-- Smart Autocomplete Suggestions Dropdown Popup -->
         <div id="autocomplete-popup" class="hidden absolute left-0 bottom-full mb-1 w-full max-w-lg rounded-lg bg-slate-900/95 border border-white/15 backdrop-blur-xl shadow-2xl p-1.5 z-40 text-xs">
           <div class="px-2 py-1 text-slate-500 font-mono text-[10px] uppercase tracking-wider flex justify-between">
-            <span>Предложения (Tab для вставки)</span>
-            <span>Стрелки ↑↓ для выбора</span>
+            <span>Suggestions (Tab to insert)</span>
+            <span>Arrow keys ↑↓ to select</span>
           </div>
           <div id="autocomplete-list" class="space-y-0.5">
             <!-- suggestions items injected via JS -->
@@ -405,7 +405,7 @@
       <div class="flex items-center justify-between p-4 border-b border-white/10">
         <div class="flex items-center space-x-2">
           <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-          <span class="font-bold text-slate-100">Настройки Windows Terminal Neo</span>
+          <span id="settings-title-text" class="font-bold text-slate-100">Настройки Windows Terminal Neo</span>
         </div>
         <button id="btn-close-settings" class="text-slate-400 hover:text-white p-1 rounded hover:bg-white/10">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -414,9 +414,24 @@
 
       <div class="p-5 space-y-4 text-xs overflow-y-auto max-h-[70vh]">
         
+        <!-- Language selection -->
+        <div>
+          <label id="settings-lbl-lang" class="block font-semibold text-slate-300 mb-2">Язык интерфейса / Interface Language</label>
+          <div class="grid grid-cols-2 gap-2 mb-3">
+            <button id="btn-set-lang-ru" class="lang-choice-btn p-2 rounded border border-purple-500/50 bg-purple-950/30 text-left flex items-center space-x-2 text-slate-100 transition" data-lang="ru">
+              <span class="text-base select-none">🇷🇺</span>
+              <span class="font-bold">Русский (RU)</span>
+            </button>
+            <button id="btn-set-lang-en" class="lang-choice-btn p-2 rounded border border-white/10 bg-slate-800 text-left flex items-center space-x-2 text-slate-300 hover:border-sky-400 transition" data-lang="en">
+              <span class="text-base select-none">🇬🇧</span>
+              <span class="font-bold">English (EN)</span>
+            </button>
+          </div>
+        </div>
+
         <!-- Theme selection -->
         <div>
-          <label class="block font-semibold text-slate-300 mb-2">Цветовая тема (Theme)</label>
+          <label id="settings-lbl-theme" class="block font-semibold text-slate-300 mb-2">Цветовая тема (Theme)</label>
           <div class="grid grid-cols-2 gap-2" id="settings-theme-grid">
             <button class="theme-choice-btn p-2 rounded border border-white/10 bg-slate-800 text-left flex items-center space-x-2 hover:border-sky-400" data-theme="default">
               <span class="w-3.5 h-3.5 rounded-full bg-sky-400"></span>
@@ -444,7 +459,7 @@
         <!-- Font size slider -->
         <div>
           <div class="flex justify-between font-semibold text-slate-300 mb-1">
-            <span>Размер шрифта консоли</span>
+            <span id="settings-lbl-fontsize">Размер шрифта консоли</span>
             <span id="font-size-val" class="font-mono text-sky-400">14px</span>
           </div>
           <input id="slider-font-size" type="range" min="11" max="18" value="14" class="w-full accent-sky-400" />
@@ -453,7 +468,7 @@
         <!-- Acrylic opacity slider -->
         <div>
           <div class="flex justify-between font-semibold text-slate-300 mb-1">
-            <span>Прозрачность Mica / Acrylic</span>
+            <span id="settings-lbl-opacity">Прозрачность Mica / Acrylic</span>
             <span id="opacity-val" class="font-mono text-sky-400">85%</span>
           </div>
           <input id="slider-opacity" type="range" min="50" max="100" value="85" class="w-full accent-sky-400" />
@@ -462,8 +477,8 @@
         <!-- Audio toggle -->
         <div class="flex items-center justify-between p-3 rounded-lg bg-white/5">
           <div>
-            <div class="font-semibold text-slate-200">Звук механической клавиатуры</div>
-            <div class="text-[11px] text-slate-400">Синтез мягких кликов клавиш через Web Audio API</div>
+            <div id="settings-lbl-sound" class="font-semibold text-slate-200">Звук механической клавиатуры</div>
+            <div id="settings-sub-sound" class="text-[11px] text-slate-400">Синтез мягких кликов клавиш через Web Audio API</div>
           </div>
           <label class="relative inline-flex items-center cursor-pointer">
             <input type="checkbox" id="check-sound-toggle" class="sr-only peer">
@@ -473,7 +488,7 @@
 
         <!-- Hotkeys summary -->
         <div class="p-3 rounded-lg bg-black/40 border border-white/5 space-y-1 text-[11px] font-mono text-slate-400">
-          <div class="font-bold text-slate-300 mb-1.5 font-sans">Горячие клавиши:</div>
+          <div id="settings-lbl-hotkeys" class="font-bold text-slate-300 mb-1.5 font-sans">Горячие клавиши:</div>
           <div class="flex justify-between"><span>Ctrl + Shift + P</span><span class="text-slate-300">Командная палитра</span></div>
           <div class="flex justify-between"><span>Ctrl + L</span><span class="text-slate-300">Очистить вывод</span></div>
           <div class="flex justify-between"><span>Ctrl + T</span><span class="text-slate-300">Новая вкладка</span></div>
@@ -484,50 +499,185 @@
 
       <div class="p-3 bg-slate-950 border-t border-white/10 flex justify-end">
         <button id="btn-save-settings" class="px-4 py-1.5 bg-sky-500 hover:bg-sky-400 text-white rounded font-medium transition text-xs">
-          Применить настройки
+          <span id="settings-btn-save-text">Применить настройки</span>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Local AI Model Manager Modal Dialog -->
-  <div id="ai-model-modal" class="hidden fixed inset-0 bg-black/65 backdrop-blur-md z-50 flex items-center justify-center p-4">
-    <div class="w-full max-w-xl rounded-xl bg-slate-900 border border-purple-500/30 shadow-2xl overflow-hidden flex flex-col">
-      <div class="flex items-center justify-between p-4 border-b border-white/10 bg-purple-950/20">
-        <div class="flex items-center space-x-2.5">
-          <div class="w-8 h-8 rounded-lg bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-purple-300 font-bold">
+  <!-- Local AI Model Manager & Beginner Wizard Modal Dialog -->
+  <div id="ai-model-modal" class="hidden fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4">
+    <div class="w-full max-w-2xl rounded-xl bg-slate-900 border border-purple-500/40 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="flex items-center justify-between p-4 border-b border-white/10 bg-gradient-to-r from-purple-950/40 to-slate-900">
+        <div class="flex items-center space-x-3">
+          <div class="w-9 h-9 rounded-lg bg-purple-500/20 border border-purple-500/50 flex items-center justify-center text-purple-300 text-lg shadow-inner">
             🤖
           </div>
           <div>
-            <div class="font-bold text-slate-100 text-sm">Управление локальными нейросетями (Local LLM)</div>
-            <div class="text-[11px] text-purple-300">Автономный оффлайн-инференс прямо на вашем ПК</div>
+            <div class="font-bold text-slate-100 text-sm sm:text-base flex items-center space-x-2">
+              <span>Локальная нейросеть: Ollama + Qwen 2.5 Coder</span>
+              <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono">Для новичков</span>
+            </div>
+            <div class="text-xs text-purple-300">Простой туториал и установка полноценной языковой модели на ваш ПК</div>
           </div>
         </div>
-        <button id="btn-close-ai-modal" class="text-slate-400 hover:text-white p-1 rounded hover:bg-white/10">
+        <button id="btn-close-ai-modal" class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
       </div>
 
-      <div class="p-5 space-y-4 text-xs overflow-y-auto max-h-[75vh]">
-        <!-- Current AI Engine Status Card -->
-        <div class="p-3.5 rounded-lg bg-white/[0.03] border border-white/10 flex items-center justify-between">
-          <div>
-            <div class="text-slate-400 text-[11px]">Текущий активный движок:</div>
-            <div id="modal-ai-status-name" class="font-bold text-slate-100 text-sm flex items-center space-x-1.5 mt-0.5">
-              <span id="modal-ai-status-dot" class="w-2 h-2 rounded-full bg-slate-500"></span>
-              <span id="modal-ai-status-text">Локальная нейросеть не скачана</span>
+      <!-- Navigation Tabs inside AI Modal -->
+      <div class="flex border-b border-white/10 bg-black/40 px-4 text-xs font-medium">
+        <button id="tab-btn-tutor" class="px-4 py-2.5 border-b-2 border-purple-400 text-purple-300 font-bold flex items-center space-x-1.5 transition">
+          <span>📖 Пошаговый туториал (3 шага)</span>
+        </button>
+        <button id="tab-btn-catalog" class="px-4 py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center space-x-1.5 transition">
+          <span>⚡ Быстрое скачивание модели Qwen</span>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4 text-xs overflow-y-auto max-h-[75vh] flex-1">
+
+        <!-- TAB 1: BEGINNER TUTORIAL VIEW (Active by default) -->
+        <div id="ai-view-tutor" class="space-y-4">
+          
+          <!-- Introduction Card for Beginners -->
+          <div class="p-3.5 rounded-lg bg-purple-950/20 border border-purple-500/25 space-y-2 text-slate-200">
+            <div class="font-bold text-sm text-purple-300 flex items-center space-x-2">
+              <span>💡 Что это такое простыми словами?</span>
+            </div>
+            <p class="leading-relaxed text-xs text-slate-300">
+              Вы можете запускать настоящую большую нейросеть <b>прямо на своем компьютере</b>, как программу. 
+              Она работает <b>без интернета</b>, моментально отвечает на любые вопросы по коду, скриптам и Windows, а ваши данные никогда не покидают ваш ПК.
+            </p>
+          </div>
+
+          <!-- Step 1: Install Ollama Engine -->
+          <div class="p-4 rounded-xl bg-white/[0.03] border border-white/10 space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-6 h-6 rounded-full bg-purple-500/30 text-purple-300 font-bold flex items-center justify-center text-xs">1</span>
+                <span class="font-bold text-slate-100 text-sm">Шаг 1: Скачайте движок Ollama</span>
+              </div>
+              <span id="ollama-live-status-badge" class="px-2 py-0.5 rounded bg-slate-800 text-[11px] font-mono text-slate-400 border border-white/10">
+                Статус: Не проверено
+              </span>
+            </div>
+
+            <p class="text-slate-400 text-xs">
+              <b>Ollama</b> — это бесплатный официальный сервис для Windows, который загружает и запускает нейросети в видеопамять (VRAM).
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+              <!-- Way A: Direct installer download -->
+              <a href="https://ollama.com/download/OllamaSetup.exe" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-lg bg-sky-600/20 hover:bg-sky-600/30 border border-sky-500/30 flex items-center space-x-2.5 text-sky-200 transition">
+                <svg class="w-5 h-5 text-sky-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                <div>
+                  <div class="font-bold text-xs">Скачать инсталлятор (.exe)</div>
+                  <div class="text-[10px] text-slate-400">Официальный сайт ollama.com</div>
+                </div>
+              </a>
+
+              <!-- Way B: Terminal Command -->
+              <div class="p-2.5 rounded-lg bg-slate-800/80 border border-white/10 flex items-center justify-between">
+                <div>
+                  <div class="text-[10px] text-slate-400">Либо введите в терминал:</div>
+                  <code class="text-emerald-300 font-mono text-xs font-bold">winget install Ollama.Ollama</code>
+                </div>
+                <button class="btn-copy-code px-2 py-1 rounded bg-white/10 hover:bg-white/20 text-slate-200 text-xs font-mono" data-text="winget install Ollama.Ollama" title="Скопировать команду">
+                  Копировать
+                </button>
+              </div>
+            </div>
+
+            <div class="pt-1 flex items-center justify-between">
+              <span class="text-[11px] text-slate-400">После установки Ollama запустится в трее Windows (возле часов).</span>
+              <button id="btn-check-ollama-live" class="px-3 py-1 rounded-md bg-purple-600/30 hover:bg-purple-600/50 text-purple-200 text-xs font-mono border border-purple-500/30 transition flex items-center space-x-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                <span>Проверить статус подключения</span>
+              </button>
             </div>
           </div>
-          <span id="modal-ai-vram-badge" class="px-2 py-1 rounded bg-white/5 border border-white/10 text-[11px] font-mono text-slate-400">
-            VRAM: 0 MB
-          </span>
+
+          <!-- Step 2: Download Qwen Model -->
+          <div class="p-4 rounded-xl bg-white/[0.03] border border-white/10 space-y-3">
+            <div class="flex items-center space-x-2">
+              <span class="w-6 h-6 rounded-full bg-purple-500/30 text-purple-300 font-bold flex items-center justify-center text-xs">2</span>
+              <span class="font-bold text-slate-100 text-sm">Шаг 2: Скачайте модель Qwen 2.5 Coder</span>
+            </div>
+
+            <p class="text-slate-400 text-xs">
+              <b>Qwen 2.5 Coder</b> от Alibaba — одна из самых мощных моделей в мире для кода. Она оптимизирована под скрипты, знает русский язык и отлично ориентируется в командах Windows.
+            </p>
+
+            <div class="space-y-2">
+              <div class="p-3 rounded-lg bg-black/40 border border-emerald-500/30 flex items-center justify-between">
+                <div>
+                  <div class="font-bold text-emerald-300 flex items-center space-x-2">
+                    <span>Qwen 2.5 Coder (1.5B)</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-400 font-mono">Оптимально (~950 MB)</span>
+                  </div>
+                  <div class="text-[11px] text-slate-400 mt-0.5">Команда для скачивания в терминале:</div>
+                  <code class="text-sky-300 font-mono text-xs font-bold">ollama run qwen2.5-coder:1.5b</code>
+                </div>
+                <div class="flex flex-col space-y-1">
+                  <button class="btn-copy-code px-2.5 py-1 rounded bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 text-xs font-mono" data-text="ollama run qwen2.5-coder:1.5b">
+                    Копировать
+                  </button>
+                  <button class="btn-insert-cmd px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-slate-200 text-xs font-mono" data-cmd="ollama run qwen2.5-coder:1.5b">
+                    Вставить в терминал
+                  </button>
+                </div>
+              </div>
+
+              <!-- Ultra-light version for slower PCs -->
+              <div class="p-2.5 rounded-lg bg-black/20 border border-white/5 flex items-center justify-between text-xs">
+                <div>
+                  <span class="text-slate-300 font-semibold">Qwen 2.5 Coder (0.5B Ultra-light):</span>
+                  <span class="text-slate-500 text-[11px]"> всего 390 MB для слабых видеокарт</span>
+                  <div class="text-slate-400 font-mono text-[11px]">ollama run qwen2.5-coder:0.5b</div>
+                </div>
+                <button class="btn-copy-code px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 text-slate-300 text-[11px] font-mono" data-text="ollama run qwen2.5-coder:0.5b">
+                  Копировать
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Use it in Terminal -->
+          <div class="p-4 rounded-xl bg-purple-950/20 border border-purple-500/30 space-y-2">
+            <div class="flex items-center space-x-2">
+              <span class="w-6 h-6 rounded-full bg-emerald-500/30 text-emerald-300 font-bold flex items-center justify-center text-xs">3</span>
+              <span class="font-bold text-slate-100 text-sm">Шаг 3: Как задавать вопросы</span>
+            </div>
+            <p class="text-slate-300 text-xs leading-relaxed">
+              Теперь просто пишите в строку ввода команду <code class="text-sky-300 font-mono font-bold">ai &lt;любой вопрос&gt;</code>!
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs font-mono pt-1">
+              <button class="p-2 rounded bg-black/30 hover:bg-purple-500/20 text-left text-slate-200 border border-white/5 quick-chip" data-cmd="ai напиши игру крестики-нолики на python">
+                &gt; ai напиши игру на python
+              </button>
+              <button class="p-2 rounded bg-black/30 hover:bg-purple-500/20 text-left text-slate-200 border border-white/5 quick-chip" data-cmd="ai как найти файлы больше 1 гигабайта">
+                &gt; ai как найти большие файлы
+              </button>
+            </div>
+          </div>
+
         </div>
 
-        <!-- Model Selection List -->
-        <div>
-          <div class="font-semibold text-slate-300 mb-2 flex items-center justify-between">
-            <span>Выберите модель для скачивания:</span>
-            <span class="text-[11px] text-slate-400">Формат: GGUF Q4_K_M</span>
+        <!-- TAB 2: QUICK DOWNLOAD VIEW (Embedded GGUF Models) -->
+        <div id="ai-view-catalog" class="hidden space-y-4">
+          <div class="p-3 rounded-lg bg-white/5 border border-white/10 flex items-center justify-between">
+            <div>
+              <div class="text-slate-400 text-[11px]">Текущий активный движок:</div>
+              <div id="modal-ai-status-name" class="font-bold text-slate-100 text-sm flex items-center space-x-1.5 mt-0.5">
+                <span id="modal-ai-status-dot" class="w-2 h-2 rounded-full bg-slate-500"></span>
+                <span id="modal-ai-status-text">Локальная нейросеть не скачана</span>
+              </div>
+            </div>
+            <span id="modal-ai-vram-badge" class="px-2 py-1 rounded bg-white/5 border border-white/10 text-[11px] font-mono text-slate-400">
+              VRAM: 0 MB
+            </span>
           </div>
 
           <div class="space-y-2" id="ai-models-list">
@@ -536,11 +686,11 @@
               <div class="flex items-start justify-between">
                 <div>
                   <div class="font-bold text-slate-100 flex items-center space-x-2">
-                    <span class="text-purple-300">Qwen 2.5 Coder (0.5B)</span>
-                    <span class="px-1.5 py-0.2 bg-emerald-500/20 text-emerald-300 rounded text-[10px] font-mono">Рекомендуется</span>
+                    <span class="text-purple-300">Qwen 2.5 Coder (0.5B GGUF)</span>
+                    <span class="px-1.5 py-0.2 bg-emerald-500/20 text-emerald-300 rounded text-[10px] font-mono">Скачивание в 1 клик</span>
                   </div>
                   <div class="text-[11px] text-slate-400 mt-1">
-                    Специализирована на генерации shell-скриптов, команд Windows/Linux, регулярных выражений и кода.
+                    Специализирована на генерации shell-скриптов, команд Windows/Linux и синтаксиса кода.
                   </div>
                 </div>
                 <div class="text-right text-[11px] font-mono">
@@ -556,7 +706,7 @@
                 <div>
                   <div class="font-bold text-slate-200">Llama 3.2 (1B Instruct)</div>
                   <div class="text-[11px] text-slate-400 mt-1">
-                    Универсальная легкая модель Meta: ответы на вопросы, анализ логов, помощь в администрировании.
+                    Универсальная легкая модель Meta: системные ответы, анализ логов, помощь в администрировании.
                   </div>
                 </div>
                 <div class="text-right text-[11px] font-mono">
@@ -572,7 +722,7 @@
                 <div>
                   <div class="font-bold text-slate-200">DeepSeek R1 Distill (1.5B)</div>
                   <div class="text-[11px] text-slate-400 mt-1">
-                    Рассуждающая модель (CoT): глубокий пошаговый анализ архитектурных задач и сложных алгоритмов.
+                    Рассуждающая модель (CoT): глубокий пошаговый анализ архитектурных задач.
                   </div>
                 </div>
                 <div class="text-right text-[11px] font-mono">
@@ -582,50 +732,53 @@
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Download Progress Container -->
-        <div id="ai-download-progress-box" class="hidden p-3.5 rounded-lg bg-black/40 border border-purple-500/30 space-y-2">
-          <div class="flex items-center justify-between text-xs font-mono">
-            <span id="ai-download-status-label" class="text-purple-300 flex items-center">
-              <svg class="animate-spin -ml-1 mr-2 h-3.5 w-3.5 text-purple-400" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
-              Загрузка модели...
-            </span>
-            <span id="ai-download-percent" class="text-slate-200 font-bold">0%</span>
+          <!-- Download Progress Container -->
+          <div id="ai-download-progress-box" class="hidden p-3.5 rounded-lg bg-black/40 border border-purple-500/30 space-y-2">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span id="ai-download-status-label" class="text-purple-300 flex items-center">
+                <svg class="animate-spin -ml-1 mr-2 h-3.5 w-3.5 text-purple-400" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+                Загрузка модели...
+              </span>
+              <span id="ai-download-percent" class="text-slate-200 font-bold">0%</span>
+            </div>
+
+            <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+              <div id="ai-download-bar" class="h-full bg-gradient-to-r from-purple-500 to-sky-400 w-0 transition-all duration-200"></div>
+            </div>
+
+            <div class="flex items-center justify-between text-[11px] text-slate-500 font-mono">
+              <span id="ai-download-speed">Скорость: 24.8 MB/s</span>
+              <span id="ai-download-size">0 / 395 MB</span>
+            </div>
           </div>
 
-          <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-            <div id="ai-download-bar" class="h-full bg-gradient-to-r from-purple-500 to-sky-400 w-0 transition-all duration-200"></div>
+          <div class="pt-2">
+            <div class="text-[11px] text-slate-400 mb-1 font-mono">Команда для запуска и скачивания в терминале:</div>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 p-2.5 rounded-lg bg-black/60 border border-purple-500/40 font-mono text-xs shadow-inner">
+              <div class="flex items-center space-x-2 truncate">
+                <span class="text-purple-400 font-bold select-none">❯</span>
+                <code id="ai-active-cmd-text" class="text-emerald-300 font-bold select-all">ollama run qwen2.5-coder:1.5b</code>
+              </div>
+              <div class="flex items-center space-x-1.5 flex-shrink-0">
+                <button id="btn-copy-active-cmd" class="px-2.5 py-1 bg-white/10 hover:bg-white/20 text-slate-200 rounded text-xs transition">
+                  Копировать
+                </button>
+                <button id="btn-run-active-cmd" class="px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white rounded text-xs font-bold transition flex items-center space-x-1 shadow-md shadow-purple-600/30">
+                  <span>Выполнить в терминале</span>
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </button>
+              </div>
+            </div>
           </div>
-
-          <div class="flex items-center justify-between text-[11px] text-slate-500 font-mono">
-            <span id="ai-download-speed">Скорость: 24.8 MB/s</span>
-            <span id="ai-download-size">0 / 395 MB</span>
-          </div>
-        </div>
-
-        <!-- Local Ollama Bridge Option -->
-        <div class="p-3 rounded-lg bg-white/5 flex items-center justify-between">
-          <div>
-            <div class="font-semibold text-slate-200">Мост к системному Ollama (localhost:11434)</div>
-            <div class="text-[11px] text-slate-400">Использовать уже установленные в вашей системе модели через Ollama</div>
-          </div>
-          <button id="btn-check-ollama" class="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-slate-200 text-xs font-mono transition">
-            Проверить Ollama
-          </button>
         </div>
 
       </div>
-
       <div class="p-3.5 bg-slate-950 border-t border-white/10 flex items-center justify-between">
-        <span class="text-[11px] text-slate-500 font-mono">Модель сохраняется в локальный кэш</span>
+        <span class="text-[11px] text-slate-400 font-mono">100% приватность: все вычисления происходят на вашем ПК</span>
         <div class="flex items-center space-x-2">
-          <button id="btn-cancel-ai-modal" class="px-3 py-1.5 rounded hover:bg-white/10 text-slate-400 hover:text-white transition text-xs">
-            Закрыть
-          </button>
-          <button id="btn-start-download-ai" class="px-4 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded font-medium transition text-xs flex items-center space-x-1.5 shadow-lg shadow-purple-600/30">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-            <span id="btn-start-download-text">Скачать модель (395 MB)</span>
+          <button id="btn-cancel-ai-modal" class="px-4 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-slate-200 transition text-xs font-medium">
+            Закрыть окно
           </button>
         </div>
       </div>
@@ -637,7 +790,7 @@
     <div class="w-full max-w-lg rounded-xl bg-slate-900 border border-white/20 shadow-2xl overflow-hidden">
       <div class="p-3 border-b border-white/10 flex items-center space-x-2">
         <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-        <input id="palette-search-input" type="text" placeholder="Введите действие или команду..." class="w-full bg-transparent border-none outline-none text-slate-100 text-xs font-mono" />
+        <input id="palette-search-input" type="text" placeholder="Type an action or command..." class="w-full bg-transparent border-none outline-none text-slate-100 text-xs font-mono" />
         <button id="btn-close-palette" class="text-slate-500 hover:text-white text-xs">Esc</button>
       </div>
       <div id="palette-results" class="max-h-60 overflow-y-auto p-1.5 space-y-0.5 text-xs font-mono">
@@ -676,6 +829,7 @@
         }
       ],
       currentTheme: 'default',
+      language: 'en',
       soundEnabled: false,
       fontSize: 14,
       acrylicOpacity: 85,
@@ -774,13 +928,15 @@
 
     // --- Available Terminal Commands & Autocompletions ---
     const COMMAND_REGISTRY = [
-      { cmd: 'help', desc: 'Справка по доступным командам терминала' },
+      { cmd: 'help', desc: 'Справка по доступным командам терминала / Command Reference' },
+      { cmd: 'lang', desc: 'Переключить язык интерфейса и справки (lang en / lang ru)' },
       { cmd: 'winfetch', desc: 'Показать детальные характеристики Windows 11 Neo' },
       { cmd: 'top', desc: 'Интерактивный диспетчер задач и мониторинг CPU/RAM' },
       { cmd: 'matrix', desc: 'Запустить анимацию цифрового дождя Matrix' },
       { cmd: 'weather', desc: 'Узнать погоду (например: weather Kyiv или weather Tokyo)' },
       { cmd: 'speedtest', desc: 'Тестирование пропускной способности сети' },
       { cmd: 'ai', desc: 'Спросить встроенного AI Copilot (например: ai как найти файл)' },
+      { cmd: 'ai tutor', desc: 'Пошаговый туториал по установке Ollama и модели Qwen' },
       { cmd: 'ls', desc: 'Список файлов в текущей папке' },
       { cmd: 'dir', desc: 'Аналог команды ls (стиль Windows CMD)' },
       { cmd: 'cd', desc: 'Перейти в каталог (например: cd .. или cd projects)' },
@@ -800,6 +956,233 @@
       { cmd: 'clear', desc: 'Очистить экран терминала' },
       { cmd: 'cls', desc: 'Очистить экран (стиль CMD)' }
     ];
+
+    // --- Language Management (RU / EN) ---
+    function setAppLanguage(lang) {
+      appState.language = lang;
+      const label = document.getElementById('lang-toggle-label');
+      if (label) label.textContent = lang.toUpperCase();
+
+      const input = document.getElementById('terminal-input');
+      if (input) {
+        input.placeholder = lang === 'en'
+          ? 'Type a command (e.g.: winfetch, top, matrix, ai tutor, help)...'
+          : 'Введите команду (например: winfetch, top, matrix, ai tutor, help)...';
+      }
+
+      // Update Welcome Banner
+      const archTag = document.getElementById('welcome-arch-tag');
+      const descText = document.getElementById('welcome-desc-text');
+      const tipsText = document.getElementById('welcome-tips-text');
+      if (archTag) archTag.textContent = lang === 'en' ? 'Architecture: Ultra Modern Next-Gen Shell' : 'Архитектура: Ultra Modern Next-Gen Shell';
+      if (descText) {
+        descText.innerHTML = lang === 'en'
+          ? 'Next-Generation terminal for Windows: block outputs, smart autocompletion, Starship prompt, live task manager (<code class="text-sky-300 font-mono">top</code>), bandwidth test (<code class="text-amber-300 font-mono">speedtest</code>), digital rain (<code class="text-emerald-300 font-mono">matrix</code>), and local AI Copilot.'
+          : 'Новое поколение терминала для Windows: блочный вывод, умное автодополнение, Starship-промпт, интерактивный диспетчер задач (<code class="text-sky-300 font-mono">top</code>), тест сети (<code class="text-amber-300 font-mono">speedtest</code>), цифровой дождь (<code class="text-emerald-300 font-mono">matrix</code>) и встроенный AI Copilot.';
+      }
+      if (tipsText) {
+        tipsText.innerHTML = lang === 'en'
+          ? '<span>• Type <span class="text-sky-300 font-bold">help</span> to view all 25+ built-in commands</span><span>• <kbd class="px-1 py-0.2 bg-white/10 rounded">Tab</kbd> — Autocompletion</span><span>• <kbd class="px-1 py-0.2 bg-white/10 rounded">↑ / ↓</kbd> — Command history</span><span>• <kbd class="px-1 py-0.2 bg-white/10 rounded">Ctrl+L</kbd> — Clear screen</span>'
+          : '<span>• Введите <span class="text-sky-300 font-bold">help</span> для списка всех 20+ встроенных команд</span><span>• <kbd class="px-1 py-0.2 bg-white/10 rounded">Tab</kbd> — автодополнение</span><span>• <kbd class="px-1 py-0.2 bg-white/10 rounded">↑ / ↓</kbd> — история команд</span><span>• <kbd class="px-1 py-0.2 bg-white/10 rounded">Ctrl+L</kbd> — очистить экран</span>';
+      }
+
+      // Update Settings Modal Labels
+      const titleText = document.getElementById('settings-title-text');
+      const lblLang = document.getElementById('settings-lbl-lang');
+      const lblTheme = document.getElementById('settings-lbl-theme');
+      const lblFontSize = document.getElementById('settings-lbl-fontsize');
+      const lblOpacity = document.getElementById('settings-lbl-opacity');
+      const lblSound = document.getElementById('settings-lbl-sound');
+      const subSound = document.getElementById('settings-sub-sound');
+      const lblHotkeys = document.getElementById('settings-lbl-hotkeys');
+      const btnSave = document.getElementById('settings-btn-save-text');
+      const quickChipsLbl = document.getElementById('label-quick-chips');
+
+      if (titleText) titleText.textContent = lang === 'en' ? 'Windows Terminal Neo Settings' : 'Настройки Windows Terminal Neo';
+      if (lblLang) lblLang.textContent = lang === 'en' ? 'Interface Language' : 'Язык интерфейса / Interface Language';
+      if (lblTheme) lblTheme.textContent = lang === 'en' ? 'Color Theme' : 'Цветовая тема (Theme)';
+      if (lblFontSize) lblFontSize.textContent = lang === 'en' ? 'Console Font Size' : 'Размер шрифта консоли';
+      if (lblOpacity) lblOpacity.textContent = lang === 'en' ? 'Mica / Acrylic Opacity' : 'Прозрачность Mica / Acrylic';
+      if (lblSound) lblSound.textContent = lang === 'en' ? 'Mechanical Keyboard Sound' : 'Звук механической клавиатуры';
+      if (subSound) subSound.textContent = lang === 'en' ? 'Synthesize soft key clicks via Web Audio API' : 'Синтез мягких кликов клавиш через Web Audio API';
+      if (lblHotkeys) lblHotkeys.textContent = lang === 'en' ? 'Keyboard Shortcuts:' : 'Горячие клавиши:';
+      if (btnSave) btnSave.textContent = lang === 'en' ? 'Apply Settings' : 'Применить настройки';
+      if (quickChipsLbl) quickChipsLbl.textContent = lang === 'en' ? 'Quick Launch:' : 'Быстрый запуск:';
+
+      // Update active state in settings modal buttons
+      const btnRu = document.getElementById('btn-set-lang-ru');
+      const btnEn = document.getElementById('btn-set-lang-en');
+      if (btnRu && btnEn) {
+        if (lang === 'en') {
+          btnEn.className = 'lang-choice-btn p-2 rounded border border-purple-500/50 bg-purple-950/30 text-left flex items-center space-x-2 text-slate-100 transition';
+          btnRu.className = 'lang-choice-btn p-2 rounded border border-white/10 bg-slate-800 text-left flex items-center space-x-2 text-slate-300 hover:border-sky-400 transition';
+        } else {
+          btnRu.className = 'lang-choice-btn p-2 rounded border border-purple-500/50 bg-purple-950/30 text-left flex items-center space-x-2 text-slate-100 transition';
+          btnEn.className = 'lang-choice-btn p-2 rounded border border-white/10 bg-slate-800 text-left flex items-center space-x-2 text-slate-300 hover:border-sky-400 transition';
+        }
+      }
+
+      // Update AI Modal Language
+      updateAiModalTranslations(lang);
+
+      showToast(lang === 'en' ? 'Language switched to English' : 'Язык переключен на русский', 'success');
+    }
+
+    function updateAiModalTranslations(lang) {
+      const isEn = lang === 'en';
+      const tutorBtn = document.getElementById('tab-btn-tutor');
+      const catalogBtn = document.getElementById('tab-btn-catalog');
+      if (tutorBtn) tutorBtn.innerHTML = isEn ? '<span>📖 Step-by-Step Tutorial (3 Steps)</span>' : '<span>📖 Пошаговый туториал (3 шага)</span>';
+      if (catalogBtn) catalogBtn.innerHTML = isEn ? '<span>⚡ Quick Download Qwen Model</span>' : '<span>⚡ Быстрое скачивание модели Qwen</span>';
+
+      const tutorBox = document.getElementById('ai-view-tutor');
+      if (tutorBox) {
+        if (isEn) {
+          tutorBox.innerHTML = `
+          <!-- Introduction Card for Beginners -->
+          <div class="p-3.5 rounded-lg bg-purple-950/20 border border-purple-500/25 space-y-2 text-slate-200">
+            <div class="font-bold text-sm text-purple-300 flex items-center space-x-2">
+              <span>💡 What is this in plain English?</span>
+            </div>
+            <p class="leading-relaxed text-xs text-slate-300">
+              You can run a full, real language model <b>directly on your computer</b> like an app. 
+              It works <b>100% offline without internet</b>, answers coding and terminal questions instantly, and your data never leaves your PC.
+            </p>
+          </div>
+
+          <!-- Step 1: Install Ollama Engine -->
+          <div class="p-4 rounded-xl bg-white/[0.03] border border-white/10 space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-6 h-6 rounded-full bg-purple-500/30 text-purple-300 font-bold flex items-center justify-center text-xs">1</span>
+                <span class="font-bold text-slate-100 text-sm">Step 1: Download Ollama Engine</span>
+              </div>
+              <span id="ollama-live-status-badge" class="px-2 py-0.5 rounded bg-slate-800 text-[11px] font-mono text-slate-400 border border-white/10">
+                Status: Not Checked
+              </span>
+            </div>
+
+            <p class="text-slate-400 text-xs">
+              <b>Ollama</b> is a free official background service for Windows that loads and runs AI models into your GPU VRAM or RAM.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+              <a href="https://ollama.com/download/OllamaSetup.exe" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-lg bg-sky-600/20 hover:bg-sky-600/30 border border-sky-500/30 flex items-center space-x-2.5 text-sky-200 transition">
+                <svg class="w-5 h-5 text-sky-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                <div>
+                  <div class="font-bold text-xs">Download Installer (.exe)</div>
+                  <div class="text-[10px] text-slate-400">Official site ollama.com</div>
+                </div>
+              </a>
+
+              <div class="p-2.5 rounded-lg bg-slate-800/80 border border-white/10 flex items-center justify-between">
+                <div>
+                  <div class="text-[10px] text-slate-400">Or type in terminal:</div>
+                  <code class="text-emerald-300 font-mono text-xs font-bold">winget install Ollama.Ollama</code>
+                </div>
+                <button class="btn-copy-code px-2 py-1 rounded bg-white/10 hover:bg-white/20 text-slate-200 text-xs font-mono" data-text="winget install Ollama.Ollama">
+                  Copy
+                </button>
+              </div>
+            </div>
+
+            <div class="pt-1 flex items-center justify-between">
+              <span class="text-[11px] text-slate-400">After installing, Ollama runs in your Windows system tray.</span>
+              <button id="btn-check-ollama-live" class="px-3 py-1 rounded-md bg-purple-600/30 hover:bg-purple-600/50 text-purple-200 text-xs font-mono border border-purple-500/30 transition flex items-center space-x-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                <span>Check Connection Status</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 2: Download Qwen Model -->
+          <div class="p-4 rounded-xl bg-white/[0.03] border border-white/10 space-y-3">
+            <div class="flex items-center space-x-2">
+              <span class="w-6 h-6 rounded-full bg-purple-500/30 text-purple-300 font-bold flex items-center justify-center text-xs">2</span>
+              <span class="font-bold text-slate-100 text-sm">Step 2: Download Qwen 2.5 Coder Model</span>
+            </div>
+
+            <p class="text-slate-400 text-xs">
+              <b>Qwen 2.5 Coder</b> by Alibaba is one of the world's most capable coding models. It is optimized for shell scripts, system diagnostics, and code generation.
+            </p>
+
+            <div class="space-y-2">
+              <div class="p-3 rounded-lg bg-black/40 border border-emerald-500/30 flex items-center justify-between">
+                <div>
+                  <div class="font-bold text-emerald-300 flex items-center space-x-2">
+                    <span>Qwen 2.5 Coder (1.5B)</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-400 font-mono">Recommended (~950 MB)</span>
+                  </div>
+                  <div class="text-[11px] text-slate-400 mt-0.5">Terminal download command:</div>
+                  <code class="text-sky-300 font-mono text-xs font-bold">ollama run qwen2.5-coder:1.5b</code>
+                </div>
+                <div class="flex flex-col space-y-1">
+                  <button class="btn-copy-code px-2.5 py-1 rounded bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 text-xs font-mono" data-text="ollama run qwen2.5-coder:1.5b">
+                    Copy
+                  </button>
+                  <button class="btn-insert-cmd px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-slate-200 text-xs font-mono" data-cmd="ollama run qwen2.5-coder:1.5b">
+                    Insert in Terminal
+                  </button>
+                </div>
+              </div>
+
+              <!-- Ultra-light version -->
+              <div class="p-2.5 rounded-lg bg-black/20 border border-white/5 flex items-center justify-between text-xs">
+                <div>
+                  <span class="text-slate-300 font-semibold">Qwen 2.5 Coder (0.5B Ultra-light):</span>
+                  <span class="text-slate-500 text-[11px]"> only 390 MB for lighter GPUs</span>
+                  <div class="text-slate-400 font-mono text-[11px]">ollama run qwen2.5-coder:0.5b</div>
+                </div>
+                <button class="btn-copy-code px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 text-slate-300 text-[11px] font-mono" data-text="ollama run qwen2.5-coder:0.5b">
+                  Copy
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Ask questions -->
+          <div class="p-4 rounded-xl bg-purple-950/20 border border-purple-500/30 space-y-2">
+            <div class="flex items-center space-x-2">
+              <span class="w-6 h-6 rounded-full bg-emerald-500/30 text-emerald-300 font-bold flex items-center justify-center text-xs">3</span>
+              <span class="font-bold text-slate-100 text-sm">Step 3: How to Ask Questions</span>
+            </div>
+            <p class="text-slate-300 text-xs leading-relaxed">
+              Now simply type <code class="text-sky-300 font-mono font-bold">ai &lt;your question&gt;</code> into the terminal!
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs font-mono pt-1">
+              <button class="p-2 rounded bg-black/30 hover:bg-purple-500/20 text-left text-slate-200 border border-white/5 quick-chip" data-cmd="ai write a tic-tac-toe game in python">
+                &gt; ai write a tic-tac-toe game in python
+              </button>
+              <button class="p-2 rounded bg-black/30 hover:bg-purple-500/20 text-left text-slate-200 border border-white/5 quick-chip" data-cmd="ai how to find files larger than 1GB">
+                &gt; ai how to find large files
+              </button>
+            </div>
+          </div>
+          `;
+          // Re-bind click listeners inside tutorBox
+          const chkBtn = document.getElementById('btn-check-ollama-live');
+          if (chkBtn) chkBtn.addEventListener('click', checkOllamaLive);
+          tutorBox.querySelectorAll('.btn-copy-code').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const txt = btn.getAttribute('data-text');
+              if (txt) { copyToClipboard(txt); showToast('Command copied to clipboard', 'success'); }
+            });
+          });
+          tutorBox.querySelectorAll('.btn-insert-cmd').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const cmd = btn.getAttribute('data-cmd');
+              if (cmd) {
+                const input = document.getElementById('terminal-input');
+                if (input) { input.value = cmd; focusTerminalInput(); }
+                const modal = document.getElementById('ai-model-modal');
+                if (modal) modal.classList.add('hidden');
+                showToast('Command inserted into terminal', 'info');
+              }
+            });
+          });
+        }
+      }
+    }
 
     // --- Tab Management ---
     function renderTabs() {
@@ -823,7 +1206,7 @@
           ${icon}
           <span class="truncate flex-1">${tab.name}</span>
           ${appState.tabs.length > 1 ? `
-            <button class="btn-close-tab hover:bg-white/20 p-0.5 rounded text-slate-400 hover:text-white" data-id="${tab.id}" title="Закрыть вкладку">
+            <button class="btn-close-tab hover:bg-white/20 p-0.5 rounded text-slate-400 hover:text-white" data-id="${tab.id}" title="Close Tab">
               <svg class="w-3 h-3" viewBox="0 0 16 16" fill="currentColor"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/></svg>
             </button>
           ` : ''}
@@ -879,6 +1262,7 @@
     function switchTab(id) {
       appState.activeTabId = id;
       detectHardwareSpecs();
+      setAppLanguage('en');
       renderTabs();
       renderBlocks();
       focusTerminalInput();
@@ -892,6 +1276,7 @@
         appState.activeTabId = appState.tabs[Math.max(0, idx - 1)].id;
       }
       detectHardwareSpecs();
+      setAppLanguage('en');
       renderTabs();
       renderBlocks();
       showToast('Вкладка закрыта');
@@ -1000,10 +1385,26 @@
           closeInteractiveOverlays();
           return;
 
+        case 'lang':
+        case 'language':
+          const targetLang = args[0] ? args[0].toLowerCase() : (appState.language === 'ru' ? 'en' : 'ru');
+          if (targetLang === 'en' || targetLang === 'ru') {
+            setAppLanguage(targetLang);
+            outputHtml = targetLang === 'en' 
+              ? '<span class="text-emerald-400 font-bold">✔ Language switched to English. Type <code class="text-sky-300">help</code> to see commands.</span>'
+              : '<span class="text-emerald-400 font-bold">✔ Язык переключен на русский. Введите <code class="text-sky-300">help</code> для просмотра команд.</span>';
+          } else {
+            outputHtml = 'Usage: <span class="text-sky-300 font-mono">lang en</span> or <span class="text-sky-300 font-mono">lang ru</span>';
+          }
+          break;
+
         case 'help':
         case '?':
-          outputHtml = generateHelpOutput();
-          rawOutput = 'Справка по командам Windows Terminal Neo';
+          const specifiedLang = args[0] && (args[0].toLowerCase() === 'en' || args[0].toLowerCase() === 'ru') 
+            ? args[0].toLowerCase() 
+            : appState.language;
+          outputHtml = generateHelpOutput(specifiedLang);
+          rawOutput = specifiedLang === 'en' ? 'Windows Terminal Neo Command Reference' : 'Справка по командам Windows Terminal Neo';
           break;
 
         case 'winfetch':
@@ -1035,7 +1436,10 @@
         case 'ai':
         case 'ask':
           const sub = args[0] ? args[0].toLowerCase() : '';
-          if (sub === 'download' || sub === 'install') {
+          if (sub === 'tutor' || sub === 'setup' || sub === 'help' || sub === 'guide') {
+            openAiModalTab('tutor');
+            outputHtml = '<span class="text-purple-300 font-bold">Открыт интерактивный мастер установки Ollama и модели Qwen!</span>\nСледуйте шагам в открывшемся окне.';
+          } else if (sub === 'download' || sub === 'install') {
             startAiDownloadInTerminal(args[1] || appState.localAI.selectedModel);
             return;
           } else if (sub === 'models' || sub === 'list') {
@@ -1155,39 +1559,92 @@
     }
 
     // --- Command Handlers & Generators ---
-    function generateHelpOutput() {
-      return `
-<span class="text-sky-400 font-bold text-sm">ДОСТУПНЫЕ КОМАНДЫ WINDOWS TERMINAL NEO</span>
+    function generateHelpOutput(lang = appState.language) {
+      if (lang === 'en') {
+        return `
+<span class="text-sky-400 font-bold text-sm">WINDOWS TERMINAL NEO — COMMAND REFERENCE (v3.5)</span>
 <span class="text-slate-500">--------------------------------------------------------------------------------</span>
-<b class="text-emerald-400">СИСТЕМА И ИНФОРМАЦИЯ:</b>
-  <span class="text-sky-300">winfetch</span>     - Красивая карточка характеристик системы Windows 11 Neo
-  <span class="text-sky-300">top</span>          - Интерактивный диспетчер процессов и нагрузка CPU / RAM в реальном времени
-  <span class="text-sky-300">matrix</span>       - Интерактивная анимация цифрового дождя Matrix
-  <span class="text-sky-300">weather</span>      - Прогноз погоды для любого города (<code class="text-slate-400">weather Kyiv</code>, <code class="text-slate-400">weather London</code>)
-  <span class="text-sky-300">speedtest</span>    - Тестирование скорости интернета и пинга с анимацией
-  <span class="text-sky-300">date</span>         - Текущая системная дата и точное время
+<b class="text-emerald-400">SYSTEM & SPECS:</b>
+  <span class="text-sky-300 font-bold">winfetch</span>         - Display beautiful Windows 11 hardware & system summary
+  <span class="text-sky-300 font-bold">top</span>              - Live interactive process manager & real CPU/RAM monitoring
+  <span class="text-sky-300 font-bold">matrix</span>           - Launch real-time digital Matrix code rain
+  <span class="text-sky-300 font-bold">weather [city]</span>   - Check weather forecast (<code class="text-slate-400">weather Kyiv</code>, <code class="text-slate-400">weather London</code>)
+  <span class="text-sky-300 font-bold">speedtest</span>        - Interactive bandwidth & network latency test
+  <span class="text-sky-300 font-bold">date</span>             - Display current system date and exact time
 
-<b class="text-purple-400">ИНТЕЛЛЕКТУАЛЬНЫЕ ИНСТРУМЕНТЫ:</b>
-  <span class="text-purple-300">ai &lt;вопрос&gt;</span>   - Встроенный AI Copilot (объяснение команд, генерация скриптов)
-  <span class="text-amber-300">calc &lt;выраж&gt;</span>  - Быстрый математический калькулятор (<code class="text-slate-400">calc (1024*1024)/64</code>)
-  <span class="text-cyan-300">curl &lt;url&gt;</span>    - Имитация HTTP REST клиента с заголовками и JSON
+<b class="text-purple-400">LOCAL AI & NEURAL NETWORKS:</b>
+  <span class="text-purple-300 font-bold">ai &lt;query&gt;</span>       - Ask local AI Copilot (offline Qwen 2.5 Coder engine)
+  <span class="text-purple-300 font-bold">ai tutor</span>         - Interactive 3-step setup guide for Ollama & Qwen LLM
+  <span class="text-purple-300 font-bold">ai models</span>        - List available lightweight local GGUF models
+  <span class="text-purple-300 font-bold">ai status</span>        - Display offline AI engine status and allocated VRAM
+  <span class="text-purple-300 font-bold">ai download</span>      - Download local offline model weights (<code class="text-slate-400">qwen</code>, <code class="text-slate-400">llama</code>, <code class="text-slate-400">deepseek</code>)
+
+<b class="text-amber-400">FILESYSTEM & NAVIGATION:</b>
+  <span class="text-sky-300 font-bold">ls / dir</span>         - List files and folders in current directory
+  <span class="text-sky-300 font-bold">cd &lt;path&gt;</span>        - Change directory (<code class="text-slate-400">cd ..</code>, <code class="text-slate-400">cd projects</code>, <code class="text-slate-400">cd ~</code>)
+  <span class="text-sky-300 font-bold">pwd</span>              - Print current working directory path
+  <span class="text-sky-300 font-bold">cat / type</span>       - View text file contents (<code class="text-slate-400">cat README.md</code>)
+  <span class="text-sky-300 font-bold">tree</span>             - Render visual hierarchical directory tree
+  <span class="text-sky-300 font-bold">touch &lt;file&gt;</span>     - Create a new empty file
+  <span class="text-sky-300 font-bold">mkdir &lt;dir&gt;</span>      - Create a new directory
+  <span class="text-sky-300 font-bold">rm &lt;file&gt;</span>        - Remove file from filesystem
+  <span class="text-sky-300 font-bold">echo &lt;text&gt;</span>      - Print text to terminal
+
+<b class="text-cyan-400">UTILITIES & NETWORK:</b>
+  <span class="text-amber-300 font-bold">calc &lt;math&gt;</span>      - Math expression evaluator (<code class="text-slate-400">calc (128 * 1024) / 4</code>)
+  <span class="text-cyan-300 font-bold">curl &lt;url&gt;</span>       - Simulate HTTP REST request with response headers
+  <span class="text-sky-300 font-bold">history</span>          - Show recent command history with rerun buttons
+
+<b class="text-pink-400">CUSTOMIZATION & INTERFACE:</b>
+  <span class="text-sky-300 font-bold">theme [name]</span>     - Switch theme (<code class="text-slate-400">default</code>, <code class="text-slate-400">tokyo</code>, <code class="text-slate-400">dracula</code>, <code class="text-slate-400">cyberpunk</code>, <code class="text-slate-400">matrix</code>)
+  <span class="text-sky-300 font-bold">lang [en|ru]</span>     - Switch interface & help language (<code class="text-slate-400">lang en</code> / <code class="text-slate-400">lang ru</code>)
+  <span class="text-sky-300 font-bold">sound [on|off]</span>   - Toggle mechanical keyboard click sounds
+  <span class="text-sky-300 font-bold">clear / cls</span>      - Clear terminal screen
+`;
+      }
+
+      // Default Russian Help
+      return `
+<span class="text-sky-400 font-bold text-sm">ДОСТУПНЫЕ КОМАНДЫ WINDOWS TERMINAL NEO (v3.5)</span>
+<span class="text-slate-500">--------------------------------------------------------------------------------</span>
+<b class="text-emerald-400">СИСТЕМА И ХАРАКТЕРИСТИКИ:</b>
+  <span class="text-sky-300 font-bold">winfetch</span>         - Карточка характеристик системы Windows 11 и реального железа
+  <span class="text-sky-300 font-bold">top</span>              - Интерактивный диспетчер процессов и нагрузка CPU / RAM в реальном времени
+  <span class="text-sky-300 font-bold">matrix</span>           - Запуск анимации цифрового дождя Matrix в консоли
+  <span class="text-sky-300 font-bold">weather [город]</span>  - Сводка погоды и прогноз (<code class="text-slate-400">weather Kyiv</code>, <code class="text-slate-400">weather London</code>)
+  <span class="text-sky-300 font-bold">speedtest</span>        - Интерактивное тестирование скорости интернета и пинга
+  <span class="text-sky-300 font-bold">date</span>             - Текущая системная дата и точное время
+
+<b class="text-purple-400">ЛОКАЛЬНЫЙ ИИ И НЕЙРОСЕТИ:</b>
+  <span class="text-purple-300 font-bold">ai &lt;запрос&gt;</span>      - Вопрос встроенному локальному AI Copilot (Qwen 2.5 Coder)
+  <span class="text-purple-300 font-bold">ai tutor</span>         - Пошаговый интерактивный туториал по запуску Ollama + Qwen
+  <span class="text-purple-300 font-bold">ai models</span>        - Каталог доступных оффлайн-моделей GGUF
+  <span class="text-purple-300 font-bold">ai status</span>        - Статус локального движка и выделенной памяти VRAM
+  <span class="text-purple-300 font-bold">ai download</span>      - Скачивание модели в терминале (<code class="text-slate-400">qwen</code>, <code class="text-slate-400">llama</code>, <code class="text-slate-400">deepseek</code>)
 
 <b class="text-amber-400">ФАЙЛОВАЯ СИСТЕМА И НАВИГАЦИЯ:</b>
-  <span class="text-sky-300">ls / dir</span>     - Просмотр содержимого текущей папки
-  <span class="text-sky-300">cd &lt;dir&gt;</span>     - Смена текущей папки (<code class="text-slate-400">cd ..</code>, <code class="text-slate-400">cd projects</code>)
-  <span class="text-sky-300">pwd</span>          - Вывести текущий путь
-  <span class="text-sky-300">cat / type</span>   - Просмотр файла (<code class="text-slate-400">cat README.md</code>)
-  <span class="text-sky-300">tree</span>         - Дерево файлов и папок
-  <span class="text-sky-300">touch &lt;file&gt;</span> - Создать файл
-  <span class="text-sky-300">mkdir &lt;dir&gt;</span>  - Создать папку
+  <span class="text-sky-300 font-bold">ls / dir</span>         - Список файлов и папок в текущей директории
+  <span class="text-sky-300 font-bold">cd &lt;путь&gt;</span>        - Переход в каталог (<code class="text-slate-400">cd ..</code>, <code class="text-slate-400">cd projects</code>, <code class="text-slate-400">cd ~</code>)
+  <span class="text-sky-300 font-bold">pwd</span>              - Вывести полный путь текущей рабочей папки
+  <span class="text-sky-300 font-bold">cat / type</span>       - Просмотр содержимого текстового файла (<code class="text-slate-400">cat README.md</code>)
+  <span class="text-sky-300 font-bold">tree</span>             - Отобразить дерево каталогов и файлов
+  <span class="text-sky-300 font-bold">touch &lt;файл&gt;</span>     - Создать новый пустой файл
+  <span class="text-sky-300 font-bold">mkdir &lt;папка&gt;</span>    - Создать новую папку
+  <span class="text-sky-300 font-bold">rm &lt;файл&gt;</span>        - Удалить файл из виртуальной файловой системы
+  <span class="text-sky-300 font-bold">echo &lt;текст&gt;</span>     - Вывести переданный текст
+
+<b class="text-cyan-400">УТИЛИТЫ И СЕТЬ:</b>
+  <span class="text-amber-300 font-bold">calc &lt;выраж&gt;</span>     - Быстрый математический калькулятор (<code class="text-slate-400">calc (128 * 1024) / 4</code>)
+  <span class="text-cyan-300 font-bold">curl &lt;url&gt;</span>       - Имитация HTTP REST запроса с выводом заголовков и JSON
+  <span class="text-sky-300 font-bold">history</span>          - История введенных команд с кнопкой повтора
 
 <b class="text-pink-400">КАСТОМИЗАЦИЯ И ИНТЕРФЕЙС:</b>
-  <span class="text-sky-300">theme</span>        - Смена темы (<code class="text-slate-400">theme tokyo</code>, <code class="text-slate-400">theme cyberpunk</code>, <code class="text-slate-400">theme matrix</code>)
-  <span class="text-sky-300">sound</span>        - Включить/выключить звук механических клавиш (<code class="text-slate-400">sound on</code> / <code class="text-slate-400">sound off</code>)
-  <span class="text-sky-300">clear / cls</span>  - Очистить консоль
-  <span class="text-sky-300">history</span>      - История введенных команд
+  <span class="text-sky-300 font-bold">theme [имя]</span>      - Сменить цветовую тему (<code class="text-slate-400">default</code>, <code class="text-slate-400">tokyo</code>, <code class="text-slate-400">dracula</code>, <code class="text-slate-400">cyberpunk</code>, <code class="text-slate-400">matrix</code>)
+  <span class="text-sky-300 font-bold">lang [ru|en]</span>     - Переключить язык терминала и справки (<code class="text-slate-400">lang en</code> / <code class="text-slate-400">lang ru</code>)
+  <span class="text-sky-300 font-bold">sound [on|off]</span>   - Включить/выключить звук механических клавиш
+  <span class="text-sky-300 font-bold">clear / cls</span>      - Очистить экран консоли
 `;
-    }
+}
 
     // Hardware state object holding real detected specs
     const systemHardware = {
@@ -1273,8 +1730,8 @@
 
     function generateWinfetchOutput() {
       const realBadge = systemHardware.isReal 
-        ? '<span class="text-emerald-400 font-bold text-[10px] px-1.5 py-0.5 bg-emerald-500/20 rounded border border-emerald-500/30">✔ Реальное железо ПК</span>'
-        : '<span class="text-sky-400 font-bold text-[10px] px-1.5 py-0.5 bg-sky-500/20 rounded">Аппаратный датчик активен</span>';
+        ? `<span class="text-emerald-400 font-bold text-[10px] px-1.5 py-0.5 bg-emerald-500/20 rounded border border-emerald-500/30">${appState.language === "en" ? "✔ Real Hardware Detected" : "✔ Реальное железо ПК"}</span>`
+        : `<span class="text-sky-400 font-bold text-[10px] px-1.5 py-0.5 bg-sky-500/20 rounded">${appState.language === "en" ? "Hardware Sensor Active" : "Аппаратный датчик активен"}</span>`;
 
       return `
 <div class="flex flex-col md:flex-row items-start md:space-x-6 space-y-3 md:space-y-0 py-1">
@@ -1323,31 +1780,52 @@
     }
 
     function generateWeatherOutput(city) {
-      const weatherData = {
+      const isEn = appState.language === 'en';
+      const weatherDataEn = {
+        'Kyiv': { temp: '+14°C', cond: 'Clear, partly cloudy', wind: '3.2 m/s (NW)', humidity: '58%', press: '1005 hPa' },
+        'London': { temp: '+11°C', cond: 'Light drizzle showers', wind: '5.8 m/s (SW)', humidity: '82%', press: '998 hPa' },
+        'Tokyo': { temp: '+18°C', cond: 'Sunny, pleasant skies', wind: '2.1 m/s (E)', humidity: '45%', press: '1013 hPa' },
+        'New York': { temp: '+13°C', cond: 'Sunny, fresh breeze', wind: '4.5 m/s (N)', humidity: '50%', press: '1010 hPa' }
+      };
+      const weatherDataRu = {
         'Kyiv': { temp: '+14°C', cond: 'Ясно, переменная облачность', wind: '3.2 м/с (СЗ)', humidity: '58%', press: '754 мм рт. ст.' },
         'London': { temp: '+11°C', cond: 'Легкий моросящий дождь', wind: '5.8 м/с (ЮЗ)', humidity: '82%', press: '748 мм рт. ст.' },
         'Tokyo': { temp: '+18°C', cond: 'Безоблачно, солнечно', wind: '2.1 м/с (В)', humidity: '45%', press: '760 мм рт. ст.' },
         'New York': { temp: '+13°C', cond: 'Солнечно, свежий бриз', wind: '4.5 м/с (С)', humidity: '50%', press: '758 мм рт. ст.' }
       };
 
-      const data = weatherData[city] || {
-        temp: '+15°C', cond: 'Стабильная умеренная погода', wind: '3.4 м/с', humidity: '60%', press: '755 мм рт. ст.'
+      const table = isEn ? weatherDataEn : weatherDataRu;
+      const data = table[city] || {
+        temp: '+15°C', 
+        cond: isEn ? 'Mild, pleasant conditions' : 'Стабильная умеренная погода', 
+        wind: isEn ? '3.4 m/s' : '3.4 м/с', 
+        humidity: '60%', 
+        press: isEn ? '1007 hPa' : '755 мм рт. ст.'
       };
+
+      const title = isEn ? `Weather in ${escapeHtml(city)} (Live Weather Station)` : `Погода в г. ${escapeHtml(city)} (Онлайн метеостанция)`;
+      const condLbl = isEn ? 'Condition:' : 'Состояние:';
+      const windLbl = isEn ? 'Wind:' : 'Ветер:';
+      const humLbl = isEn ? 'Humidity:' : 'Влажность:';
+      const pressLbl = isEn ? 'Pressure:' : 'Давление:';
+      const forecast = isEn 
+        ? 'Forecast: Tomorrow: <span class="text-slate-200">+16°C</span> • Next Day: <span class="text-slate-200">+17°C</span> • Weekend: <span class="text-sky-300">Sunny</span>'
+        : 'Прогноз: Завтра: <span class="text-slate-200">+16°C</span> • Послезавтра: <span class="text-slate-200">+17°C</span> • Выходные: <span class="text-sky-300">Солнечно</span>';
 
       return `
 <div class="border border-sky-500/20 rounded-lg p-3 bg-sky-950/20 space-y-2">
   <div class="flex items-center justify-between">
-    <span class="font-bold text-sky-300 text-sm">Погода в г. ${escapeHtml(city)} (Онлайн метеостанция)</span>
+    <span class="font-bold text-sky-300 text-sm">${title}</span>
     <span class="text-amber-400 font-bold text-base">${data.temp}</span>
   </div>
   <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs pt-1">
-    <div class="p-1.5 rounded bg-white/5"><b>Состояние:</b> ${data.cond}</div>
-    <div class="p-1.5 rounded bg-white/5"><b>Ветер:</b> ${data.wind}</div>
-    <div class="p-1.5 rounded bg-white/5"><b>Влажность:</b> ${data.humidity}</div>
-    <div class="p-1.5 rounded bg-white/5"><b>Давление:</b> ${data.press}</div>
+    <div class="p-1.5 rounded bg-white/5"><b>${condLbl}</b> ${data.cond}</div>
+    <div class="p-1.5 rounded bg-white/5"><b>${windLbl}</b> ${data.wind}</div>
+    <div class="p-1.5 rounded bg-white/5"><b>${humLbl}</b> ${data.humidity}</div>
+    <div class="p-1.5 rounded bg-white/5"><b>${pressLbl}</b> ${data.press}</div>
   </div>
-  <div class="text-[11px] text-slate-400 pt-1">
-    Прогноз: Завтра: <span class="text-slate-200">+16°C</span> • Послезавтра: <span class="text-slate-200">+17°C</span> • Выходные: <span class="text-sky-300">Солнечно</span>
+  <div class="text-[11px] text-slate-400 pt-1 font-sans">
+    ${forecast}
   </div>
 </div>`;
     }
@@ -1355,10 +1833,13 @@
     function startSpeedTestBlock(cmd) {
       const tab = getActiveTab();
       const blockIdx = tab.blocks.length;
+      const isEn = appState.language === 'en';
+
+      const initialText = isEn ? 'Connecting to nearest Edge/Fast node...' : 'Подключение к ближайшему узлу Cloudflare/Fast...';
 
       tab.blocks.push({
         cmd: cmd,
-        output: '<div id="speedtest-live-' + blockIdx + '" class="p-3 rounded bg-white/5 space-y-2">Подключение к ближайшему узлу Cloudflare/Fast...</div>',
+        output: `<div id="speedtest-live-${blockIdx}" class="p-3 rounded bg-white/5 space-y-2">${initialText}</div>`,
         rawOutput: 'Speedtest in progress...',
         timestamp: new Date().toLocaleTimeString()
       });
@@ -1367,32 +1848,42 @@
       let step = 0;
       const interval = setInterval(() => {
         step++;
-        const target = document.getElementById('speedtest-live-' + blockIdx);
+        const target = document.getElementById(`speedtest-live-${blockIdx}`);
         if (!target) {
           clearInterval(interval);
           return;
         }
 
+        const isEnglish = appState.language === 'en';
+
         if (step === 1) {
+          const pingLbl = isEnglish ? 'Ping:' : 'Пинг:';
+          const dlLbl = isEnglish ? 'Testing Download...' : 'Тестирование Download...';
           target.innerHTML = `
             <div class="space-y-1.5">
-              <div class="flex justify-between text-xs"><span>Пинг:</span><span class="text-emerald-400 font-bold">4.2 ms (Jitter 0.4ms)</span></div>
-              <div class="flex justify-between text-xs"><span>Тестирование Download...</span><span class="text-sky-400 font-mono">480 Mbps</span></div>
+              <div class="flex justify-between text-xs"><span>${pingLbl}</span><span class="text-emerald-400 font-bold">4.2 ms (Jitter 0.4ms)</span></div>
+              <div class="flex justify-between text-xs"><span>${dlLbl}</span><span class="text-sky-400 font-mono">480 Mbps</span></div>
               <div class="w-full h-1.5 bg-slate-800 rounded overflow-hidden"><div class="h-full bg-sky-400 w-1/2 animate-pulse"></div></div>
             </div>`;
         } else if (step === 2) {
+          const pingLbl = isEnglish ? 'Ping:' : 'Пинг:';
+          const dlLbl = isEnglish ? 'Download Speed:' : 'Скорость загрузки:';
+          const upLbl = isEnglish ? 'Testing Upload...' : 'Тестирование Upload...';
           target.innerHTML = `
             <div class="space-y-1.5">
-              <div class="flex justify-between text-xs"><span>Пинг:</span><span class="text-emerald-400 font-bold">4.2 ms</span></div>
-              <div class="flex justify-between text-xs"><span>Download Speed:</span><span class="text-sky-400 font-bold font-mono">945.8 Mbps</span></div>
-              <div class="flex justify-between text-xs"><span>Тестирование Upload...</span><span class="text-indigo-400 font-mono">720 Mbps</span></div>
+              <div class="flex justify-between text-xs"><span>${pingLbl}</span><span class="text-emerald-400 font-bold">4.2 ms</span></div>
+              <div class="flex justify-between text-xs"><span>${dlLbl}</span><span class="text-sky-400 font-bold font-mono">945.8 Mbps</span></div>
+              <div class="flex justify-between text-xs"><span>${upLbl}</span><span class="text-indigo-400 font-mono">720 Mbps</span></div>
               <div class="w-full h-1.5 bg-slate-800 rounded overflow-hidden"><div class="h-full bg-indigo-400 w-3/4 animate-pulse"></div></div>
             </div>`;
         } else {
           clearInterval(interval);
+          const successMsg = isEnglish ? '✔ Speedtest completed successfully' : '✔ Speedtest завершен успешно';
+          const providerInfo = isEnglish ? 'Provider: Gigabit Fiber Optic • Server: Kyiv IXP Edge' : 'Провайдер: Gigabit Fiber Optic • Сервер: Kyiv IXP Edge';
+
           target.innerHTML = `
-            <div class="space-y-2 border border-emerald-500/20 p-2 rounded bg-emerald-950/10">
-              <div class="text-emerald-400 font-bold text-sm">✔ Speedtest завершен успешно</div>
+            <div class="space-y-2 border border-emerald-500/20 p-2.5 rounded bg-emerald-950/10">
+              <div class="text-emerald-400 font-bold text-sm">${successMsg}</div>
               <div class="grid grid-cols-3 gap-2 text-center text-xs">
                 <div class="p-2 rounded bg-white/5">
                   <div class="text-slate-400 text-[10px]">PING</div>
@@ -1407,11 +1898,93 @@
                   <div class="text-indigo-400 font-bold text-sm">914.1 Mbps</div>
                 </div>
               </div>
-              <div class="text-[11px] text-slate-400">Провайдер: Gigabit Fiber Optic • Сервер: Kyiv IXP Edge</div>
+              <div class="text-[11px] text-slate-400 font-mono">${providerInfo}</div>
             </div>`;
           tab.blocks[blockIdx].output = target.parentElement.innerHTML;
         }
       }, 700);
+    }
+
+    function openAiModalTab(tabName) {
+      const modal = document.getElementById('ai-model-modal');
+      const viewTutor = document.getElementById('ai-view-tutor');
+      const viewCatalog = document.getElementById('ai-view-catalog');
+      const tabTutor = document.getElementById('tab-btn-tutor');
+      const tabCatalog = document.getElementById('tab-btn-catalog');
+
+      if (!modal) return;
+      modal.classList.remove('hidden');
+
+      if (tabName === 'catalog') {
+        if (viewTutor) viewTutor.classList.add('hidden');
+        if (viewCatalog) viewCatalog.classList.remove('hidden');
+        if (tabTutor) {
+          tabTutor.classList.remove('border-purple-400', 'text-purple-300', 'font-bold');
+          tabTutor.classList.add('border-transparent', 'text-slate-400');
+        }
+        if (tabCatalog) {
+          tabCatalog.classList.remove('border-transparent', 'text-slate-400');
+          tabCatalog.classList.add('border-purple-400', 'text-purple-300', 'font-bold');
+        }
+      } else {
+        if (viewCatalog) viewCatalog.classList.add('hidden');
+        if (viewTutor) viewTutor.classList.remove('hidden');
+        if (tabCatalog) {
+          tabCatalog.classList.remove('border-purple-400', 'text-purple-300', 'font-bold');
+          tabCatalog.classList.add('border-transparent', 'text-slate-400');
+        }
+        if (tabTutor) {
+          tabTutor.classList.remove('border-transparent', 'text-slate-400');
+          tabTutor.classList.add('border-purple-400', 'text-purple-300', 'font-bold');
+        }
+      }
+    }
+
+    function checkOllamaLive() {
+      const badge = document.getElementById('ollama-live-status-badge');
+      if (badge) {
+        badge.textContent = 'Опрос службы...';
+        badge.className = 'px-2 py-0.5 rounded bg-amber-500/20 text-[11px] font-mono text-amber-300 border border-amber-500/30 animate-pulse';
+      }
+
+      // Check via fetch to local Ollama API
+      fetch('http://127.0.0.1:11434/api/tags', { mode: 'cors' })
+        .then(res => res.json())
+        .then(data => {
+          if (badge) {
+            badge.textContent = '✔ Ollama подключена!';
+            badge.className = 'px-2 py-0.5 rounded bg-emerald-500/20 text-[11px] font-mono text-emerald-300 border border-emerald-500/30';
+          }
+          appState.localAI.ollamaConnected = true;
+          showToast('Ollama успешно обнаружена!', 'success');
+        })
+        .catch(err => {
+          // If in standalone exe with Python bridge, test via bridge
+          if (window.pywebview && window.pywebview.api && window.pywebview.api.check_ollama_available) {
+            window.pywebview.api.check_ollama_available().then(res => {
+              if (res && res.active) {
+                if (badge) {
+                  badge.textContent = '✔ Ollama активна!';
+                  badge.className = 'px-2 py-0.5 rounded bg-emerald-500/20 text-[11px] font-mono text-emerald-300 border border-emerald-500/30';
+                }
+                appState.localAI.ollamaConnected = true;
+                showToast('Ollama успешно обнаружена через нативный мост!', 'success');
+              } else {
+                setOllamaOfflineBadge(badge);
+              }
+            });
+          } else {
+            setOllamaOfflineBadge(badge);
+          }
+        });
+    }
+
+    function setOllamaOfflineBadge(badge) {
+      if (badge) {
+        badge.textContent = 'Не запущена (127.0.0.1:11434)';
+        badge.className = 'px-2 py-0.5 rounded bg-slate-800 text-[11px] font-mono text-slate-400 border border-white/10';
+      }
+      showToast('Ollama не запущена. Установите её по шагу 1.', 'info');
     }
 
     // --- Local AI Engine & Model Management ---
@@ -1566,7 +2139,7 @@
       const nameEl = document.getElementById('modal-ai-status-text');
       const dotEl = document.getElementById('modal-ai-status-dot');
       const vramEl = document.getElementById('modal-ai-vram-badge');
-      const btnText = document.getElementById('btn-start-download-text');
+      // btnText removed
 
       if (nameEl && dotEl && vramEl) {
         if (appState.localAI.installed) {
@@ -1574,13 +2147,13 @@
           dotEl.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
           vramEl.textContent = 'VRAM: 420 MB (Active)';
           vramEl.className = 'px-2 py-1 rounded bg-emerald-500/20 border border-emerald-500/40 text-[11px] font-mono text-emerald-300';
-          if (btnText) btnText.textContent = 'Модель уже установлена';
+          
         } else {
           nameEl.textContent = 'Локальная нейросеть не скачана';
           dotEl.className = 'w-2 h-2 rounded-full bg-slate-500';
           vramEl.textContent = 'VRAM: 0 MB';
           vramEl.className = 'px-2 py-1 rounded bg-white/5 border border-white/10 text-[11px] font-mono text-slate-400';
-          if (btnText) btnText.textContent = `Скачать модель (${appState.localAI.sizeMB} MB)`;
+          
         }
       }
     }
@@ -1667,8 +2240,58 @@
 • <b>Посмотреть структуру каталогов в виде дерева:</b>
 В этом терминале просто введите команду <code class="text-purple-300 font-mono">tree</code>.`;
 
-      // 7. Скрипты, PowerShell, автоматизация
-      } else if (p.includes('скрипт') || p.includes('powershell') || p.includes('автоматизац') || p.includes('цикл') || p.includes('служба')) {
+      // 7. Программирование, написание кода, Python, JS, C
+      } else if (p.includes('код') || p.includes('напиши') || p.includes('программ') || p.includes('разработ') || p.includes('скрипт') || p.includes('powershell') || p.includes('python') || p.includes('пайтон') || p.includes('питон') || p.includes('javascript') || p.includes('автоматизац') || p.includes('цикл') || p.includes('функци') || p.includes('калькулятор')) {
+        
+        let codeSnippet = '';
+        let desc = '';
+
+        if (p.includes('калькулятор') || p.includes('calc')) {
+          desc = '<b>Пример консольного калькулятора на Python:</b>';
+          codeSnippet = `# simple_calc.py
+def calculate(a, b, op):
+    if op == '+': return a + b
+    if op == '-': return a - b
+    if op == '*': return a * b
+    if op == '/': return a / b if b != 0 else 'Ошибка: деление на 0'
+    return 'Неизвестный оператор'
+
+print("Калькулятор готов! Пример: 24 * 5 =", calculate(24, 5, '*'))`;
+        } else if (p.includes('powershell') || p.includes('служба')) {
+          desc = '<b>Автоматизация на PowerShell:</b>';
+          codeSnippet = `# Проверка статуса службы и перезапуск при сбое
+$serviceName = "wuauserv"
+$svc = Get-Service -Name $serviceName -ErrorAction SilentlyContinue
+
+if ($svc.Status -ne "Running") {
+    Write-Host "Служба $serviceName остановлена. Запуск..." -ForegroundColor Yellow
+    Start-Service -Name $serviceName
+} else {
+    Write-Host "Служба $serviceName активна и работает стабильно." -ForegroundColor Green
+}`;
+        } else {
+          desc = '<b>Пошаговый план написания программы и готовый шаблон:</b>\n' +
+                 '1. Выберите язык под задачу: <b>Python</b> (скрипты, данные, AI), <b>JavaScript/Node.js</b> (веб, приложения) или <b>C#/C++</b> (высокая производительность).\n' +
+                 '2. Создайте файл прямо в терминале: <code class="text-sky-300 font-mono">touch app.py</code>\n' +
+                 '3. Напишите базовую структуру программы:';
+          codeSnippet = `# app.py — Шаблон консольной программы на Python
+import sys
+import datetime
+
+def main():
+    user = "${escapeHtml(systemHardware.user)}"
+    print(f"[{datetime.datetime.now().strftime('%H:%M:%S')}] Привет, {user}!")
+    print("Программа успешно запущена в среде Windows Terminal Neo.")
+
+if __name__ == "__main__":
+    main()`;
+        }
+
+        answer = `${desc}
+<pre class="bg-black/60 p-3 rounded-lg text-emerald-300 border border-emerald-500/20 my-2 font-mono text-[11px] leading-relaxed select-all overflow-x-auto">${codeSnippet}</pre>
+<div class="text-[11px] text-slate-400 mt-1">
+  💡 <b>Как запустить прямо сейчас:</b> сохраните этот код в файл <code class="text-sky-300 font-mono">app.py</code> и выполните в терминале команду <code class="text-emerald-300 font-mono">python app.py</code>.
+</div>`;
         answer = `<b>Пример надежного PowerShell-скрипта:</b>
 
 <pre class="bg-black/50 p-2 rounded text-slate-200 border border-white/10 my-1 font-mono text-[11px] select-all"># Проверка статуса службы и перезапуск при сбое
@@ -1747,13 +2370,13 @@ if ($svc.Status -ne "Running") {
     function handleChangeDir(target, tab) {
       if (target === '..' || target === '../') {
         tab.cwd = '~/projects';
-        return `<span class="text-slate-400">Переход в:</span> <span class="text-sky-300">${tab.cwd}</span>`;
+        const isEn = appState.language === 'en'; return `<span class="text-slate-400">${isEn ? 'Changed directory to:' : 'Переход в:'}</span> <span class="text-sky-300">${tab.cwd}</span>`;
       } else if (target === '~' || target === '') {
         tab.cwd = '~/projects/nexus-core';
         return `<span class="text-slate-400">Переход в домашний каталог:</span> <span class="text-sky-300">${tab.cwd}</span>`;
       } else {
         tab.cwd = target.startsWith('~') ? target : `${tab.cwd}/${target}`;
-        return `<span class="text-slate-400">Переход в:</span> <span class="text-sky-300">${tab.cwd}</span>`;
+        const isEn = appState.language === 'en'; return `<span class="text-slate-400">${isEn ? 'Changed directory to:' : 'Переход в:'}</span> <span class="text-sky-300">${tab.cwd}</span>`;
       }
     }
 
@@ -1786,11 +2409,11 @@ if ($svc.Status -ne "Running") {
     }
 
     function handleTouchFile(name, cwd) {
-      return `<span class="text-emerald-400">✔ Файл создан:</span> <span class="text-sky-300">${escapeHtml(name)}</span> (0 байт)`;
+      const isEn = appState.language === 'en'; return `<span class="text-emerald-400">${isEn ? '✔ File created:' : '✔ Файл создан:'}</span> <span class="text-sky-300">${escapeHtml(name)}</span> (${isEn ? '0 bytes' : '0 байт'})`;
     }
 
     function handleMakeDir(name, cwd) {
-      return `<span class="text-emerald-400">✔ Директория создана:</span> <span class="text-sky-300">${escapeHtml(name)}/</span>`;
+      const isEn = appState.language === 'en'; return `<span class="text-emerald-400">${isEn ? '✔ Directory created:' : '✔ Директория создана:'}</span> <span class="text-sky-300">${escapeHtml(name)}/</span>`;
     }
 
     function handleCalculate(expr) {
@@ -1799,7 +2422,7 @@ if ($svc.Status -ne "Running") {
         // Safe math evaluation
         const sanitized = expr.replace(/[^0-9+\-*/(). %^]/g, '');
         const res = Function(`'use strict'; return (${sanitized})`)();
-        return `<span class="text-slate-400">Результат:</span> <span class="text-emerald-400 font-bold text-sm">${res}</span>`;
+        const isEn = appState.language === 'en'; return `<span class="text-slate-400">${isEn ? 'Result:' : 'Результат:'}</span> <span class="text-emerald-400 font-bold text-sm">${res}</span>`;
       } catch (e) {
         return `<span class="text-red-400">Ошибка вычисления: некорректное математическое выражение</span>`;
       }
@@ -1832,47 +2455,103 @@ if ($svc.Status -ne "Running") {
 
       overlay.classList.remove('hidden');
 
+      const isEn = appState.language === 'en';
+      const subLabel = document.getElementById('htop-sub-label');
+      const closeText = document.getElementById('htop-btn-close-text');
+      if (subLabel) subLabel.textContent = isEn ? '(Live update: 1.0s)' : '(Обновление в реальном времени: 1.0s)';
+      if (closeText) closeText.textContent = isEn ? 'Exit (q / Esc)' : 'Выйти (q / Esc)';
+
+      let cachedRealProcesses = [];
+
+      function fetchProcesses() {
+        if (window.pywebview && window.pywebview.api && window.pywebview.api.get_real_processes) {
+          window.pywebview.api.get_real_processes().then(procs => {
+            if (procs && procs.length > 0) cachedRealProcesses = procs;
+          }).catch(() => {});
+        }
+      }
+      fetchProcesses();
+
       function updateHtop() {
-        const cpu1 = Math.floor(15 + Math.random() * 30);
-        const cpu2 = Math.floor(10 + Math.random() * 45);
-        const cpu3 = Math.floor(20 + Math.random() * 25);
-        const cpu4 = Math.floor(8 + Math.random() * 30);
-        const ramUsed = (4.1 + Math.random() * 0.4).toFixed(1);
+        const isEnglish = appState.language === 'en';
+        const cpu0 = Math.floor(12 + Math.random() * 25);
+        const cpu1 = Math.floor(18 + Math.random() * 30);
+        const cpu2 = Math.floor(8 + Math.random() * 22);
+        const cpu3 = Math.floor(14 + Math.random() * 28);
+
+        // Real RAM from systemHardware
+        const totalRam = systemHardware.ram_total || '16.0';
+        const baseUsed = parseFloat(systemHardware.ram_used) || 8.5;
+        const currentUsed = (baseUsed + (Math.random() * 0.2 - 0.1)).toFixed(1);
+        const ramPercent = Math.min(100, Math.round((currentUsed / parseFloat(totalRam)) * 100)) || systemHardware.ram_percent || 55;
+
+        // Processes list (Real from Windows tasklist or realistic local system)
+        let procRows = '';
+        if (cachedRealProcesses.length > 0) {
+          procRows = cachedRealProcesses.slice(0, 7).map(p => {
+            return `<tr>
+              <td class="text-sky-300 py-1">${escapeHtml(p.pid)}</td>
+              <td>${escapeHtml(systemHardware.user || 'user')}</td>
+              <td class="text-emerald-400">${p.cpu || '1.2%'}</td>
+              <td>${escapeHtml(p.mem || '45 MB')}</td>
+              <td class="text-slate-400">1:04.2</td>
+              <td class="text-slate-200 font-bold">${escapeHtml(p.name)}</td>
+            </tr>`;
+          }).join('');
+        } else {
+          // Dynamic realistic processes on user machine
+          const sampleProcs = [
+            { pid: '1042', user: systemHardware.user || 'user', cpu: '2.4%', mem: '142 MB', time: '0:45.2', cmd: 'WindowsTerminalNeo.exe' },
+            { pid: '2180', user: systemHardware.user || 'user', cpu: '1.8%', mem: '210 MB', time: '1:12.4', cmd: 'explorer.exe' },
+            { pid: '3890', user: systemHardware.user || 'user', cpu: '1.1%', mem: '480 MB', time: '4:18.0', cmd: 'msedge.exe' },
+            { pid: '4512', user: 'system', cpu: '0.4%', mem: '85 MB', time: '12:04.1', cmd: 'svchost.exe' },
+            { pid: '5190', user: systemHardware.user || 'user', cpu: '0.6%', mem: '68 MB', time: '0:22.3', cmd: 'python.exe' },
+            { pid: '6820', user: systemHardware.user || 'user', cpu: '0.2%', mem: '340 MB', time: '2:15.0', cmd: 'Discord.exe' },
+            { pid: '7410', user: systemHardware.user || 'user', cpu: '0.1%', mem: '115 MB', time: '0:35.8', cmd: 'cmd.exe' }
+          ];
+          procRows = sampleProcs.map(p => `<tr>
+            <td class="text-sky-300 py-1">${p.pid}</td>
+            <td>${p.user}</td>
+            <td class="text-emerald-400">${p.cpu}</td>
+            <td>${p.mem}</td>
+            <td class="text-slate-400">${p.time}</td>
+            <td class="text-slate-200 font-bold">${p.cmd}</td>
+          </tr>`).join('');
+        }
 
         content.innerHTML = `
           <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3 border-b border-white/10 pb-3">
             <div class="space-y-1.5">
-              <div class="flex justify-between"><span>CPU [Core 0]:</span><span class="text-sky-400">${cpu1}%</span></div>
-              <div class="w-full bg-slate-800 h-2 rounded overflow-hidden"><div class="bg-sky-400 h-full" style="width: ${cpu1}%"></div></div>
-              <div class="flex justify-between"><span>CPU [Core 1]:</span><span class="text-emerald-400">${cpu2}%</span></div>
-              <div class="w-full bg-slate-800 h-2 rounded overflow-hidden"><div class="bg-emerald-400 h-full" style="width: ${cpu2}%"></div></div>
+              <div class="flex justify-between"><span>CPU [Core 0]:</span><span class="text-sky-400 font-bold">${cpu0}%</span></div>
+              <div class="w-full bg-slate-800 h-2 rounded overflow-hidden"><div class="bg-sky-400 h-full transition-all duration-300" style="width: ${cpu0}%"></div></div>
+              <div class="flex justify-between"><span>CPU [Core 1]:</span><span class="text-emerald-400 font-bold">${cpu1}%</span></div>
+              <div class="w-full bg-slate-800 h-2 rounded overflow-hidden"><div class="bg-emerald-400 h-full transition-all duration-300" style="width: ${cpu1}%"></div></div>
             </div>
             <div class="space-y-1.5">
-              <div class="flex justify-between"><span>CPU [Core 2]:</span><span class="text-indigo-400">${cpu3}%</span></div>
-              <div class="w-full bg-slate-800 h-2 rounded overflow-hidden"><div class="bg-indigo-400 h-full" style="width: ${cpu3}%"></div></div>
-              <div class="flex justify-between"><span>Память RAM:</span><span class="text-amber-400">${ramUsed} / 64.0 GB</span></div>
-              <div class="w-full bg-slate-800 h-2 rounded overflow-hidden"><div class="bg-amber-400 h-full" style="width: 7%"></div></div>
+              <div class="flex justify-between"><span>CPU [Core 2]:</span><span class="text-indigo-400 font-bold">${cpu2}%</span></div>
+              <div class="w-full bg-slate-800 h-2 rounded overflow-hidden"><div class="bg-indigo-400 h-full transition-all duration-300" style="width: ${cpu2}%"></div></div>
+              <div class="flex justify-between">
+                <span>${isEnglish ? 'Memory RAM:' : 'Память RAM:'}</span>
+                <span class="text-amber-400 font-bold">${currentUsed} / ${totalRam} GB (${ramPercent}%)</span>
+              </div>
+              <div class="w-full bg-slate-800 h-2 rounded overflow-hidden"><div class="bg-amber-400 h-full transition-all duration-300" style="width: ${ramPercent}%"></div></div>
             </div>
           </div>
 
           <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs">
+            <table class="w-full text-left text-xs font-mono">
               <thead class="text-slate-500 border-b border-white/5 pb-1">
                 <tr>
                   <th class="py-1">PID</th>
                   <th>USER</th>
                   <th>CPU%</th>
-                  <th>MEM%</th>
+                  <th>MEM</th>
                   <th>TIME+</th>
                   <th>COMMAND</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-white/[0.03]">
-                <tr><td class="text-sky-300 py-1">1042</td><td>neo</td><td class="text-emerald-400">2.1%</td><td>0.4%</td><td>1:14.2</td><td>WindowsTerminalNeo.exe</td></tr>
-                <tr><td class="text-sky-300 py-1">2180</td><td>neo</td><td class="text-emerald-400">1.4%</td><td>1.2%</td><td>0:42.5</td><td>node_server.exe</td></tr>
-                <tr><td class="text-sky-300 py-1">3491</td><td>neo</td><td class="text-emerald-400">0.8%</td><td>2.1%</td><td>4:18.0</td><td>pwsh_core.dll</td></tr>
-                <tr><td class="text-sky-300 py-1">4512</td><td>system</td><td class="text-emerald-400">0.3%</td><td>0.2%</td><td>12:04.1</td><td>wslhost.exe</td></tr>
-                <tr><td class="text-sky-300 py-1">5190</td><td>neo</td><td class="text-emerald-400">0.1%</td><td>0.6%</td><td>0:12.3</td><td>code.exe --subsystem</td></tr>
+                ${procRows}
               </tbody>
             </table>
           </div>
@@ -2094,6 +2773,7 @@ if ($svc.Status -ne "Running") {
     // --- Event Listeners Initialization ---
     window.addEventListener('DOMContentLoaded', () => {
       detectHardwareSpecs();
+      setAppLanguage('en');
       renderTabs();
       renderBlocks();
 
@@ -2218,20 +2898,51 @@ if ($svc.Status -ne "Running") {
         }
       });
 
-      // Local AI Modal Controls
+      // Local AI Modal Controls & Tab Switching
       const aiModal = document.getElementById('ai-model-modal');
-      const openAiBtn = document.getElementById('btn-open-ai-modal');
+      const tabBtnTutor = document.getElementById('tab-btn-tutor');
+      const tabBtnCatalog = document.getElementById('tab-btn-catalog');
+      const btnCheckOllamaLive = document.getElementById('btn-check-ollama-live');
+
+      if (tabBtnTutor) tabBtnTutor.addEventListener('click', () => openAiModalTab('tutor'));
+      if (tabBtnCatalog) tabBtnCatalog.addEventListener('click', () => openAiModalTab('catalog'));
+      if (btnCheckOllamaLive) btnCheckOllamaLive.addEventListener('click', checkOllamaLive);
+
+      // Copy code buttons in tutorial
+      document.querySelectorAll('.btn-copy-code').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const txt = btn.getAttribute('data-text');
+          if (txt) {
+            copyToClipboard(txt);
+            showToast('Команда скопирована в буфер', 'success');
+          }
+        });
+      });
+
+      // Insert command into terminal
+      document.querySelectorAll('.btn-insert-cmd').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const cmd = btn.getAttribute('data-cmd');
+          if (cmd) {
+            const input = document.getElementById('terminal-input');
+            if (input) {
+              input.value = cmd;
+              focusTerminalInput();
+            }
+            if (aiModal) aiModal.classList.add('hidden');
+            showToast('Команда вставлена в терминал', 'info');
+          }
+        });
+      });
+// chip-ai-tutor handled via .quick-chip delegation
+
+      // openAiBtn removed
       const closeAiBtn = document.getElementById('btn-close-ai-modal');
       const cancelAiBtn = document.getElementById('btn-cancel-ai-modal');
-      const startDlAiBtn = document.getElementById('btn-start-download-ai');
-      const checkOllamaBtn = document.getElementById('btn-check-ollama');
+      // startDlAiBtn removed
+      // checkOllamaBtn removed
 
-      if (openAiBtn) {
-        openAiBtn.addEventListener('click', () => {
-          updateAiModalStatus();
-          aiModal.classList.remove('hidden');
-        });
-      }
+
       if (closeAiBtn) closeAiBtn.addEventListener('click', () => aiModal.classList.add('hidden'));
       if (cancelAiBtn) cancelAiBtn.addEventListener('click', () => aiModal.classList.add('hidden'));
 
@@ -2257,57 +2968,36 @@ if ($svc.Status -ne "Running") {
             appState.localAI.modelName = 'DeepSeek R1 Distill (1.5B)';
             appState.localAI.sizeMB = 1100;
           }
-          const dlBtnText = document.getElementById('btn-start-download-text');
-          if (dlBtnText) dlBtnText.textContent = `Скачать модель (${appState.localAI.sizeMB} MB)`;
+          const activeCmd = document.getElementById('ai-active-cmd-text');
+          if (activeCmd) {
+            if (m === 'qwen') activeCmd.textContent = 'ollama run qwen2.5-coder:1.5b';
+            else if (m === 'llama') activeCmd.textContent = 'ollama run llama3.2:1b';
+            else if (m === 'deepseek') activeCmd.textContent = 'ollama run deepseek-r1:1.5b';
+          }
         });
       });
 
-      if (startDlAiBtn) {
-        startDlAiBtn.addEventListener('click', () => {
-          const progressBox = document.getElementById('ai-download-progress-box');
-          const progressBar = document.getElementById('ai-download-bar');
-          const percentLabel = document.getElementById('ai-download-percent');
-          const sizeLabel = document.getElementById('ai-download-size');
-          const statusLabel = document.getElementById('ai-download-status-label');
+      const btnCopyActiveCmd = document.getElementById('btn-copy-active-cmd');
+      const btnRunActiveCmd = document.getElementById('btn-run-active-cmd');
+      const activeCmdCode = document.getElementById('ai-active-cmd-text');
 
-          progressBox.classList.remove('hidden');
-          startDlAiBtn.disabled = true;
-
-          let p = 0;
-          const interval = setInterval(() => {
-            p += 20;
-            if (p <= 100) {
-              progressBar.style.width = p + '%';
-              percentLabel.textContent = p + '%';
-              const curMB = Math.round((p / 100) * appState.localAI.sizeMB);
-              sizeLabel.textContent = `${curMB} / ${appState.localAI.sizeMB} MB`;
-            } else {
-              clearInterval(interval);
-              appState.localAI.installed = true;
-              statusLabel.innerHTML = '✔ Модель успешно скачана и сохранена в кэш!';
-              statusLabel.className = 'text-emerald-400 font-bold';
-              startDlAiBtn.disabled = false;
-              updateAiModalStatus();
-              showToast(`Локальная модель ${appState.localAI.modelName} установлена!`, 'success');
-              setTimeout(() => {
-                aiModal.classList.add('hidden');
-                progressBox.classList.add('hidden');
-              }, 1200);
-            }
-          }, 400);
+      if (btnCopyActiveCmd && activeCmdCode) {
+        btnCopyActiveCmd.addEventListener('click', () => {
+          copyToClipboard(activeCmdCode.textContent.trim());
+          showToast('Команда скопирована в буфер', 'success');
         });
       }
 
-      if (checkOllamaBtn) {
-        checkOllamaBtn.addEventListener('click', () => {
-          checkOllamaBtn.textContent = 'Проверка...';
-          setTimeout(() => {
-            checkOllamaBtn.textContent = 'Ollama готов (127.0.0.1)';
-            checkOllamaBtn.className = 'px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 text-xs font-mono border border-emerald-500/40';
-            showToast('Обнаружена локальная служба Ollama!', 'success');
-          }, 600);
+      if (btnRunActiveCmd && activeCmdCode) {
+        btnRunActiveCmd.addEventListener('click', () => {
+          const cmd = activeCmdCode.textContent.trim();
+          if (aiModal) aiModal.classList.add('hidden');
+          executeCommand(cmd);
+          showToast('Команда запущена в терминале!', 'info');
         });
       }
+
+      // Ollama check listener is handled above via btnCheckOllamaLive
 
       // Tool buttons
       document.getElementById('btn-quick-palette').addEventListener('click', openCommandPalette);
@@ -2318,6 +3008,14 @@ if ($svc.Status -ne "Running") {
 
       document.getElementById('btn-toggle-sound').addEventListener('click', () => toggleSound());
       
+      const btnLangToggle = document.getElementById('btn-lang-toggle');
+      if (btnLangToggle) {
+        btnLangToggle.addEventListener('click', () => {
+          const nextLang = appState.language === 'ru' ? 'en' : 'ru';
+          setAppLanguage(nextLang);
+        });
+      }
+
       document.getElementById('btn-theme-switcher').addEventListener('click', () => {
         const themes = ['default', 'tokyo', 'dracula', 'cyberpunk', 'matrix'];
         const currentIdx = themes.indexOf(appState.currentTheme);
@@ -2337,6 +3035,12 @@ if ($svc.Status -ne "Running") {
         settingsModal.classList.add('hidden');
         showToast('Настройки сохранены', 'success');
       });
+
+      // Settings Modal Language Selection
+      const btnSetRu = document.getElementById('btn-set-lang-ru');
+      const btnSetEn = document.getElementById('btn-set-lang-en');
+      if (btnSetRu) btnSetRu.addEventListener('click', () => setAppLanguage('ru'));
+      if (btnSetEn) btnSetEn.addEventListener('click', () => setAppLanguage('en'));
 
       document.querySelectorAll('.theme-choice-btn').forEach(btn => {
         btn.addEventListener('click', () => {
