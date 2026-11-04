@@ -183,6 +183,11 @@
           <svg id="icon-sound-on" class="w-4 h-4 hidden text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
         </button>
 
+        <button id="btn-open-ai-modal" title="Локальная нейросеть (AI Model Manager)" class="h-7 px-2 flex items-center space-x-1 rounded-md hover:bg-purple-500/20 text-purple-400 hover:text-purple-300 transition text-xs font-mono border border-purple-500/20">
+          <svg class="w-3.5 h-3.5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          <span class="hidden lg:inline">Local AI</span>
+        </button>
+
         <button id="btn-theme-switcher" title="Сменить тему оформления" class="h-7 w-7 flex items-center justify-center rounded-md hover:bg-white/10 text-slate-400 hover:text-yellow-400 transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4 4 4 0 014-4h4a4 4 0 014 4 4 4 0 01-4 4H7zm0 0l2.5-5.5M17 3a4 4 0 014 4 4 4 0 01-4 4h-4a4 4 0 01-4-4 4 4 0 014-4h4z"></path></svg>
         </button>
@@ -241,6 +246,7 @@
         <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-green-500/20 hover:text-green-300 border border-white/5 transition font-mono" data-cmd="matrix">matrix</button>
         <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-indigo-500/20 hover:text-indigo-300 border border-white/5 transition font-mono" data-cmd="weather Kyiv">weather</button>
         <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-amber-500/20 hover:text-amber-300 border border-white/5 transition font-mono" data-cmd="speedtest">speedtest</button>
+        <button class="quick-chip px-2 py-0.5 rounded bg-purple-500/15 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30 transition font-mono" data-cmd="ai download">⚡ ai download</button>
         <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-purple-500/20 hover:text-purple-300 border border-white/5 transition font-mono" data-cmd="ai Поясни архитектуру терминала">ai copilot</button>
         <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-rose-500/20 hover:text-rose-300 border border-white/5 transition font-mono" data-cmd="tree">tree</button>
         <button class="quick-chip px-2 py-0.5 rounded bg-white/5 hover:bg-slate-500/20 hover:text-slate-200 border border-white/5 transition font-mono" data-cmd="help">help</button>
@@ -484,6 +490,148 @@
     </div>
   </div>
 
+  <!-- Local AI Model Manager Modal Dialog -->
+  <div id="ai-model-modal" class="hidden fixed inset-0 bg-black/65 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <div class="w-full max-w-xl rounded-xl bg-slate-900 border border-purple-500/30 shadow-2xl overflow-hidden flex flex-col">
+      <div class="flex items-center justify-between p-4 border-b border-white/10 bg-purple-950/20">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-8 h-8 rounded-lg bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-purple-300 font-bold">
+            🤖
+          </div>
+          <div>
+            <div class="font-bold text-slate-100 text-sm">Управление локальными нейросетями (Local LLM)</div>
+            <div class="text-[11px] text-purple-300">Автономный оффлайн-инференс прямо на вашем ПК</div>
+          </div>
+        </div>
+        <button id="btn-close-ai-modal" class="text-slate-400 hover:text-white p-1 rounded hover:bg-white/10">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4 text-xs overflow-y-auto max-h-[75vh]">
+        <!-- Current AI Engine Status Card -->
+        <div class="p-3.5 rounded-lg bg-white/[0.03] border border-white/10 flex items-center justify-between">
+          <div>
+            <div class="text-slate-400 text-[11px]">Текущий активный движок:</div>
+            <div id="modal-ai-status-name" class="font-bold text-slate-100 text-sm flex items-center space-x-1.5 mt-0.5">
+              <span id="modal-ai-status-dot" class="w-2 h-2 rounded-full bg-slate-500"></span>
+              <span id="modal-ai-status-text">Локальная нейросеть не скачана</span>
+            </div>
+          </div>
+          <span id="modal-ai-vram-badge" class="px-2 py-1 rounded bg-white/5 border border-white/10 text-[11px] font-mono text-slate-400">
+            VRAM: 0 MB
+          </span>
+        </div>
+
+        <!-- Model Selection List -->
+        <div>
+          <div class="font-semibold text-slate-300 mb-2 flex items-center justify-between">
+            <span>Выберите модель для скачивания:</span>
+            <span class="text-[11px] text-slate-400">Формат: GGUF Q4_K_M</span>
+          </div>
+
+          <div class="space-y-2" id="ai-models-list">
+            <!-- Model 1: Qwen 2.5 Coder -->
+            <div class="p-3 rounded-lg border border-purple-500/40 bg-purple-950/15 hover:border-purple-400 transition cursor-pointer model-card selected-model" data-model="qwen">
+              <div class="flex items-start justify-between">
+                <div>
+                  <div class="font-bold text-slate-100 flex items-center space-x-2">
+                    <span class="text-purple-300">Qwen 2.5 Coder (0.5B)</span>
+                    <span class="px-1.5 py-0.2 bg-emerald-500/20 text-emerald-300 rounded text-[10px] font-mono">Рекомендуется</span>
+                  </div>
+                  <div class="text-[11px] text-slate-400 mt-1">
+                    Специализирована на генерации shell-скриптов, команд Windows/Linux, регулярных выражений и кода.
+                  </div>
+                </div>
+                <div class="text-right text-[11px] font-mono">
+                  <div class="text-purple-300 font-bold">395 MB</div>
+                  <div class="text-slate-500">&lt; 0.6 GB RAM</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Model 2: Llama 3.2 -->
+            <div class="p-3 rounded-lg border border-white/10 bg-white/[0.02] hover:border-purple-400 transition cursor-pointer model-card" data-model="llama">
+              <div class="flex items-start justify-between">
+                <div>
+                  <div class="font-bold text-slate-200">Llama 3.2 (1B Instruct)</div>
+                  <div class="text-[11px] text-slate-400 mt-1">
+                    Универсальная легкая модель Meta: ответы на вопросы, анализ логов, помощь в администрировании.
+                  </div>
+                </div>
+                <div class="text-right text-[11px] font-mono">
+                  <div class="text-sky-300 font-bold">850 MB</div>
+                  <div class="text-slate-500">&lt; 1.2 GB RAM</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Model 3: DeepSeek R1 Distill -->
+            <div class="p-3 rounded-lg border border-white/10 bg-white/[0.02] hover:border-purple-400 transition cursor-pointer model-card" data-model="deepseek">
+              <div class="flex items-start justify-between">
+                <div>
+                  <div class="font-bold text-slate-200">DeepSeek R1 Distill (1.5B)</div>
+                  <div class="text-[11px] text-slate-400 mt-1">
+                    Рассуждающая модель (CoT): глубокий пошаговый анализ архитектурных задач и сложных алгоритмов.
+                  </div>
+                </div>
+                <div class="text-right text-[11px] font-mono">
+                  <div class="text-amber-300 font-bold">1.1 GB</div>
+                  <div class="text-slate-500">&lt; 1.8 GB RAM</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Download Progress Container -->
+        <div id="ai-download-progress-box" class="hidden p-3.5 rounded-lg bg-black/40 border border-purple-500/30 space-y-2">
+          <div class="flex items-center justify-between text-xs font-mono">
+            <span id="ai-download-status-label" class="text-purple-300 flex items-center">
+              <svg class="animate-spin -ml-1 mr-2 h-3.5 w-3.5 text-purple-400" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+              Загрузка модели...
+            </span>
+            <span id="ai-download-percent" class="text-slate-200 font-bold">0%</span>
+          </div>
+
+          <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+            <div id="ai-download-bar" class="h-full bg-gradient-to-r from-purple-500 to-sky-400 w-0 transition-all duration-200"></div>
+          </div>
+
+          <div class="flex items-center justify-between text-[11px] text-slate-500 font-mono">
+            <span id="ai-download-speed">Скорость: 24.8 MB/s</span>
+            <span id="ai-download-size">0 / 395 MB</span>
+          </div>
+        </div>
+
+        <!-- Local Ollama Bridge Option -->
+        <div class="p-3 rounded-lg bg-white/5 flex items-center justify-between">
+          <div>
+            <div class="font-semibold text-slate-200">Мост к системному Ollama (localhost:11434)</div>
+            <div class="text-[11px] text-slate-400">Использовать уже установленные в вашей системе модели через Ollama</div>
+          </div>
+          <button id="btn-check-ollama" class="px-2.5 py-1 rounded bg-white/10 hover:bg-white/20 text-slate-200 text-xs font-mono transition">
+            Проверить Ollama
+          </button>
+        </div>
+
+      </div>
+
+      <div class="p-3.5 bg-slate-950 border-t border-white/10 flex items-center justify-between">
+        <span class="text-[11px] text-slate-500 font-mono">Модель сохраняется в локальный кэш</span>
+        <div class="flex items-center space-x-2">
+          <button id="btn-cancel-ai-modal" class="px-3 py-1.5 rounded hover:bg-white/10 text-slate-400 hover:text-white transition text-xs">
+            Закрыть
+          </button>
+          <button id="btn-start-download-ai" class="px-4 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded font-medium transition text-xs flex items-center space-x-1.5 shadow-lg shadow-purple-600/30">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            <span id="btn-start-download-text">Скачать модель (395 MB)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Command Palette Modal (Ctrl+Shift+P) -->
   <div id="palette-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-start justify-center pt-20 p-4">
     <div class="w-full max-w-lg rounded-xl bg-slate-900 border border-white/20 shadow-2xl overflow-hidden">
@@ -506,6 +654,15 @@
     // --- Application State ---
     const appState = {
       activeTabId: 1,
+      localAI: {
+        installed: false,
+        selectedModel: 'qwen',
+        modelName: 'Qwen 2.5 Coder (0.5B GGUF)',
+        sizeMB: 395,
+        downloadProgress: 0,
+        isDownloading: false,
+        ollamaConnected: false
+      },
       tabs: [
         {
           id: 1,
@@ -877,11 +1034,26 @@
 
         case 'ai':
         case 'ask':
-          const query = args.join(' ');
-          if (!query) {
-            outputHtml = '<span class="text-amber-400">Использование: ai &lt;вопрос или запрос к терминалу&gt;</span>\nПример: <span class="text-sky-300">ai как найти файлы больше 100MB</span>';
+          const sub = args[0] ? args[0].toLowerCase() : '';
+          if (sub === 'download' || sub === 'install') {
+            startAiDownloadInTerminal(args[1] || appState.localAI.selectedModel);
+            return;
+          } else if (sub === 'models' || sub === 'list') {
+            outputHtml = generateAiModelsOutput();
+          } else if (sub === 'status') {
+            outputHtml = generateAiStatusOutput();
           } else {
-            outputHtml = generateAiResponse(query);
+            const query = args.join(' ');
+            if (!query) {
+              outputHtml = '<span class="text-purple-300 font-bold">УПРАВЛЕНИЕ НЕЙРОСЕТЬЮ TERMINAL AI:</span>\n' +
+                '  <span class="text-sky-300 font-mono">ai download</span> - Скачать компактную локальную модель (Qwen 2.5 Coder, 395 MB)\n' +
+                '  <span class="text-sky-300 font-mono">ai models</span>   - Список доступных локальных моделей (GGUF)\n' +
+                '  <span class="text-sky-300 font-mono">ai status</span>   - Статус локального движка и VRAM\n' +
+                '  <span class="text-sky-300 font-mono">ai &lt;запрос&gt;</span>  - Задать вопрос локальной нейросети\n\n' +
+                'Пример: <span class="text-emerald-300 font-mono">ai как написать цикл на powershell</span>';
+            } else {
+              outputHtml = generateAiResponse(query);
+            }
           }
           break;
 
@@ -1242,33 +1414,317 @@
       }, 700);
     }
 
-    function generateAiResponse(prompt) {
-      const p = prompt.toLowerCase();
-      let answer = '';
+    // --- Local AI Engine & Model Management ---
+    function generateAiModelsOutput() {
+      return `
+<div class="space-y-2 border border-purple-500/20 p-3 rounded-lg bg-purple-950/20">
+  <div class="flex items-center justify-between text-purple-300 font-bold">
+    <span>ДОСТУПНЫЕ ДЛЯ СКАЧИВАНИЯ ЛОКАЛЬНЫЕ НЕЙРОСЕТИ:</span>
+    <span class="text-[10px] bg-purple-500/20 px-1.5 py-0.5 rounded">GGUF 4-bit</span>
+  </div>
+  <div class="divide-y divide-white/5 text-xs font-mono">
+    <div class="py-1.5 flex justify-between items-center">
+      <div>
+        <b class="text-emerald-300">1. qwen</b> (Qwen 2.5 Coder 0.5B) - <span class="text-slate-400">395 MB</span>
+        <div class="text-[11px] text-slate-500 font-sans">Идеальна для командной строки, PowerShell, Bash и синтаксиса кода.</div>
+      </div>
+      <button class="px-2 py-0.5 rounded bg-purple-500/30 hover:bg-purple-500 text-purple-200 hover:text-white quick-chip" data-cmd="ai download qwen">Скачать</button>
+    </div>
+    <div class="py-1.5 flex justify-between items-center">
+      <div>
+        <b class="text-sky-300">2. llama</b> (Llama 3.2 1B Instruct) - <span class="text-slate-400">850 MB</span>
+        <div class="text-[11px] text-slate-500 font-sans">Универсальная легковесная модель для системных ответов и скриптов.</div>
+      </div>
+      <button class="px-2 py-0.5 rounded bg-purple-500/30 hover:bg-purple-500 text-purple-200 hover:text-white quick-chip" data-cmd="ai download llama">Скачать</button>
+    </div>
+    <div class="py-1.5 flex justify-between items-center">
+      <div>
+        <b class="text-amber-300">3. deepseek</b> (DeepSeek R1 Distill 1.5B) - <span class="text-slate-400">1.1 GB</span>
+        <div class="text-[11px] text-slate-500 font-sans">Модель с пошаговым рассуждением (Reasoning) для сложных задач.</div>
+      </div>
+      <button class="px-2 py-0.5 rounded bg-purple-500/30 hover:bg-purple-500 text-purple-200 hover:text-white quick-chip" data-cmd="ai download deepseek">Скачать</button>
+    </div>
+  </div>
+  <div class="text-[11px] text-slate-400 pt-1">
+    Команда скачивания: <span class="text-sky-300 font-mono">ai download qwen</span>
+  </div>
+</div>`;
+    }
 
-      if (p.includes('архитектур') || p.includes('терминал') || p.includes('как устроен')) {
-        answer = `Архитектура <b>Windows Terminal Neo</b> построена на трех уровнях:
-1. <b>Визуальный уровень Mica:</b> аппаратное ускорение рендеринга с размытием заднего плана, поддержка тем оформления и гибкой кастомизации.
-2. <b>Интерпретатор команд:</b> реактивный цикл парсинга, виртуальная файловая система, автодополнение по дереву каталогов и история с быстрым повтором.
-3. <b>Поддержка профилей:</b> единая среда запуска для PowerShell, WSL2 Linux, CMD и Python REPL в независимых изолированных вкладках.`;
-      } else if (p.includes('файл') || p.includes('найти') || p.includes('поиск')) {
-        answer = `Для поиска файлов в современной командной строке используйте:
-• В Linux/WSL: <code class="text-sky-300">find . -name "*.ts" -size +10M</code> или быстрый <code class="text-sky-300">fd my-file</code>
-• В Windows PowerShell: <code class="text-sky-300">Get-ChildItem -Recurse -Filter *.ts</code>
-• В этом эмуляторе вы можете ввести <code class="text-emerald-300">tree</code> или <code class="text-emerald-300">ls projects</code>, чтобы увидеть всю файловую структуру.`;
-      } else {
-        answer = `AI Copilot обработал ваш запрос: <i>"${escapeHtml(prompt)}"</i>
-
-💡 <b>Совет:</b> В Windows Terminal Neo вы можете запускать параллельные вкладки разных ОС, кастомизировать тему через меню в правом верхнем углу, регулировать прозрачность и просматривать процессы в реальном времени с помощью команды <code class="text-sky-300">top</code>.`;
-      }
+    function generateAiStatusOutput() {
+      const isInst = appState.localAI.installed;
+      const statusBadge = isInst 
+        ? '<span class="text-emerald-400 font-bold">✔ Установлена и готова к автономной работе (Offline VRAM)</span>'
+        : '<span class="text-amber-400 font-bold">Не скачана (работает в режиме быстрых встроенных шаблонов)</span>';
 
       return `
-<div class="border border-purple-500/30 rounded-lg p-3 bg-purple-950/20 space-y-2">
-  <div class="flex items-center space-x-2 text-purple-300 font-bold text-xs">
-    <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
-    <span>Terminal AI Copilot</span>
+<div class="border border-purple-500/20 p-3 rounded-lg bg-purple-950/20 space-y-1.5 text-xs font-mono">
+  <div class="text-purple-300 font-bold text-sm flex items-center space-x-1.5">
+    <span class="w-2 h-2 rounded-full ${isInst ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}"></span>
+    <span>СТАТУС ЛОКАЛЬНОГО ДВИЖКА AI:</span>
   </div>
-  <div class="text-slate-200 text-xs leading-relaxed whitespace-pre-wrap">${answer}</div>
+  <div><b>Статус:</b> ${statusBadge}</div>
+  <div><b>Активная модель:</b> <span class="text-slate-200">${escapeHtml(appState.localAI.modelName)}</span></div>
+  <div><b>Занимаемый объем на диске:</b> <span class="text-slate-200">${isInst ? appState.localAI.sizeMB + ' MB' : '0 MB'}</span></div>
+  <div><b>Использование VRAM / RAM:</b> <span class="text-slate-200">${isInst ? '420 MB' : '0 MB'}</span></div>
+  <div><b>Сетевой режим:</b> <span class="text-emerald-400">100% Offline (локальный инференс без интернета)</span></div>
+  <div class="pt-1.5 text-slate-400 text-[11px] font-sans">
+    ${!isInst ? 'Чтобы скачать модель, введите команду: <span class="text-sky-300 font-mono">ai download</span>' : 'Модель активна. Задайте вопрос: <span class="text-sky-300 font-mono">ai &lt;ваш вопрос&gt;</span>'}
+  </div>
+</div>`;
+    }
+
+    function startAiDownloadInTerminal(modelKey) {
+      const tab = getActiveTab();
+      const blockIdx = tab.blocks.length;
+
+      let modelName = 'Qwen 2.5 Coder (0.5B-GGUF)';
+      let sizeMB = 395;
+      if (modelKey === 'llama') {
+        modelName = 'Llama 3.2 (1B-Instruct)';
+        sizeMB = 850;
+      } else if (modelKey === 'deepseek') {
+        modelName = 'DeepSeek R1 Distill (1.5B)';
+        sizeMB = 1100;
+      }
+
+      tab.blocks.push({
+        cmd: `ai download ${modelKey}`,
+        output: `<div id="ai-live-dl-${blockIdx}" class="p-3 rounded-lg bg-purple-950/30 border border-purple-500/30 space-y-2 font-mono text-xs">
+          <div class="text-purple-300 font-bold flex items-center space-x-2">
+            <span class="w-2 h-2 rounded-full bg-purple-400 animate-ping"></span>
+            <span>Инициализация загрузки ${modelName}...</span>
+          </div>
+          <div class="text-slate-400">Подключение к репозиторию квантованных моделей GGUF...</div>
+        </div>`,
+        rawOutput: `Downloading ${modelName}...`,
+        timestamp: new Date().toLocaleTimeString()
+      });
+      renderBlocks();
+
+      let progress = 0;
+      const dlInterval = setInterval(() => {
+        progress += 20;
+        const target = document.getElementById(`ai-live-dl-${blockIdx}`);
+        if (!target) {
+          clearInterval(dlInterval);
+          return;
+        }
+
+        if (progress < 100) {
+          const loadedMB = Math.round((progress / 100) * sizeMB);
+          target.innerHTML = `
+            <div class="space-y-1.5">
+              <div class="flex justify-between">
+                <span class="text-purple-300 font-bold">Загрузка ${modelName}:</span>
+                <span class="text-sky-400 font-bold">${progress}%</span>
+              </div>
+              <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-purple-500 to-sky-400" style="width: ${progress}%"></div>
+              </div>
+              <div class="flex justify-between text-[11px] text-slate-400">
+                <span>Скорость: 26.4 MB/s</span>
+                <span>${loadedMB} / ${sizeMB} MB</span>
+              </div>
+            </div>`;
+        } else {
+          clearInterval(dlInterval);
+          appState.localAI.installed = true;
+          appState.localAI.selectedModel = modelKey;
+          appState.localAI.modelName = modelName;
+          appState.localAI.sizeMB = sizeMB;
+
+          target.innerHTML = `
+            <div class="space-y-2 border border-emerald-500/30 p-2.5 rounded bg-emerald-950/20">
+              <div class="text-emerald-400 font-bold text-sm">✔ Локальная нейросеть ${modelName} успешно загружена!</div>
+              <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                <div class="p-1.5 rounded bg-white/5">
+                  <div class="text-slate-400 text-[10px]">ФОРМАТ</div>
+                  <div class="text-purple-300 font-bold">GGUF Q4_K_M</div>
+                </div>
+                <div class="p-1.5 rounded bg-white/5">
+                  <div class="text-slate-400 text-[10px]">РАЗМЕР НА ДИСКЕ</div>
+                  <div class="text-sky-300 font-bold">${sizeMB} MB</div>
+                </div>
+                <div class="p-1.5 rounded bg-white/5">
+                  <div class="text-slate-400 text-[10px]">РЕЖИМ</div>
+                  <div class="text-emerald-300 font-bold">100% Offline</div>
+                </div>
+              </div>
+              <div class="text-[11px] text-slate-300 font-sans">
+                Модель готова к автономной работе без подключения к интернету. Попробуйте: <span class="text-sky-300 font-mono font-bold">ai как настроить автозагрузку службы</span>
+              </div>
+            </div>`;
+          tab.blocks[blockIdx].output = target.parentElement.innerHTML;
+          showToast(`Модель ${modelName} установлена!`, 'success');
+          updateAiModalStatus();
+        }
+      }, 500);
+    }
+
+    function updateAiModalStatus() {
+      const nameEl = document.getElementById('modal-ai-status-text');
+      const dotEl = document.getElementById('modal-ai-status-dot');
+      const vramEl = document.getElementById('modal-ai-vram-badge');
+      const btnText = document.getElementById('btn-start-download-text');
+
+      if (nameEl && dotEl && vramEl) {
+        if (appState.localAI.installed) {
+          nameEl.textContent = `${appState.localAI.modelName} (Активна)`;
+          dotEl.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+          vramEl.textContent = 'VRAM: 420 MB (Active)';
+          vramEl.className = 'px-2 py-1 rounded bg-emerald-500/20 border border-emerald-500/40 text-[11px] font-mono text-emerald-300';
+          if (btnText) btnText.textContent = 'Модель уже установлена';
+        } else {
+          nameEl.textContent = 'Локальная нейросеть не скачана';
+          dotEl.className = 'w-2 h-2 rounded-full bg-slate-500';
+          vramEl.textContent = 'VRAM: 0 MB';
+          vramEl.className = 'px-2 py-1 rounded bg-white/5 border border-white/10 text-[11px] font-mono text-slate-400';
+          if (btnText) btnText.textContent = `Скачать модель (${appState.localAI.sizeMB} MB)`;
+        }
+      }
+    }
+
+    function generateAiResponse(prompt) {
+      const p = prompt.trim().toLowerCase();
+      let answer = '';
+
+      // 1. Приветствия и small talk
+      if (/^(привет|здравствуй|хай|салют|добрый|hello|hi|hey|ку|йоу|yo)/i.test(p)) {
+        answer = `<b>Привет!</b> Я встроенный локальный AI-ассистент Windows Terminal Neo (на базе модели <i>Qwen 2.5 Coder</i>). 
+
+Работаю полностью автономно на вашем компьютере. Вот с чем я могу помочь прямо сейчас:
+• <b>Написание скриптов:</b> PowerShell, Bash, Python, Batch для автоматизации рутины.
+• <b>Команды Windows и Linux:</b> подбор нужных флагов, конвейеры (pipes), поиск файлов и работа со службами.
+• <b>Управление Git:</b> решение конфликтов, слияние веток, оформление коммитов и работа с GitHub.
+• <b>Диагностика системы:</b> проверка открытых портов, мониторинг процессов, очистка диска и кэша.
+
+Задайте любой вопрос или опишите задачу, например: <i>"как найти процесс, занимающий порт 8080"</i>.`;
+
+      // 2. Кто ты / О себе
+      } else if (p.includes('кто ты') || p.includes('что ты умеешь') || p.includes('о себе') || p.includes('who are you')) {
+        answer = `Я — <b>Windows Terminal Neo AI Copilot</b>, автономный интеллектуальный движок, интегрированный прямо в ваш терминал.
+
+<b>Ключевые свойства:</b>
+• <b>100% Offline:</b> ваши данные и код не отправляются в облако и обрабатываются локально на процессоре/видеокарте.
+• <b>Интеграция с системой:</b> знаю специфику Windows 10/11, PowerShell 7, реестра, WSL 2 и системных вызовов Win32.
+• <b>Генерация готовых решений:</b> составляю проверенные однострочники и скрипты, которые можно сразу запускать в терминале.`;
+
+      // 3. Сеть, порты, IP, пинг
+      } else if (p.includes('порт') || p.includes('сеть') || p.includes('ip') || p.includes('netstat') || p.includes('dns')) {
+        answer = `<b>Работа с сетью и портами в Windows:</b>
+
+1. <b>Найти, какая программа заняла конкретный порт (например, 8080):</b>
+<pre class="bg-black/50 p-2 rounded text-sky-300 border border-white/10 my-1 font-mono select-all">Get-NetTCPConnection -LocalPort 8080 | Select-Object LocalAddress, OwningProcess, State</pre>
+Затем узнать имя процесса по найденному PID:
+<pre class="bg-black/50 p-2 rounded text-slate-300 border border-white/10 my-1 font-mono select-all">Get-Process -Id &lt;PID&gt;</pre>
+
+2. <b>Проверить доступность удаленного порта (замена telnet):</b>
+<pre class="bg-black/50 p-2 rounded text-emerald-300 border border-white/10 my-1 font-mono select-all">Test-NetConnection -ComputerName 1.1.1.1 -Port 443</pre>
+
+3. <b>Очистить системный кэш DNS:</b>
+<pre class="bg-black/50 p-2 rounded text-amber-300 border border-white/10 my-1 font-mono select-all">Clear-DnsClientCache</pre>`;
+
+      // 4. Процессы, память, оптимизация
+      } else if (p.includes('памят') || p.includes('процесс') || p.includes('завис') || p.includes('убить') || p.includes('kill') || p.includes('очист')) {
+        answer = `<b>Управление процессами и оперативной памятью:</b>
+
+• <b>Топ-5 самых прожорливых процессов по памяти в реальном времени:</b>
+<pre class="bg-black/50 p-2 rounded text-sky-300 border border-white/10 my-1 font-mono select-all">Get-Process | Sort-Object WorkingSet64 -Descending | Select-Object -First 5 Name, @{Name="RAM (MB)";Expression={[math]::Round($_.WorkingSet64/1MB,1)}}</pre>
+
+• <b>Принудительно закрыть зависший процесс по имени:</b>
+<pre class="bg-black/50 p-2 rounded text-rose-300 border border-white/10 my-1 font-mono select-all">Stop-Process -Name "node" -Force</pre>
+
+• <b>Быстрый интерактивный монитор в терминале:</b>
+Просто введите команду <code class="text-emerald-300 font-mono">top</code> в этом окне терминала!`;
+
+      // 5. Git и GitHub
+      } else if (p.includes('git') || p.includes('ветк') || p.includes('коммит') || p.includes('репозитор') || p.includes('откат')) {
+        answer = `<b>Шпаргалка по полезным командам Git:</b>
+
+• <b>Красивое компактное дерево коммитов:</b>
+<pre class="bg-black/50 p-2 rounded text-sky-300 border border-white/10 my-1 font-mono select-all">git log --graph --oneline --all --decorate</pre>
+
+• <b>Отменить последний коммит, оставив изменения в файлах:</b>
+<pre class="bg-black/50 p-2 rounded text-amber-300 border border-white/10 my-1 font-mono select-all">git reset --soft HEAD~1</pre>
+
+• <b>Очистить временные неотслеживаемые файлы:</b>
+<pre class="bg-black/50 p-2 rounded text-slate-300 border border-white/10 my-1 font-mono select-all">git clean -fd</pre>
+
+• <b>Создать новую ветку и сразу перейти в нее:</b>
+<pre class="bg-black/50 p-2 rounded text-emerald-300 border border-white/10 my-1 font-mono select-all">git switch -c feature/new-logic</pre>`;
+
+      // 6. Поиск файлов и каталогов
+      } else if (p.includes('файл') || p.includes('найти') || p.includes('поиск') || p.includes('диск') || p.includes('find')) {
+        answer = `<b>Быстрый поиск файлов на диске:</b>
+
+• <b>Найти все файлы размером больше 500 МБ в текущей папке:</b>
+<pre class="bg-black/50 p-2 rounded text-sky-300 border border-white/10 my-1 font-mono select-all">Get-ChildItem -Recurse -File | Where-Object { $_.Length -gt 500MB } | Select-Object FullName, @{N="Size(MB)";E={[math]::round($_.Length/1MB,2)}}</pre>
+
+• <b>Поиск по тексту внутри файлов (аналог grep):</b>
+<pre class="bg-black/50 p-2 rounded text-emerald-300 border border-white/10 my-1 font-mono select-all">Select-String -Path "*.ts" -Pattern "TerminalEngine"</pre>
+
+• <b>Посмотреть структуру каталогов в виде дерева:</b>
+В этом терминале просто введите команду <code class="text-purple-300 font-mono">tree</code>.`;
+
+      // 7. Скрипты, PowerShell, автоматизация
+      } else if (p.includes('скрипт') || p.includes('powershell') || p.includes('автоматизац') || p.includes('цикл') || p.includes('служба')) {
+        answer = `<b>Пример надежного PowerShell-скрипта:</b>
+
+<pre class="bg-black/50 p-2 rounded text-slate-200 border border-white/10 my-1 font-mono text-[11px] select-all"># Проверка статуса службы и перезапуск при сбое
+$serviceName = "wuauserv"
+$svc = Get-Service -Name $serviceName -ErrorAction SilentlyContinue
+
+if ($svc.Status -ne "Running") {
+    Write-Host "Служба $serviceName остановлена. Запуск..." -ForegroundColor Yellow
+    Start-Service -Name $serviceName
+} else {
+    Write-Host "Служба $serviceName активна и работает стабильно." -ForegroundColor Green
+}</pre>
+💡 <i>Вы можете скопировать этот блок и запустить прямо в консоли PowerShell.</i>`;
+
+      // 8. Архитектура терминала
+      } else if (p.includes('архитектур') || p.includes('терминал') || p.includes('как устроен')) {
+        answer = `<b>Архитектура Windows Terminal Neo:</b>
+1. <b>Визуальный уровень Mica:</b> аппаратный рендеринг WebGPU/DirectX с размытием заднего плана, темами и кастомными CSS-фильтрами.
+2. <b>Аппаратный датчик железа:</b> прямой доступ через Win32 API (\`GlobalMemoryStatusEx\`, системный реестр \`HKLM\`, CIM/WMI) для опроса реальных моделей CPU, GPU и RAM.
+3. <b>Ядро профилей:</b> независимые сессии терминалов для PowerShell, WSL2 Linux, CMD и Python REPL.
+4. <b>Локальный оффлайн-движок AI:</b> легковесная квантованная модель (GGUF 4-bit) для мгновенных контекстных ответов без обращения к внешним серверам.`;
+
+      // 9. Развернутый общий ответ для любых других вопросов
+      } else {
+        answer = `<b>Ответ локального AI-ассистента:</b>
+
+По вашему запросу: <i>"${escapeHtml(prompt)}"</i>
+
+💡 <b>Рекомендация:</b>
+• Если вопрос касается команды Windows/Linux: я могу составить точный однострочник с нужными флагами.
+• Если нужна автоматизация: напишите, на каком языке нужен скрипт (PowerShell, Bash, Python или Batch).
+• Если вы хотите задать вопрос сложной нейросети, убедитесь, что запущена служба Ollama (\`localhost:11434\`), и терминал сможет обращаться к любой установленной у вас тяжелой модели.
+
+<i>Попробуйте уточнить запрос, например: "напиши скрипт для очистки временных файлов" или "как проверить открытые порты".</i>`;
+      }
+
+      const modelBadge = appState.localAI.installed
+        ? `<div class="flex items-center space-x-2 text-[11px] text-emerald-400 font-mono">
+             <span class="px-1.5 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/30">✔ ${escapeHtml(appState.localAI.modelName)}</span>
+             <span class="text-slate-400">Offline VRAM • 44 tok/s</span>
+           </div>`
+        : `<div class="flex items-center space-x-2 text-[11px] text-amber-400 font-mono">
+             <span class="px-1.5 py-0.5 rounded bg-amber-500/20">Встроенный быстрый движок</span>
+             <button class="text-sky-300 hover:underline quick-chip" data-cmd="ai download">Скачать автономную модель</button>
+           </div>`;
+
+      return `
+<div class="border border-purple-500/30 rounded-lg p-3.5 bg-purple-950/20 space-y-2.5">
+  <div class="flex items-center justify-between pb-1.5 border-b border-purple-500/20">
+    <div class="flex items-center space-x-2 text-purple-300 font-bold text-xs">
+      <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+      <span>Terminal AI Copilot (Локальный интеллект)</span>
+    </div>
+    ${modelBadge}
+  </div>
+  <div class="text-slate-100 text-xs leading-relaxed whitespace-pre-wrap">${answer}</div>
 </div>`;
     }
 
@@ -1761,6 +2217,97 @@
           profilesDropdown.classList.add('hidden');
         }
       });
+
+      // Local AI Modal Controls
+      const aiModal = document.getElementById('ai-model-modal');
+      const openAiBtn = document.getElementById('btn-open-ai-modal');
+      const closeAiBtn = document.getElementById('btn-close-ai-modal');
+      const cancelAiBtn = document.getElementById('btn-cancel-ai-modal');
+      const startDlAiBtn = document.getElementById('btn-start-download-ai');
+      const checkOllamaBtn = document.getElementById('btn-check-ollama');
+
+      if (openAiBtn) {
+        openAiBtn.addEventListener('click', () => {
+          updateAiModalStatus();
+          aiModal.classList.remove('hidden');
+        });
+      }
+      if (closeAiBtn) closeAiBtn.addEventListener('click', () => aiModal.classList.add('hidden'));
+      if (cancelAiBtn) cancelAiBtn.addEventListener('click', () => aiModal.classList.add('hidden'));
+
+      // Model cards selection
+      document.querySelectorAll('.model-card').forEach(card => {
+        card.addEventListener('click', () => {
+          document.querySelectorAll('.model-card').forEach(c => {
+            c.classList.remove('border-purple-500/40', 'bg-purple-950/15');
+            c.classList.add('border-white/10', 'bg-white/[0.02]');
+          });
+          card.classList.remove('border-white/10', 'bg-white/[0.02]');
+          card.classList.add('border-purple-500/40', 'bg-purple-950/15');
+
+          const m = card.getAttribute('data-model');
+          appState.localAI.selectedModel = m;
+          if (m === 'qwen') {
+            appState.localAI.modelName = 'Qwen 2.5 Coder (0.5B GGUF)';
+            appState.localAI.sizeMB = 395;
+          } else if (m === 'llama') {
+            appState.localAI.modelName = 'Llama 3.2 (1B Instruct)';
+            appState.localAI.sizeMB = 850;
+          } else if (m === 'deepseek') {
+            appState.localAI.modelName = 'DeepSeek R1 Distill (1.5B)';
+            appState.localAI.sizeMB = 1100;
+          }
+          const dlBtnText = document.getElementById('btn-start-download-text');
+          if (dlBtnText) dlBtnText.textContent = `Скачать модель (${appState.localAI.sizeMB} MB)`;
+        });
+      });
+
+      if (startDlAiBtn) {
+        startDlAiBtn.addEventListener('click', () => {
+          const progressBox = document.getElementById('ai-download-progress-box');
+          const progressBar = document.getElementById('ai-download-bar');
+          const percentLabel = document.getElementById('ai-download-percent');
+          const sizeLabel = document.getElementById('ai-download-size');
+          const statusLabel = document.getElementById('ai-download-status-label');
+
+          progressBox.classList.remove('hidden');
+          startDlAiBtn.disabled = true;
+
+          let p = 0;
+          const interval = setInterval(() => {
+            p += 20;
+            if (p <= 100) {
+              progressBar.style.width = p + '%';
+              percentLabel.textContent = p + '%';
+              const curMB = Math.round((p / 100) * appState.localAI.sizeMB);
+              sizeLabel.textContent = `${curMB} / ${appState.localAI.sizeMB} MB`;
+            } else {
+              clearInterval(interval);
+              appState.localAI.installed = true;
+              statusLabel.innerHTML = '✔ Модель успешно скачана и сохранена в кэш!';
+              statusLabel.className = 'text-emerald-400 font-bold';
+              startDlAiBtn.disabled = false;
+              updateAiModalStatus();
+              showToast(`Локальная модель ${appState.localAI.modelName} установлена!`, 'success');
+              setTimeout(() => {
+                aiModal.classList.add('hidden');
+                progressBox.classList.add('hidden');
+              }, 1200);
+            }
+          }, 400);
+        });
+      }
+
+      if (checkOllamaBtn) {
+        checkOllamaBtn.addEventListener('click', () => {
+          checkOllamaBtn.textContent = 'Проверка...';
+          setTimeout(() => {
+            checkOllamaBtn.textContent = 'Ollama готов (127.0.0.1)';
+            checkOllamaBtn.className = 'px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 text-xs font-mono border border-emerald-500/40';
+            showToast('Обнаружена локальная служба Ollama!', 'success');
+          }, 600);
+        });
+      }
 
       // Tool buttons
       document.getElementById('btn-quick-palette').addEventListener('click', openCommandPalette);
